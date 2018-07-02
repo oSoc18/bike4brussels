@@ -1,5 +1,7 @@
 # bike4brussels
 
+- redo Navigation app? Code has never been tested
+
 QUESTIONS - meeting 03-07-2018:
 
 - What is the most important thing you want us to make it work? Why?
