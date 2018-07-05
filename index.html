@@ -11,17 +11,39 @@
     <link href='style/general_style.css' rel='stylesheet'/>
 </head>
 <body style="height: 100vh">
-<div class="container-fluid top-overlay" style="position: absolute; float: left">
-    <div class="row">
+<div class="container-fluid top-overlay">
+    <!--<div class="row">
         <div class="col-12">
             <h1>Bike For Brussels</h1>
             <h4>Route Planner</h4>
         </div>
+    </div>-->
+    <button class="btn image-button" id="sidebarHamburger" onclick="toggleSidebar()"></button>
+    <!--<div class="center-helper">-->
+    <div class="row">
+        <div class="col-lg-2 col-md-1" id="top-overlay-center-spacer">
+        </div>
+        <div class="col-lg-7 col-md-8" id="top-overlay-input">
+            <div class="row">
+                <!--<label class="col-lg-1 control-label" for="fromInput">From</label>-->
+                <div class="col-lg-5 col-md-12">
+                    <input class="form-control" type="text" id="fromInput" placeholder="From">
+                </div>
+                <!--<label class="col-lg-1 control-label" for="toInput">To</label>-->
+                <div class="col-lg-2 col-md-12 text-center">
+                    <button class="btn btn-primary image-button" id="swap-origin-destination-button"></button>
+                </div>
+                <div class="col-lg-5 col-md-12">
+                    <input class="form-control" type="text" id="toInput" placeholder="To">
+                </div>
+            </div>
+        </div>
     </div>
+    <!--</div>-->
 </div>
 <div class="container-fluid  map-container" style="height: 100vh">
     <div class="row" style="height: 100%">
-        <div class="col-lg-9 col-md-8 col-sm-12" style=" height: 100%; padding: 0px 0px 0px 0px;">
+        <div class="col-lg-12" style=" height: 100%; padding: 0px 0px 0px 0px;">
             <div id='map' style='width: 100%; height: 100%'></div>
             <script>
                 mapboxgl.accessToken = 'pk.eyJ1IjoiZml6ejU1IiwiYSI6ImNqajVxcG9uajAwMDYza3VrcXY5bTkwMjYifQ.ixw4txr_8ykx5GOeWzUBKQ';
@@ -33,10 +55,11 @@
                 });
             </script>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-12" style=" height: 100%; padding: 0px 0px 0px 0px; z-index: 101;">
-            <div id='sidebar-left' style="background: darkorange; height: 100vh">This is a sidebar</div>
-        </div>
     </div>
+</div>
+<div id="sidebar-right-container" class="col-lg-3 col-md-4 col-sm-12">
+    <button class="btn btn-default image-button" id="sidebarClose" onclick="toggleSidebar()"></button>
+    <div id='sidebar-right-content'>This is a sidebar</div>
 </div>
 
 </body>
@@ -52,5 +75,6 @@
         crossorigin="anonymous"></script>
 <script src="js/constants.js"></script>
 <script src="js/routeplanning.js"></script>
+<script src="js/uihelper.js"></script>
 
 </html>

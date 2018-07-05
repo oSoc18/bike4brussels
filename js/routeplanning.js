@@ -27,76 +27,75 @@ function calculateRoute(origin, destination, profile, instructions = true, updat
     const url = `${urls.route}/route?loc1=${originS}&loc2=${destinationS}&profile=${profile}&instructions=${instructions}`;
 
     // TODO: The json should be requested instead of using a hardcoded example json. This hack is used because the backend server is not yet reachable.
-    //$.getJSON(url, function (json) {
-    {
-        json = examplejson;
-        console.log(json);
+    $.getJSON(url, function (json) {
+            //{
+            json = examplejson;
+            console.log(json);
 
-        // Check if profile already exists
-        const calculatedRoute = map.getSource(profile);
-        if (calculatedRoute) {
-            // Just set the data
-            calculatedRoute.setData(json.route);
-        } else {
-            // Add a new layer
-            map.addLayer({
-                id: profile,
-                type: 'line',
-                source: {
-                    type: 'geojson',
-                    data: json.route
-                },
-                paint: {
-                    'line-color':
-                        profile === 'shortest'
-                            ? 'lightgrey'
-                            : {
-                                type: 'identity',
-                                property: 'colour'
-                            },
-                    'line-width': 4
-                },
-                layout: {
-                    'line-cap': 'round'
-                }
-            });
+            // Check if profile already exists
+            const calculatedRoute = map.getSource(profile);
+            if (calculatedRoute) {
+                // Just set the data
+                calculatedRoute.setData(json.route);
+            } else {
+                // Add a new layer
+                map.addLayer({
+                    id: profile,
+                    type: 'line',
+                    source: {
+                        type: 'geojson',
+                        data: json.route
+                    },
+                    paint: {
+                        'line-color':
+                            profile === 'shortest'
+                                ? 'darkgrey'
+                                : {
+                                    type: 'identity',
+                                    property: 'colour'
+                                },
+                        'line-width': 4
+                    },
+                    layout: {
+                        'line-cap': 'round'
+                    }
+                });
+            }
+
+            /*if (profile === 'shortest') {
+                // If the route is the 'shortest' then the duration (time) of the route (which is contained in the last
+                // route segment) was originally shown in a popup displayed at the middle line segment of all the lines.
+                // This code still works but is not used at the moment. Could be useful though.
+                const time = json.route.features[json.route.features.length - 1].properties.time;
+                const text = timeToText(time);
+                const middleFeature = json.route.features[Math.round(json.route.features.length / 2)];
+                const LatLng = middleFeature.geometry.coordinates[0];
+            }*/
+
+            // Move the network layer always on top
+            if (profile === 'shortest' && map.getSource('brussels')) {
+                map.moveLayer('shortest', 'brussels');
+            }
+
+            //fitToBounds(origin, destination);
+            /*setTimeout(() => {
+                fitToBounds(origin, destination);
+                // hide the loading icon
+                //view.toggleMapLoading();
+            }, 350);*/
         }
+    ) // TODO: uncomment when routeplanner backnd is available
 
-        /*if (profile === 'shortest') {
-            // If the route is the 'shortest' then the duration (time) of the route (which is contained in the last
-            // route segment) was originally shown in a popup displayed at the middle line segment of all the lines.
-            // This code still works but is not used at the moment. Could be useful though.
-            const time = json.route.features[json.route.features.length - 1].properties.time;
-            const text = timeToText(time);
-            const middleFeature = json.route.features[Math.round(json.route.features.length / 2)];
-            const LatLng = middleFeature.geometry.coordinates[0];
-        }*/
-
-        // Move the network layer always on top
-        if (profile === 'shortest' && map.getSource('brussels')) {
-            map.moveLayer('shortest', 'brussels');
-        }
-
-        //fitToBounds(origin, destination);
-        /*setTimeout(() => {
-            fitToBounds(origin, destination);
-            // hide the loading icon
-            //view.toggleMapLoading();
-        }, 350);*/
-    }
-/*) // TODO: uncomment when routeplanner backnd is available
-
-.
-catch(ex => {
-    // eslint-disable-next-line
-    console.warn('Problem calculating route: ', ex);
-    if (profile === 'brussels') {
-        mapController.clearRoutes();
-        mapController.clearMapObject('shortestPopup');
-        view.toggleMapLoading();
-        view.toggleErrorDialog();
-    }
-});*/
+        .catch(ex => {
+            // eslint-disable-next-line
+            console.warn('Problem calculating route: ', ex);
+            if (profile === 'brussels') {
+                mapController.clearRoutes();
+                mapController.clearMapObject('shortestPopup');
+                view.toggleMapLoading();
+                view.toggleErrorDialog();
+            }
+        });
 }
 
 function fitToBounds(origin, destination) {
@@ -126,7 +125,7 @@ function swapArrayValues(array) {
 }
 
 function startCalculation() {
-    calculateRoute([4.320122, 50.858051], [4.397713, 50.854367], "brussels");
+    calculateRoute([4.320122, 50.858051], [4.397713, 50.854367], "shortest");
 }
 
 setTimeout(startCalculation, 2000);
