@@ -35,7 +35,7 @@
                 </div>
                 <!--<label class="col-lg-1 control-label" for="toInput">To</label>-->
                 <div class="col-lg-2 col-md-12 text-center">
-                    <button class="btn btn-primary image-button" id="swap-origin-destination-button" onclick="swapOriginDestination()"></button>
+                    <button class="btn btn-warning image-button" id="swap-origin-destination-button" onclick="swapOriginDestination()"></button>
                 </div>
                 <div class="col-lg-5 col-md-12">
                     <input class="form-control typeahead geocoder-input" type="text" id="toInput" placeholder="To">
@@ -62,7 +62,9 @@
     </div>
 </div>
 <div id="sidebar-right-container" class="col-lg-3 col-md-4 col-sm-12">
-    <button class="btn-close btn-default image-button" id="sidebarClose" onclick="toggleSidebar()"></button>
+    <div id="sidebar-top-spacer">
+        <button class="btn-close btn-default image-button" id="sidebarClose" onclick="toggleSidebar()"></button>
+    </div>
     <div id='sidebar-right-content'>
       <div id='sidebar-top'>
         <span id="fastest-route" class="route"><img src="./assets/img/fast.svg"/>Fast</span>
