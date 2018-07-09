@@ -31,9 +31,21 @@ function calculateRoute(origin, destination, profile = "shortest", instructions 
     // Construct the url
     const url = `${urls.route}/route?loc1=${originS}&loc2=${destinationS}&profile=${profile}&instructions=${instructions}`;
 
-    // TODO: The json should be requested instead of using a hardcoded example json. This hack is used because the backend server is not yet reachable.
     $.getJSON(url, function (json) {
             console.log(json);
+            
+            route = json.route.features;
+            for(var i in route){
+                if(route[i].properties.cyclecolour === undefined){
+                    route[i].properties.cyclecolour = "#979797";
+                } else if(route[i].properties.cyclecolour.length !== 7){
+                    if(route[i].properties.cyclecolour.length > 7){
+                        route[i].properties.cyclecolour = route[i].properties.cyclecolour.substring(0,7);
+                    } else {
+                        route[i].properties.cyclecolour = "#979797";
+                    }
+                }
+            }
 
             // Check if profile already exists
             const calculatedRoute = map.getSource(profile);
@@ -50,13 +62,12 @@ function calculateRoute(origin, destination, profile = "shortest", instructions 
                         data: json.route
                     },
                     paint: {
-                        'line-color':
-                            profile === 'shortest'
-                                ? 'darkgrey'
-                                : {
+                            'line-color':
+                                {   // always use the colors of the cycling network
                                     type: 'identity',
-                                    property: 'colour'
-                                },
+                                    property: 'cyclecolour'
+                                }
+                        ,
                         'line-width': 4
                     },
                     layout: {
@@ -90,6 +101,12 @@ function calculateRoute(origin, destination, profile = "shortest", instructions 
     ) // TODO: uncomment when routeplanner backnd is available
 
         .catch(ex => {
+            if (map.getLayer(profile)) {
+                map.removeLayer(profile);
+            }
+            if (map.getSource(profile)){
+                map.removeSource(profile);
+            }
             // eslint-disable-next-line
             console.warn('Problem calculating route: ', ex);
             if (profile === 'brussels') {
@@ -128,6 +145,74 @@ function createMarker(loc, color = '#3FB1CE') {
         .addTo(map);
 }
 
+map.on('click', function (e) {
+    console.log(e.lngLat);
+    var lngLatArray = [e.lngLat.lng, e.lngLat.lat];
+    if (location1 === undefined) {
+        location1 = lngLatArray;
+        reverseGeocode(location1, function (adress) {
+            $("#fromInput").val(adress);
+        });
+    } else {
+        location2 = lngLatArray;
+        reverseGeocode(location2, function (adress) {
+            $("#toInput").val(adress);
+        });
+    }
+    showLocationsOnMap();
+});
+
+function initInputGeocoders() {
+    $('.geocoder-input').typeahead({
+        source: function (query, callback) {
+            // MapBox Geocoder:
+            /*$.getJSON(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${mapboxAccessCode}&proximity=50.861%2C4.356&country=BE&bbox=3.9784240723%2C50.6485897217%2C4.7282409668%2C51.0552073386&limit=5`, function (data) {
+                var resArray = [];
+                for(var feature in data.features){
+                    resArray.push({name: data.features[feature].place_name, loc: data.features[feature].center});
+                }
+                callback(resArray);
+            });*/
+
+            // Nominatim Geocoder
+            $.getJSON(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&polygon=0&addressdetails=0`, function (data) {
+                var resArray = [];
+                for (var feature in data) {
+                    resArray.push({name: data[feature].display_name, loc: [data[feature].lon, data[feature].lat]});
+                }
+                callback(resArray);
+            });
+
+        },
+        matcher: function (s) {   //Fix display results when query contains space
+            return true;
+        },
+        afterSelect: function (activeItem) {
+            var id = this.$element.attr('id');
+            if (id == "fromInput") {
+                //set the origin, add to the map
+                location1 = activeItem.loc;
+            } else if (id == "toInput") {
+                //set the destination, add to the map
+                location2 = activeItem.loc;
+            } else {
+                //fout
+                console.log("NIET GEVONDEN!");
+            }
+            showLocationsOnMap();
+        }
+    });
+}
+
+function reverseGeocode(location, callback) {
+    var lng = location[0];
+    var lat = location[1];
+    $.getJSON(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=0`, function (data) {
+        console.log(data);
+        callback(data.display_name);
+    });
+}
+
 function fitToBounds(origin, destination) {
     let bounds = new mapboxgl.LngLatBounds();
     bounds.extend(origin);
@@ -142,6 +227,21 @@ function fitToBounds(origin, destination) {
             left: 50
         }
     });
+}
+
+function swapOriginDestination() {
+    var locTemp = location1;
+    location1 = location2;
+    location2 = locTemp;
+
+    var fromInput = $("#fromInput");
+    var toInput = $("#toInput");
+
+    var adress1 = fromInput.val();
+    fromInput.val(toInput.val());
+    toInput.val(adress1);
+
+    showLocationsOnMap();
 }
 
 function swapArrayValues(array) {
