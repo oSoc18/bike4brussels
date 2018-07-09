@@ -65,7 +65,7 @@
 }
 
 #sidebarClose:before{
-    background-image : url(icons/ic_clear_black_24px.svg);
+    background-image : url(icons/ic_clear_white_24px.svg);
 }
 
 .btn {
@@ -114,9 +114,27 @@ svg:hover {
   align-items: center;
 }
 
-#sidebar-right-content {
+#sidebar-top {
   display: flex;
   flex-direction: row;
+  height: 5rem;
+}
+
+.route-instructions {
+  overflow-y: auto;
+  background-color: #FFD438;
+  color: white;
+  list-style: none;
+}
+
+li {
+  border-bottom: 1px solid white;
+  padding: 1.5rem;
+}
+
+.active {
+  color: white;
+  background-color: #FFD438;
 }
 
 input[type="text"], textarea {

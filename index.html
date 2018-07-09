@@ -64,14 +64,24 @@
 <div id="sidebar-right-container" class="col-lg-3 col-md-4 col-sm-12">
     <button class="btn-close btn-default image-button" id="sidebarClose" onclick="toggleSidebar()"></button>
     <div id='sidebar-right-content'>
-      <span class="route">
-        <svg viewBox="0 0 32 32">
-            <use xlink:href="./assets/img/fast.svg"></use>
-        </svg>
-        Fast</span>
-      <span class="route"><img src="./assets/img/balanced.svg" width="25"/>Balanced</span>
-      <span class="route"><img src="./assets/img/relaxed.svg" width="25"/>Relaxed</span>
-      <span class="route"><img src="./assets/img/other.svg" width="25"/>Other</span>
+      <div id='sidebar-top'>
+        <span id="fastest-route" class="route"><img src="./assets/img/fast.svg"/>Fast</span>
+        <span id="balanced-route" class="route"><img src="./assets/img/balanced.svg" width="25"/>Balanced</span>
+        <span id="relaxed-route" class="route"><img src="./assets/img/relaxed.svg" width="25"/>Relaxed</span>
+        <span id="other-route" class="route"><img src="./assets/img/other.svg" width="25"/>Other</span>
+      </div>
+      <div id="fast-instruction" class="route-instructions">
+
+      </div>
+      <div id="balanced-instruction" class="route-instructions">
+
+      </div>
+      <div id="relaxed-instruction" class="route-instructions">
+
+      </div>
+      <div id="other-instruction" class="route-instructions">
+
+      </div>
     </div>
 </div>
 

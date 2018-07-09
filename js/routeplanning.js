@@ -2,6 +2,7 @@ var location1 = undefined;
 var location1Marker = undefined;
 var location2 = undefined;
 var location2Marker = undefined;
+var routes = [];
 
 function timeToText(s) {
     if (s < 60) {
@@ -33,7 +34,7 @@ function calculateRoute(origin, destination, profile = "shortest", instructions 
 
     $.getJSON(url, function (json) {
             console.log(json);
-            
+
             route = json.route.features;
             for(var i in route){
                 if(route[i].properties.cyclecolour === undefined){
@@ -45,6 +46,13 @@ function calculateRoute(origin, destination, profile = "shortest", instructions 
                         route[i].properties.cyclecolour = "#979797";
                     }
                 }
+            }
+
+            for(let i in json.instructions.features){
+              console.log(json.instructions.features[i].properties.instruction);
+              $("#fast-instruction").append(`<li>${json.instructions.features[i].properties.instruction}</li>`);
+              $("#fastest-route").addClass(`active`);
+
             }
 
             // Check if profile already exists
