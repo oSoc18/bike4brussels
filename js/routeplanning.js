@@ -1,3 +1,8 @@
+var location1 = undefined;
+var location1Marker = undefined;
+var location2 = undefined;
+var location2Marker = undefined;
+
 function timeToText(s) {
     if (s < 60) {
         return '1min';
@@ -18,7 +23,7 @@ function timeToText(s) {
  * @param {boolean} instructions - Whether or not the route instructions should be requested from the server
  * @param {boolean} update - For my location, if we should do a silent update
  */
-function calculateRoute(origin, destination, profile, instructions = true, update = true) {
+function calculateRoute(origin, destination, profile = "shortest", instructions = false, update = true) {
     // Swap around values for the API
     const originS = swapArrayValues(origin);
     const destinationS = swapArrayValues(destination);
@@ -28,8 +33,6 @@ function calculateRoute(origin, destination, profile, instructions = true, updat
 
     // TODO: The json should be requested instead of using a hardcoded example json. This hack is used because the backend server is not yet reachable.
     $.getJSON(url, function (json) {
-            //{
-            json = examplejson;
             console.log(json);
 
             // Check if profile already exists
@@ -90,12 +93,39 @@ function calculateRoute(origin, destination, profile, instructions = true, updat
             // eslint-disable-next-line
             console.warn('Problem calculating route: ', ex);
             if (profile === 'brussels') {
+                /*
                 mapController.clearRoutes();
                 mapController.clearMapObject('shortestPopup');
                 view.toggleMapLoading();
                 view.toggleErrorDialog();
+                */
             }
         });
+}
+
+
+function showLocationsOnMap() {
+    if (location1 !== undefined) {
+        if (location1Marker !== undefined) {
+            location1Marker.remove();
+        }
+        location1Marker = createMarker(location1, '#47b200');
+    }
+    if (location2 !== undefined) {
+        if (location2Marker !== undefined) {
+            location2Marker.remove();
+        }
+        location2Marker = createMarker(location2, '#b50000');
+    }
+    if (location1 !== undefined && location2 !== undefined) {
+        calculateRoute(location1, location2);
+    }
+}
+
+function createMarker(loc, color = '#3FB1CE') {
+    return new mapboxgl.Marker({color: color})
+        .setLngLat(loc)
+        .addTo(map);
 }
 
 function fitToBounds(origin, destination) {
@@ -124,8 +154,9 @@ function swapArrayValues(array) {
     return newArray;
 }
 
-function startCalculation() {
+/*function startCalculation() {
     calculateRoute([4.320122, 50.858051], [4.397713, 50.854367], "shortest");
-}
+}*/
 
-setTimeout(startCalculation, 2000);
+initInputGeocoders();
+//setTimeout(startCalculation, 2000);

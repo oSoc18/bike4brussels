@@ -5,6 +5,8 @@ const urls = {
     route: 'http://localhost:5000'
 };
 
+const mapboxAccessCode = "pk.eyJ1IjoiZml6ejU1IiwiYSI6ImNqajVxcG9uajAwMDYza3VrcXY5bTkwMjYifQ.ixw4txr_8ykx5GOeWzUBKQ";
+
 //const center = { latlng: [4.355975, 50.860633], zoom: 11 };
 
 // TODO: remove example json as soon as we have a test-server for this purpose
