@@ -29,8 +29,9 @@
         <div class="col-lg-8 col-md-8" id="top-overlay-input">
             <div class="row">
                 <!--<label class="col-lg-1 control-label" for="fromInput">From</label>-->
-                <div class="col-lg-5 col-md-12">
+                <div class="col-lg-5 col-md-12 currentLocation">
                     <input class="form-control typeahead geocoder-input" type="text" id="fromInput" placeholder="From">
+                    <img src="./assets/img/currentLocation.svg"/>
                 </div>
                 <!--<label class="col-lg-1 control-label" for="toInput">To</label>-->
                 <div class="col-lg-2 col-md-12 text-center">
@@ -61,8 +62,17 @@
     </div>
 </div>
 <div id="sidebar-right-container" class="col-lg-3 col-md-4 col-sm-12">
-    <button class="btn btn-default image-button" id="sidebarClose" onclick="toggleSidebar()"></button>
-    <div id='sidebar-right-content'>This is a sidebar</div>
+    <button class="btn-close btn-default image-button" id="sidebarClose" onclick="toggleSidebar()"></button>
+    <div id='sidebar-right-content'>
+      <span class="route">
+        <svg viewBox="0 0 32 32">
+            <use xlink:href="./assets/img/fast.svg"></use>
+        </svg>
+        Fast</span>
+      <span class="route"><img src="./assets/img/balanced.svg" width="25"/>Balanced</span>
+      <span class="route"><img src="./assets/img/relaxed.svg" width="25"/>Relaxed</span>
+      <span class="route"><img src="./assets/img/other.svg" width="25"/>Other</span>
+    </div>
 </div>
 
 </body>

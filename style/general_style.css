@@ -69,7 +69,60 @@
 }
 
 .btn {
-    background: transparent;
+  background-color: #FAFAFA;
+  border: none;
+}
+
+.btn-close {
+  background-color: #ECB900;
+  border: none;
+}
+
+.btn:hover{
+  background-color: #ECB900;
+}
+
+.form-control {
+  border: none;
+  background-color: #FAFAFA;
+  border-radius: 0;
+}
+
+.route {
+  background-color: white;
+  color: #ECB900;
+  text-align: center;
+  cursor: pointer;
+  flex-grow: 1;
+}
+
+svg:hover {
+  fill: white;
+}
+
+.svg {
+  fill: #ECB900;
+}
+
+.route:hover {
+  background-color: #FFD438;
+  color: white;
+}
+
+.currentLocation {
+  display: flex;
+  align-items: center;
+}
+
+#sidebar-right-content {
+  display: flex;
+  flex-direction: row;
+}
+
+input[type="text"], textarea {
+  outline: none;
+  box-shadow:none !important;
+  border-bottom: 3px solid #ECB900 !important;
 }
 
 @media only screen and (min-width : 768px) {

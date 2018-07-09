@@ -23,7 +23,7 @@ function timeToText(s) {
  * @param {boolean} instructions - Whether or not the route instructions should be requested from the server
  * @param {boolean} update - For my location, if we should do a silent update
  */
-function calculateRoute(origin, destination, profile = "shortest", instructions = false, update = true) {
+function calculateRoute(origin, destination, profile = "shortest", instructions = true, update = true) {
     // Swap around values for the API
     const originS = swapArrayValues(origin);
     const destinationS = swapArrayValues(destination);
