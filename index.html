@@ -35,7 +35,8 @@
                 </div>
                 <!--<label class="col-lg-1 control-label" for="toInput">To</label>-->
                 <div class="col-lg-2 col-md-12 text-center">
-                    <button class="btn btn-warning image-button" id="swap-origin-destination-button" onclick="swapOriginDestination()"></button>
+                    <button class="btn btn-warning image-button" id="swap-origin-destination-button"
+                            onclick="swapOriginDestination()"></button>
                 </div>
                 <div class="col-lg-5 col-md-12">
                     <input class="form-control typeahead geocoder-input" type="text" id="toInput" placeholder="To">
@@ -66,24 +67,35 @@
         <button class="btn-close btn-default image-button" id="sidebarClose" onclick="toggleSidebar()"></button>
     </div>
     <div id='sidebar-right-content'>
-      <div id='sidebar-top'>
-        <span id="fastest-route" class="route"><img src="./assets/img/fast.svg"/>Fast</span>
-        <span id="balanced-route" class="route"><img src="./assets/img/balanced.svg" width="25"/>Balanced</span>
-        <span id="relaxed-route" class="route"><img src="./assets/img/relaxed.svg" width="25"/>Relaxed</span>
-        <span id="other-route" class="route"><img src="./assets/img/other.svg" width="25"/>Other</span>
-      </div>
-      <div id="fast-instruction" class="route-instructions">
+        <div id='sidebar-top'>
+            <span class="btn btn-lg text-center route" id="fastest-route"><span><img
+                    src="./assets/img/fast.svg"/></span><br>Fast</span>
+            <span class="btn btn-default btn-lg text-center route" id="balanced-route"><span><img
+                    src="./assets/img/balanced.svg"/></span><br>Balanced</span>
+            <span class="btn btn-default btn-lg text-center route" id="relaxed-route"><span><img
+                    src="./assets/img/relaxed.svg"/></span><br>Relaxed</span>
+            <span class="btn btn-default btn-lg text-center route" id="other-route"><span><img
+                    src="./assets/img/other.svg"/></span><br>Other</span>
 
-      </div>
-      <div id="balanced-instruction" class="route-instructions">
+            <!--
+            <span id="fastest-route" class="route"><img src="./assets/img/fast.svg"/>Fast</span>
+            <span id="balanced-route" class="route"><img src="./assets/img/balanced.svg" width="25"/>Balanced</span>
+            <span id="relaxed-route" class="route"><img src="./assets/img/relaxed.svg" width="25"/>Relaxed</span>
+            <span id="other-route" class="route"><img src="./assets/img/other.svg" width="25"/>Other</span>
+            -->
+        </div>
+        <div id="fast-instruction" class="route-instructions">
 
-      </div>
-      <div id="relaxed-instruction" class="route-instructions">
+        </div>
+        <div id="balanced-instruction" class="route-instructions">
 
-      </div>
-      <div id="other-instruction" class="route-instructions">
+        </div>
+        <div id="relaxed-instruction" class="route-instructions">
 
-      </div>
+        </div>
+        <div id="other-instruction" class="route-instructions">
+
+        </div>
     </div>
 </div>
 
