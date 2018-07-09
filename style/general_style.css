@@ -151,6 +151,25 @@ input[type="text"], textarea {
     }
 }
 
+/* enable absolute positioning */
+.currentLocation {
+    position: relative;
+}
+
+/* style icon */
+.currentLocation img {
+    position: absolute;
+    padding: 10px;
+}
+
+/* align icon */
+.left-addon img  { left:  0px;}
+.right-addon img { right: 10px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
 /*.dropdown-menu {
     display: block !important;
 }*/

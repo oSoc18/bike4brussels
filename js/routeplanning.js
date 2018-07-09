@@ -221,6 +221,22 @@ function reverseGeocode(location, callback) {
     });
 }
 
+function useCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+function showPosition(position) {
+    location1 = [position.coords.longitude, position.coords.latitude];
+    showLocationsOnMap();
+    reverseGeocode(location1, function (adress) {
+        $("#fromInput").val(adress);
+    });
+}
+
 function fitToBounds(origin, destination) {
     let bounds = new mapboxgl.LngLatBounds();
     bounds.extend(origin);
