@@ -21,15 +21,15 @@ function timeToText(s) {
  * @param {[int, int]} destination - The LatLng Coords
  * @param {String} profile - The routing profile
  * @param {boolean} instructions - Whether or not the route instructions should be requested from the server
- * @param {boolean} update - For my location, if we should do a silent update
+ * @param {String} lang - en/nl(/fr) select the language for the instructions
  */
-function calculateRoute(origin, destination, profile = "shortest", instructions = true, update = true) {
+function calculateRoute(origin, destination, profile = "shortest", instructions = true, lang = 'en') {
     // Swap around values for the API
     const originS = swapArrayValues(origin);
     const destinationS = swapArrayValues(destination);
 
     // Construct the url
-    const url = `${urls.route}/route?loc1=${originS}&loc2=${destinationS}&profile=${profile}&instructions=${instructions}`;
+    const url = `${urls.route}/route?loc1=${originS}&loc2=${destinationS}&profile=${profile}&instructions=${instructions}&lang=${lang}`;
 
     $.getJSON(url, function (json) {
             console.log(json);
