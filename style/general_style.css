@@ -101,7 +101,7 @@
     /*flex-grow: 1;*/
 }
 
-svg:hover {
+.route:hover path {
     fill: white;
 }
 
@@ -140,6 +140,10 @@ li {
 .active {
     color: white;
     background-color: #FFD438;
+}
+
+.active path {
+    fill: white;
 }
 
 input[type="text"], textarea {
