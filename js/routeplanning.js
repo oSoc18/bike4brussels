@@ -47,7 +47,7 @@ function calculateRoute(origin, destination, profile = "shortest", instructions 
                     }
                 }
             }
-
+            // Shows the instructions in the sidebar
             for(let i in json.instructions.features){
               console.log(json.instructions.features[i].properties.instruction);
               $("#fast-instruction").append(`<li>${json.instructions.features[i].properties.instruction}</li>`);
