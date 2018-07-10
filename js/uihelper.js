@@ -12,6 +12,17 @@ function toggleSidebar() {
     }
 }
 
+function sidebarDisplayProfileHtmlId(id) {
+    sidebarDisplayProfile(profileButtonIds[id]);
+}
+
+function sidebarDisplayProfile(profile){
+    console.log(`showing only ${profile}`);
+    $(".route-instructions").addClass("height-zero");
+    $(`#${profileHtmlId[profile]}`).removeClass("height-zero");
+    $("#sidebar-top>span").removeClass("active");
+    $(`#${getKeyByValue(profileButtonIds, profile)}`).addClass("active");
+}
 
 /*
      * Replace all SVG images with inline SVG
@@ -42,5 +53,8 @@ jQuery('img.svg').each(function(){
         $img.replaceWith($svg);
 
     }, 'xml');
-
 });
+
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}

@@ -63,6 +63,13 @@
     overflow: hidden;
 }
 
+/*.route-instructions {     // Transition animations won't work when animating from height: 0 to flex grow
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}*/
+
 #sidebar-right-container .container-fluid {
     flex: 0 0 1%;
 }
@@ -222,6 +229,10 @@ input[type="text"], textarea {
 
 .right-addon input {
     padding-right: 30px;
+}
+
+.height-zero {
+    height: 0px;
 }
 
 /*.dropdown-menu {

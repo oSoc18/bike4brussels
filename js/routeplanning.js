@@ -3,6 +3,20 @@ var location1Marker = undefined;
 var location2 = undefined;
 var location2Marker = undefined;
 var routes = [];
+const profileHtmlId = {
+    "fast": "fast-instruction",
+    "shortest": "shortest-instruction", // Currently not in use
+    "balanced": "balanced-instruction",
+    "networks": "relaxed-instruction",
+    "brussels": "other-instruction"
+};
+const profileButtonIds = {
+    "fastest-route": "fast",
+    "shortest-route": "shortest", // Currently not in use
+    "balanced-route": "balanced",
+    "relaxed-route": "networks",
+    "other-route": "brussels"
+};
 
 function timeToText(s) {
     if (s < 60) {
@@ -17,6 +31,22 @@ function timeToText(s) {
 }
 
 /**
+ * Calculates all routes and shows it on the map
+ * @param {[int, int]} origin - The LatLng Coords
+ * @param {[int, int]} destination - The LatLng Coords
+ * @param {[String]} profiles - for every profile, a route will be requested
+ * @param {boolean} instructions - Whether or not the route instructions should be requested from the server
+ * @param {String} lang - en/nl(/fr) select the language for the instructions
+ */
+function calculateAllRoutes(origin, destination, profiles = ["fast", "shortest", "balanced", "networks", "brussels"], instructions = true, lang = 'en') {
+    $(".route-instructions").html("Loading...");
+    profiles.forEach(function (profile) {
+        calculateRoute(origin, destination, profile, instructions, lang);
+    });
+    sidebarDisplayProfile(profiles[0]);
+}
+
+/**
  * Calculates a route and shows it on the map
  * @param {[int, int]} origin - The LatLng Coords
  * @param {[int, int]} destination - The LatLng Coords
@@ -24,35 +54,41 @@ function timeToText(s) {
  * @param {boolean} instructions - Whether or not the route instructions should be requested from the server
  * @param {String} lang - en/nl(/fr) select the language for the instructions
  */
-function calculateRoute(origin, destination, profile = "shortest", instructions = true, lang = 'en') {
+function calculateRoute(origin, destination, profile = "balanced", instructions = true, lang = 'en') {
     // Swap around values for the API
     const originS = swapArrayValues(origin);
     const destinationS = swapArrayValues(destination);
 
     // Construct the url
-    const url = `${urls.route}/route?loc1=${originS}&loc2=${destinationS}&profile=${profile}&instructions=${instructions}&lang=${lang}`;
+    let profile_url;
+    if (profile == "fast") {
+        profile_url = "";
+    } else {
+        profile_url = profile;
+    }
+    const url = `${urls.route}/route?loc1=${originS}&loc2=${destinationS}&profile=${profile_url}&instructions=${instructions}&lang=${lang}`;
 
     $.getJSON(url, function (json) {
             console.log(json);
 
             route = json.route.features;
-            for(var i in route){
-                if(route[i].properties.cyclecolour === undefined){
+            for (var i in route) {
+                if (route[i].properties.cyclecolour === undefined) {
                     route[i].properties.cyclecolour = "#979797";
-                } else if(route[i].properties.cyclecolour.length !== 7){
-                    if(route[i].properties.cyclecolour.length > 7){
-                        route[i].properties.cyclecolour = route[i].properties.cyclecolour.substring(0,7);
+                } else if (route[i].properties.cyclecolour.length !== 7) {
+                    if (route[i].properties.cyclecolour.length > 7) {
+                        route[i].properties.cyclecolour = route[i].properties.cyclecolour.substring(0, 7);
                     } else {
                         route[i].properties.cyclecolour = "#979797";
                     }
                 }
             }
             // Shows the instructions in the sidebar
-            for(let i in json.instructions.features){
-              console.log(json.instructions.features[i].properties.instruction);
-              $("#fast-instruction").append(`<li>${json.instructions.features[i].properties.instruction}</li>`);
-              $("#fastest-route").addClass(`active`);
-
+            let $profileInstructions = $(`#${profileHtmlId[profile]}`);
+            $profileInstructions.html("");
+            for (let i in json.instructions.features) {
+                //console.log(json.instructions.features[i].properties.instruction);
+                $profileInstructions.append(`<li>${json.instructions.features[i].properties.instruction}</li>`);
             }
 
             // Check if profile already exists
@@ -70,11 +106,11 @@ function calculateRoute(origin, destination, profile = "shortest", instructions 
                         data: json.route
                     },
                     paint: {
-                            'line-color':
-                                {   // always use the colors of the cycling network
-                                    type: 'identity',
-                                    property: 'cyclecolour'
-                                }
+                        'line-color':
+                            {   // always use the colors of the cycling network
+                                type: 'identity',
+                                property: 'cyclecolour'
+                            }
                         ,
                         'line-width': 4
                     },
@@ -109,10 +145,13 @@ function calculateRoute(origin, destination, profile = "shortest", instructions 
     ) // TODO: uncomment when routeplanner backnd is available
 
         .catch(ex => {
+            console.log(profile);
+            $(`#${profileHtmlId[profile]}`).html("Fout :(");
+
             if (map.getLayer(profile)) {
                 map.removeLayer(profile);
             }
-            if (map.getSource(profile)){
+            if (map.getSource(profile)) {
                 map.removeSource(profile);
             }
             // eslint-disable-next-line
@@ -143,7 +182,7 @@ function showLocationsOnMap() {
         location2Marker = createMarker(location2, '#b50000');
     }
     if (location1 !== undefined && location2 !== undefined) {
-        calculateRoute(location1, location2);
+        calculateAllRoutes(location1, location2);
     }
 }
 
