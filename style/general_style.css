@@ -39,21 +39,50 @@
     transition: all 0.5s ease;
 }
 
+.top-overlay div {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
 #sidebar-right-container {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     right: 0px;
     top: 0px;
     height: 100%;
     padding: 0px 0px 0px 0px;
     z-index: 101;
-    display: none;
     background: #ECB900;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    overflow: hidden;
 }
+
+#sidebar-right-container .container-fluid {
+    flex: 0 0 1%;
+}
+
+#sidebar-right-content {
+    flex: 1 0 1%;
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar-right-container.hidden-sidebar {
+    width: 0px;
+}
+
 
 #sidebarHamburger {
     position: absolute;
     top: 5px;
     right: 5px;
+    padding: 0.5rem 0.5rem 0.5rem 0.65rem;
 }
 
 #swap-origin-destination-button:before {
@@ -123,6 +152,11 @@
     display: flex;
     flex-direction: row;
     height: 5rem;
+    flex-shrink: 0;
+}
+
+#sidebar-top-spacer{
+    padding: 0px 0px 0px 0px;
 }
 
 .route-instructions {
@@ -156,6 +190,7 @@ input[type="text"], textarea {
     @media only screen and (max-width: 992px) {
         .col-md-0 {
             display: none;
+            /*width: 0px;*/
         }
     }
 }
