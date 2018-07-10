@@ -66,7 +66,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
     } else {
         profile_url = profile;
     }
-    const url = `${urls.route}/route?loc1=${originS}&loc2=${destinationS}&profile=${profile_url}&instructions=${instructions}&lang=${lang}`;
+    const url = `${urls.route}/route?loc1=${originS}&loc2=${destinationS}&instructions=${instructions}&lang=${lang}` + (profile_url === "" ? "" : `&profile=${profile_url}`);
 
     $.getJSON(url, function (json) {
             console.log(json);
