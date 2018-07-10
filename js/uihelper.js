@@ -24,9 +24,13 @@ function sidebarDisplayProfile(profile){
     $(`#${getKeyByValue(profileButtonIds, profile)}`).addClass("active");
 }
 
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
+
 /*
-     * Replace all SVG images with inline SVG
-     */
+ * Replace all SVG images with inline SVG
+ */
 jQuery('img.svg').each(function(){
     var $img = jQuery(this);
     var imgID = $img.attr('id');
@@ -55,6 +59,6 @@ jQuery('img.svg').each(function(){
     }, 'xml');
 });
 
-function getKeyByValue(object, value) {
-    return Object.keys(object).find(key => object[key] === value);
-}
+window.onload = function() {
+    sidebarDisplayProfile("fast");
+};

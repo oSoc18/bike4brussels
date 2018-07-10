@@ -43,7 +43,6 @@ function calculateAllRoutes(origin, destination, profiles = ["fast", "shortest",
     profiles.forEach(function (profile) {
         calculateRoute(origin, destination, profile, instructions, lang);
     });
-    sidebarDisplayProfile(profiles[0]);
 }
 
 /**
