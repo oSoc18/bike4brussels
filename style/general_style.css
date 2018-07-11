@@ -129,7 +129,7 @@
     color: #ECB900;
     text-align: center;
     cursor: pointer;
-    width: 25%;
+    width: 20%;
     border-radius: 0px;
     font-size: 110%;
     padding-left: 0px;
@@ -139,6 +139,7 @@
 
 .route:hover path {
     fill: white;
+    stroke: white;
 }
 
 .svg {
@@ -185,6 +186,7 @@ li {
 
 .active path {
     fill: white;
+    stroke: white;
 }
 
 input[type="text"], textarea {
