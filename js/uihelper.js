@@ -17,6 +17,10 @@ function sidebarDisplayProfileHtmlId(id) {
 }
 
 function sidebarDisplayProfile(profile){
+    if(location1 && location2) {
+        removeAllRoutesFromMap();
+        calculateRoute(location1, location2, profile = profile);
+    }
     console.log(`showing only ${profile}`);
     $(".route-instructions").addClass("height-zero");
     $(`#${profileHtmlId[profile]}`).removeClass("height-zero");

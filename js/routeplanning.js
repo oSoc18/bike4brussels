@@ -166,6 +166,19 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
         });
 }
 
+function removeAllRoutesFromMap(){
+    for(let i in Object.keys(profileHtmlId)) {
+        profile = Object.keys(profileHtmlId)[i];
+        console.log(profile);
+        if (map.getLayer(profile)) {
+            map.removeLayer(profile);
+        }
+        if (map.getSource(profile)) {
+            map.removeSource(profile);
+        }
+    }
+}
+
 
 function showLocationsOnMap() {
     if (location1 !== undefined) {
