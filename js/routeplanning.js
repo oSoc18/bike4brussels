@@ -3,6 +3,7 @@ var location1Marker = undefined;
 var location2 = undefined;
 var location2Marker = undefined;
 var routes = [];
+
 const profileHtmlId = {
     "fast": "fast-instruction",
     "shortest": "shortest-instruction", // Currently not in use
@@ -39,7 +40,7 @@ function timeToText(s) {
  * @param {String} lang - en/nl(/fr) select the language for the instructions
  */
 function calculateAllRoutes(origin, destination, profiles = ["fast", "shortest", "balanced", "networks", "brussels"], instructions = true, lang = 'en') {
-    $(".route-instructions").html("Loading...");
+    $(".route-instructions ul").html("Loading...");
     profiles.forEach(function (profile) {
         calculateRoute(origin, destination, profile, instructions, lang);
     });
@@ -83,12 +84,13 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
                 }
             }
             // Shows the instructions in the sidebar
-            let $profileInstructions = $(`#${profileHtmlId[profile]}`);
+            let $profileInstructions = $(`#${profileHtmlId[profile]} ul`);
             $profileInstructions.html("");
             for (let i in json.instructions.features) {
                 //console.log(json.instructions.features[i].properties.instruction);
                 $profileInstructions.append(`<li>${json.instructions.features[i].properties.instruction}</li>`);
             }
+            $profileInstructions.append(`</ul>`);
 
             // Check if profile already exists
             const calculatedRoute = map.getSource(profile);
@@ -141,11 +143,10 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
                 //view.toggleMapLoading();
             }, 350);*/
         }
-    ) // TODO: uncomment when routeplanner backnd is available
-
+    )
         .catch(ex => {
             console.log(profile);
-            $(`#${profileHtmlId[profile]}`).html("Fout :(");
+            $(`#${profileHtmlId[profile]} ul`).html("Fout :(");
 
             if (map.getLayer(profile)) {
                 map.removeLayer(profile);
