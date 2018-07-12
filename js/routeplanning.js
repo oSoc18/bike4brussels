@@ -96,7 +96,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
 
             let $instrResume = $(`#${profileHtmlId[profile]} .instructions-resume`);
             if(routeStops.length === 2) {
-                $instrResume.html(`distance: ${roundToThree(routeStops[1].properties.distance / 1000)}km  time: ${timeToText(routeStops[1].properties.time)}`);
+                $instrResume.html(`<div>${roundToThree(routeStops[1].properties.distance / 1000)}km</div><div>${timeToText(routeStops[1].properties.time)}</div>`);
             }
 
             // Shows the instructions in the sidebar

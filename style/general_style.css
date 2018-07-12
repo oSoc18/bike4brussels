@@ -70,6 +70,10 @@
     transition: all 0.5s ease;
 }*/
 
+.instructions-resume div {  /* TODO: center align with spacing */
+    display: inline;
+}
+
 #sidebar-right-container .container-fluid {
     flex: 0 0 1%;
 }
@@ -177,6 +181,11 @@
 li {
     border-bottom: 1px solid white;
     padding: 1.5rem;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0px;
 }
 
 .active {
