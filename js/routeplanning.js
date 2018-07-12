@@ -31,6 +31,10 @@ function timeToText(s) {
     return `${h} h ${m}min`;
 }
 
+function roundToThree(num) {
+    return +(Math.round(num + "e+3")  + "e-3");
+}
+
 /**
  * Calculates all routes and shows it on the map
  * @param {[int, int]} origin - The LatLng Coords
@@ -41,6 +45,7 @@ function timeToText(s) {
  */
 function calculateAllRoutes(origin, destination, profiles = ["fast", "shortest", "balanced", "networks", "brussels"], instructions = true, lang = 'en') {
     $(".route-instructions ul").html("Loading...");
+    $(`.route-instructions  .instructions-resume`).html("");
     profiles.forEach(function (profile) {
         calculateRoute(origin, destination, profile, instructions, lang);
     });
@@ -71,8 +76,13 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
     $.getJSON(url, function (json) {
             console.log(json);
 
+            let routeStops = [];
+
             route = json.route.features;
-            for (var i in route) {
+            for (let i in route) {
+                if(route[i].name === "Stop"){
+                    routeStops.push(route[i]);
+                }
                 if (route[i].properties.cyclecolour === undefined) {
                     route[i].properties.cyclecolour = "#979797";
                 } else if (route[i].properties.cyclecolour.length !== 7) {
@@ -83,13 +93,20 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
                     }
                 }
             }
+
+            let $instrResume = $(`#${profileHtmlId[profile]} .instructions-resume`);
+            if(routeStops.length === 2) {
+                $instrResume.html(`distance: ${roundToThree(routeStops[1].properties.distance / 1000)}km  time: ${timeToText(routeStops[1].properties.time)}`);
+            }
+
             // Shows the instructions in the sidebar
             let $profileInstructions = $(`#${profileHtmlId[profile]} ul`);
             $profileInstructions.html("");
+            $profileInstructions.append(`<li class="startpoint-li">${$("#fromInput").val()}</li>`);
             for (let i in json.instructions.features) {
-                //console.log(json.instructions.features[i].properties.instruction);
                 $profileInstructions.append(`<li>${json.instructions.features[i].properties.instruction}</li>`);
             }
+            $profileInstructions.append(`<li class="endpoint-li">${$("#toInput").val()}</li>`);
             $profileInstructions.append(`</ul>`);
 
             // Check if profile already exists
