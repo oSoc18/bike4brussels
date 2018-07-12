@@ -252,7 +252,7 @@ function initInputGeocoders() {
             });*/
 
             // Nominatim Geocoder
-            $.getJSON(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&polygon=0&addressdetails=0`, function (data) {
+            $.getJSON(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&polygon=0&addressdetails=0&countrycodes=BE`/*bounded=1&viewbox=4.239465,50.930741,4.501558,50.784803`*/, function (data) {
                 var resArray = [];
                 for (var feature in data) {
                     resArray.push({name: data[feature].display_name, loc: [data[feature].lon, data[feature].lat]});
