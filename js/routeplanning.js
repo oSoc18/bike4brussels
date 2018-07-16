@@ -46,6 +46,7 @@ function roundToThree(num) {
 function calculateAllRoutes(origin, destination, profiles = ["fast", "shortest", "balanced", "networks", "brussels"], instructions = true, lang = 'en') {
     $(".route-instructions ul").html("Loading...");
     $(`.route-instructions  .instructions-resume`).html("");
+    $(`.route-instructions .elevation-info`).html("");
     profiles.forEach(function (profile) {
         calculateRoute(origin, destination, profile, instructions, lang);
     });
