@@ -2,7 +2,7 @@ const urls = {
     mapStyle: 'https://openmaptiles.github.io/positron-gl-style/style-cdn.json',
     network: 'https://cyclenetworks.osm.be/brumob/data/network.geojson',
     /*route: 'https://cyclerouting-api.osm.be'*/
-    route: 'http://localhost:5000'
+    route: 'https://bike4brussels.osm.be/api'
 };
 
 const mapboxAccessCode = "pk.eyJ1IjoiZml6ejU1IiwiYSI6ImNqajVxcG9uajAwMDYza3VrcXY5bTkwMjYifQ.ixw4txr_8ykx5GOeWzUBKQ";
