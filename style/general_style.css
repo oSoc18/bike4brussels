@@ -1,0 +1,259 @@
+.container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.top-overlay {
+    position: absolute;
+    float: left;
+    width: 100%;
+    z-index: 100;
+    background: #FAFAFA;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+}
+
+.image-button:before {
+    content: "";
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    margin-right: 0px;
+    vertical-align: text-top;
+    background-color: transparent;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.center-helper {
+    margin: auto;
+    /*max-width: 300px;*/
+}
+
+#top-overlay-center-spacer {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.top-overlay div {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#sidebar-right-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 100%;
+    padding: 0px 0px 0px 0px;
+    z-index: 101;
+    background: #ECB900;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    overflow: hidden;
+}
+
+/*.route-instructions {     // Transition animations won't work when animating from height: 0 to flex grow
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}*/
+
+.instructions-resume div {
+    display: inline;
+    flex-grow: 1;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.instructions-resume {
+    display: flex;
+    flex-direction: row;
+}
+
+#sidebar-right-container .container-fluid {
+    flex: 0 0 1%;
+}
+
+#sidebar-right-content {
+    flex: 1 0 1%;
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar-right-container.hidden-sidebar {
+    width: 0px;
+}
+
+
+#sidebarHamburger {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 0.5rem 0.5rem 0.5rem 0.65rem;
+}
+
+#swap-origin-destination-button:before {
+    background-image: url(icons/baseline-swap_vert-24px.svg);
+}
+
+#sidebarHamburger:before {
+    background-image: url(icons/ic_menu_black_24px.svg);
+}
+
+#sidebarClose:before {
+    background-image: url(icons/ic_clear_white_24px.svg);
+}
+
+.btn {
+    background-color: #FAFAFA;
+    border: none;
+}
+
+.btn-close {
+    background-color: #ECB900;
+    border: none;
+}
+
+.btn:hover {
+    background-color: #ECB900;
+}
+
+.form-control {
+    border: none;
+    background-color: #FAFAFA;
+    border-radius: 0;
+}
+
+.route {
+    background-color: white;
+    color: #ECB900;
+    text-align: center;
+    cursor: pointer;
+    width: 20%;
+    border-radius: 0px;
+    font-size: 110%;
+    padding-left: 0px;
+    padding-right: 0px;
+    /*flex-grow: 1;*/
+}
+
+.route:hover path {
+    fill: white;
+    stroke: white;
+}
+
+.svg {
+    fill: #ECB900;
+}
+
+.route:hover {
+    background-color: #FFD438;
+    color: white;
+}
+
+.currentLocation {
+    display: flex;
+    align-items: center;
+}
+
+#sidebar-top {
+    display: flex;
+    flex-direction: row;
+    height: 5rem;
+    flex-shrink: 0;
+}
+
+#sidebar-top-spacer{
+    padding: 0px 0px 0px 0px;
+}
+
+.route-instructions {
+    overflow-y: auto;
+    background-color: #FFD438;
+    color: white;
+    list-style: none;
+}
+
+li {
+    border-bottom: 1px solid white;
+    padding: 1.5rem;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+.active {
+    color: white;
+    background-color: #FFD438;
+}
+
+.active path {
+    fill: white;
+    stroke: white;
+}
+
+input[type="text"], textarea {
+    outline: none;
+    box-shadow: none !important;
+    border-bottom: 3px solid #ECB900 !important;
+}
+
+@media only screen and (min-width: 768px) {
+    @media only screen and (max-width: 992px) {
+        .col-md-0 {
+            display: none;
+            /*width: 0px;*/
+        }
+    }
+}
+
+/* enable absolute positioning */
+.currentLocation {
+    position: relative;
+}
+
+/* style icon */
+.currentLocation img {
+    position: absolute;
+    padding: 10px;
+}
+
+/* align icon */
+.left-addon img {
+    left: 0px;
+}
+
+.right-addon img {
+    right: 10px;
+}
+
+/* add padding  */
+.left-addon input {
+    padding-left: 30px;
+}
+
+.right-addon input {
+    padding-right: 30px;
+}
+
+.height-zero {
+    height: 0px;
+}
+
+/*.dropdown-menu {
+    display: block !important;
+}*/
