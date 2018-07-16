@@ -70,8 +70,16 @@
     transition: all 0.5s ease;
 }*/
 
-.instructions-resume div {  /* TODO: center align with spacing */
+.instructions-resume div {
     display: inline;
+    flex-grow: 1;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.instructions-resume {
+    display: flex;
+    flex-direction: row;
 }
 
 #sidebar-right-container .container-fluid {

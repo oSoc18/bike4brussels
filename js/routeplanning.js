@@ -77,6 +77,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
             console.log(json);
 
             let routeStops = [];
+            let heightInfo = [];
 
             route = json.route.features;
             for (let i in route) {
@@ -92,12 +93,22 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
                         route[i].properties.cyclecolour = "#979797";
                     }
                 }
+                try {
+                    heightInfo.push(route[i].geometry.coordinates[0][2]);
+                } catch (e){
+                    console.log("Failed to read height info", e);
+                }
             }
 
             let $instrResume = $(`#${profileHtmlId[profile]} .instructions-resume`);
             if(routeStops.length === 2) {
                 $instrResume.html(`<div>${roundToThree(routeStops[1].properties.distance / 1000)}km</div><div>${timeToText(routeStops[1].properties.time)}</div>`);
+            } else {
+                $instrResume.html("");
             }
+            $(`#${profileHtmlId[profile]} .elevation-info`).html(`<div><canvas id="chart-${profile}" style="width: 100%; height: 100px"></canvas></div>`);
+
+            displayChart(`chart-${profile}`, heightInfo);
 
             // Shows the instructions in the sidebar
             let $profileInstructions = $(`#${profileHtmlId[profile]} ul`);
