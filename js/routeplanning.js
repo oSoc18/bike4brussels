@@ -6,6 +6,16 @@ var routes = [];
 let language = "en";
 const availableProfiles = ["fast", "shortest", "balanced", "networks", "brussels"];
 
+// Check browser support
+if (typeof(Storage) !== "undefined") {
+    let temp_lang = localStorage.getItem("lang");
+    if(temp_lang){
+        language = temp_lang;
+    }
+} else {
+    console.log("Sorry, your browser does not support Web Storage.");
+}
+
 const profileHtmlId = {
     "fast": "fast-instruction",
     "shortest": "shortest-instruction", // Currently not in use
