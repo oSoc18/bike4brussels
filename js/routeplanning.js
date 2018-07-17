@@ -3,6 +3,18 @@ var location1Marker = undefined;
 var location2 = undefined;
 var location2Marker = undefined;
 var routes = [];
+let language = "en";
+const availableProfiles = ["fast", "shortest", "balanced", "networks", "brussels"];
+
+// Check browser support
+if (typeof(Storage) !== "undefined") {
+    let temp_lang = localStorage.getItem("lang");
+    if(temp_lang){
+        language = temp_lang;
+    }
+} else {
+    console.log("Sorry, your browser does not support Web Storage.");
+}
 
 const profileHtmlId = {
     "fast": "fast-instruction",
@@ -41,11 +53,12 @@ function roundToThree(num) {
  * @param {[int, int]} destination - The LatLng Coords
  * @param {[String]} profiles - for every profile, a route will be requested
  * @param {boolean} instructions - Whether or not the route instructions should be requested from the server
- * @param {String} lang - en/nl(/fr) select the language for the instructions
+ * @param {String} lang - en/nl/fr select the language for the instructions
  */
-function calculateAllRoutes(origin, destination, profiles = ["fast", "shortest", "balanced", "networks", "brussels"], instructions = true, lang = 'en') {
+function calculateAllRoutes(origin, destination, profiles = availableProfiles, instructions = true, lang = language) {
     $(".route-instructions ul").html("Loading...");
     $(`.route-instructions  .instructions-resume`).html("");
+    $(`.route-instructions .elevation-info`).html("");
     profiles.forEach(function (profile) {
         calculateRoute(origin, destination, profile, instructions, lang);
     });

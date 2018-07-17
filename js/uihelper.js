@@ -109,6 +109,45 @@ function displayChart(htmlCanvasId, heightInfo) {
     });
 }
 
+function switchLanguage(element){
+    switch (element.id) {
+        case "label-option-EN":
+            //English
+            language = "en";
+            break;
+        case "label-option-FR":
+            //French
+            language = "fr";
+            break;
+        case "label-option-NL":
+            //Dutch
+            language = "nl";
+            break;
+    }
+    if (typeof(Storage) !== "undefined") {
+        localStorage.setItem("lang", language);
+    }
+    if (location1 && location2) {
+        calculateAllRoutes(location1, location2, availableProfiles, true, language);
+    }
+}
+
 window.onload = function () {
     sidebarDisplayProfile("fast");
+    $(".lang_label").removeClass("active");
+    switch (language) {
+        case "en":
+            //English
+            $("#label-option-EN").addClass("active");
+            break;
+        case "fr":
+            //French
+            $("#label-option-FR").addClass("active");
+            break;
+        case "nl":
+            //Dutch
+            $("#label-option-NL").addClass("active");
+            break;
+    }
+
 };

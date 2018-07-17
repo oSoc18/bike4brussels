@@ -150,6 +150,24 @@
     </div>
 </div>
 
+<div class="bottom-right-floating-buttons">
+    <!--<button class="btn btn-warning" data-toggle="button">NL</button>
+    <button class="btn btn-warning" data-toggle="button">EN</button>
+    <button class="btn btn-warning" data-toggle="button">FR</button>-->
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+
+        <label class="btn btn-warning lang_label"  id="label-option-EN" onclick="switchLanguage(this);">
+            <input type="radio" name="options" id="option-EN" autocomplete="off" checked> EN
+        </label>
+        <label class="btn btn-warning lang_label" id="label-option-FR" onclick="switchLanguage(this);">
+            <input type="radio" name="options" id="option-FR" autocomplete="off"> FR
+        </label>
+        <label class="btn btn-warning lang_label" id="label-option-NL" onclick="switchLanguage(this);">
+            <input type="radio" name="options" id="option-NL" autocomplete="off"> NL
+        </label>
+    </div>
+</div>
+
 </body>
 <!--<script
         src="https://code.jquery.com/jquery-3.3.1.min.js"
