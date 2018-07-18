@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="msapplication-TileColor" content="#ECB900">
+    <meta name="theme-color" content="#ECB900">
     <title>B4B</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
@@ -10,7 +16,7 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet'/>
     <link href='style/general_style.css' rel='stylesheet'/>
-    <link rel="manifest" href="./manifest.json">
+    <!--<link rel="manifest" href="./manifest.json">-->
     <script src="js/constants.js"></script>
 </head>
 <body style="height: 100vh">
@@ -150,6 +156,28 @@
     </div>
 </div>
 
+<div class="bottom-left-floating-buttons">
+    <button class="btn btn-warning" onclick="exportCurrentRoute()">Export</button>
+</div>
+
+<div class="bottom-right-floating-buttons">
+    <!--<button class="btn btn-warning" data-toggle="button">NL</button>
+    <button class="btn btn-warning" data-toggle="button">EN</button>
+    <button class="btn btn-warning" data-toggle="button">FR</button>-->
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+
+        <label class="btn btn-warning lang_label"  id="label-option-EN" onclick="switchLanguage(this);">
+            <input type="radio" name="options" id="option-EN" autocomplete="off" checked> EN
+        </label>
+        <label class="btn btn-warning lang_label" id="label-option-FR" onclick="switchLanguage(this);">
+            <input type="radio" name="options" id="option-FR" autocomplete="off"> FR
+        </label>
+        <label class="btn btn-warning lang_label" id="label-option-NL" onclick="switchLanguage(this);">
+            <input type="radio" name="options" id="option-NL" autocomplete="off"> NL
+        </label>
+    </div>
+</div>
+
 </body>
 <!--<script
         src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -166,5 +194,6 @@
 
 <script src="js/uihelper.js"></script>
 <script src="js/routeplanning.js"></script>
+<script src="js/gpx.js"></script>
 
 </html>

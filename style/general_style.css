@@ -96,6 +96,20 @@
     width: 0px;
 }
 
+.bottom-right-floating-buttons {
+    position: absolute;
+    right: 10px;
+    bottom: 20px;
+    z-index: 102;
+}
+
+.bottom-left-floating-buttons {
+    position: absolute;
+    left: 10px;
+    bottom: 20px;
+    z-index: 102;
+}
+
 
 #sidebarHamburger {
     position: absolute;
