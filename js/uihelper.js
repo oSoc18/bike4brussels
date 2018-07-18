@@ -171,7 +171,7 @@ function printExport() {
         "<h1>Bike For Brussels - Routeplanner</h1>" +
         "<p id='image_for_crop'>" /*+ mapimgHtml */+ "</p>" +
         "<div id='instructionsPrintContainer'>" +
-        document.getElementById(`${selectedProfile}-instruction`).innerHTML +
+        document.getElementById(profileHtmlId[selectedProfile]).innerHTML +
         "</div></body>";
     window.frames["print_frame"].document.body.innerHTML = html;
     window.frames["print_frame"].document.getElementById("image_for_crop").appendChild(mapimg);
