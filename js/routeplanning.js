@@ -4,7 +4,7 @@ var location2 = undefined;
 var location2Marker = undefined;
 var routes = {};
 let language = "en";
-const availableProfiles = ["fast", "shortest", "balanced", "networks", "brussels"];
+const availableProfiles = ["fast", "balanced", "brussels", "relaxed"];
 let selectedProfile = "fast";
 
 //set the corect language
@@ -24,16 +24,16 @@ if (typeof(Storage) !== "undefined") {
 
 const profileHtmlId = {
     "fast": "fast-instruction",
-    "shortest": "shortest-instruction", // Currently not in use
+    "relaxed": "relaxed-instruction", // Currently not in use
     "balanced": "balanced-instruction",
-    "networks": "relaxed-instruction",
+    //"networks": "relaxed-instruction",
     "brussels": "other-instruction"
 };
 const profileButtonIds = {
     "fastest-route": "fast",
-    "shortest-route": "shortest", // Currently not in use
+    "relaxed-route": "relaxed", // Currently not in use
     "balanced-route": "balanced",
-    "relaxed-route": "networks",
+    //"networks-route": "networks",
     "other-route": "brussels"
 };
 
@@ -164,7 +164,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
                                 property: 'cyclecolour'
                             }
                         ,
-                        'line-width': 4
+                        'line-width': 6
                     },
                     layout: {
                         'line-cap': 'round'

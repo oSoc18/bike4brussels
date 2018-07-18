@@ -60,7 +60,7 @@
                 mapboxgl.accessToken = mapboxAccessCode;
                 var map = new mapboxgl.Map({
                     container: 'map',
-                    style: 'https://openmaptiles.github.io/positron-gl-style/style-cdn.json',
+                    style: './style.json',
                     center: [4.388443, 50.8486229], // starting position [lng, lat]
                     zoom: 11, // starting zoom
                     preserveDrawingBuffer: true
@@ -89,18 +89,10 @@
                 <br>
                 Fast
             </span>
-            <span class="btn btn-default btn-lg text-center route" id="shortest-route"
-                  onclick="sidebarDisplayProfileHtmlId(this.id)">
-                <span>
-                    <img class="svg" src="./assets/img/shortest.svg"/>
-                </span>
-                <br>
-                Shortest
-            </span>
             <span class="btn btn-default btn-lg text-center route" id="balanced-route"
                   onclick="sidebarDisplayProfileHtmlId(this.id)">
                 <span>
-                    <img class="svg" src="./assets/img/balanced.svg"/>
+                    <img class="svg" src="./assets/img/shortest.svg"/>
                 </span>
                 <br>
                 Balanced
@@ -108,7 +100,7 @@
             <span class="btn btn-default btn-lg text-center route" id="relaxed-route"
                   onclick="sidebarDisplayProfileHtmlId(this.id)">
                 <span>
-                    <img class="svg" src="./assets/img/relaxed.svg"/>
+                    <img class="svg" src="./assets/img/balanced.svg"/>
                 </span>
                 <br>
                 Relaxed
@@ -116,11 +108,12 @@
             <span class="btn btn-default btn-lg text-center route" id="other-route"
                   onclick="sidebarDisplayProfileHtmlId(this.id)">
                 <span>
-                    <img class="svg" src="./assets/img/other.svg"/>
+                    <img class="svg" src="./assets/img/relaxed.svg"/>
                 </span>
                 <br>
-                Other
+                Networks
             </span>
+
 
             <!--
             <span id="fastest-route" class="route"><img src="./assets/img/fast.svg"/>Fast</span>
@@ -130,11 +123,6 @@
             -->
         </div>
         <div id="fast-instruction" class="route-instructions">
-            <div class="instructions-resume"></div>
-            <div class="elevation-info"></div>
-            <ul></ul>
-        </div>
-        <div id="shortest-instruction" class="route-instructions">
             <div class="instructions-resume"></div>
             <div class="elevation-info"></div>
             <ul></ul>
