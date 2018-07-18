@@ -292,13 +292,19 @@ function exportCurrentRoute() {
     }
     console.log("route for export:", route);
     console.log(startpoint, endpoint, routepoints);
-    download(exportRoute(startpoint, endpoint, routepoints), "Bike4Brussels-route.gpx", ".gpx");
+    exported = exportRoute(startpoint, endpoint, routepoints);
+    if(exported) {
+        download(exported, "Bike4Brussels-route.gpx", ".gpx");
+    }
 }
 
 function exportRoute(startpoint, endpoint, routepoints) {
-    let gpx = '<?xml version="1.0" encoding="UTF-8"?><gpx xmlns="http://www.topografix.com/GPX/1/1" creator="RouteYou" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">';
-    gpx +=
-        `<wpt lat="${startpoint[1]}" lon="${startpoint[0]}">
+    if(!routepoints || !(startpoint && endpoint)){
+        alert(getString("routeMissing", language));
+    } else {
+        let gpx = '<?xml version="1.0" encoding="UTF-8"?><gpx xmlns="http://www.topografix.com/GPX/1/1" creator="RouteYou" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">';
+        gpx +=
+            `<wpt lat="${startpoint[1]}" lon="${startpoint[0]}">
             <name>Start</name>
             <desc>Startpoint route</desc>
             <type>Marker</type>
@@ -308,23 +314,24 @@ function exportRoute(startpoint, endpoint, routepoints) {
             <desc>Endpoint route</desc>
             <type>Marker</type>
         </wpt>`;
-    gpx +=
-        `\n\t\t<trk>
+        gpx +=
+            `\n\t\t<trk>
             <name>BikeForBrussels Export</name>
             <desc>Route exported using the Bike For Brussels Routeplaner.</desc>
             <trkseg>`;
-    for(var i in routepoints) {
-        gpx +=
+        for (var i in routepoints) {
+            gpx +=
                 `\n\t\t\t\t<trkpt lat="${routepoints[i][1]}" lon="${routepoints[i][0]}">
                     <ele>${routepoints[i][2]}</ele>
                 </trkpt>`;
         }
-    gpx +=
+        gpx +=
             `\n\t\t\t</trkseg>
         </trk>
     </gpx>`;
-    console.log(gpx);
-    return gpx;
+        console.log(gpx);
+        return gpx;
+    }
 }
 
 // Function to download data to a file
