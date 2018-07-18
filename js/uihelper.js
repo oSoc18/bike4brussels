@@ -169,7 +169,7 @@ function printExport() {
         "</head>" +
         "<body>" +
         "<h1>Bike For Brussels - Routeplanner</h1>" +
-        "<p id='image_for_crop'>" /*+ mapimgHtml */+ "</p>" +
+        "<p id='image_for_crop'>" /*+ mapimgHtml */+ "</p>" + `${selectedProfile} route` +
         "<div id='instructionsPrintContainer'>" +
         document.getElementById(profileHtmlId[selectedProfile]).innerHTML +
         "</div></body>";
