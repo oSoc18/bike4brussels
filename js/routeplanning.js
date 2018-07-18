@@ -133,7 +133,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
             $profileInstructions.html("");
             $profileInstructions.append(`<li class="startpoint-li">${$("#fromInput").val()}</li>`);
             for (let i in json.instructions.features) {
-                $profileInstructions.append(`<li>${json.instructions.features[i].properties.instruction}</li>`);
+                $profileInstructions.append(`<li class="type-${json.instructions.features[i].properties.type}  angle-${json.instructions.features[i].properties.angle}">${json.instructions.features[i].properties.instruction}</li>`);
             }
             $profileInstructions.append(`<li class="endpoint-li">${$("#toInput").val()}</li>`);
             $profileInstructions.append(`</ul>`);
