@@ -6,6 +6,11 @@ var routes = [];
 let language = "en";
 const availableProfiles = ["fast", "shortest", "balanced", "networks", "brussels"];
 
+//set the corect language
+var userLang = navigator.language || navigator.userLanguage;
+if(userLang==='nl' || userLang === 'fr'){
+    language = userLang;
+}
 // Check browser support
 if (typeof(Storage) !== "undefined") {
     let temp_lang = localStorage.getItem("lang");
