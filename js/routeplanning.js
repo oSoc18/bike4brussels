@@ -247,6 +247,13 @@ function showLocationsOnMap() {
     }
     if (location1 !== undefined && location2 !== undefined) {
         calculateAllRoutes(location1, location2);
+        setCurrentUrl({loc1:location1, loc2:location2});
+    } else if(location1){
+        setCurrentUrl({loc1:location1});
+    } else if(location2){
+        setCurrentUrl({loc2:location2});
+    } else {
+        setCurrentUrl({});
     }
 }
 
