@@ -6,16 +6,16 @@ var routes = [];
 
 const profileHtmlId = {
     "fast": "fast-instruction",
-    "shortest": "shortest-instruction", // Currently not in use
+    "relaxed": "relaxed-instruction", // Currently not in use
     "balanced": "balanced-instruction",
-    "networks": "relaxed-instruction",
+    //"networks": "relaxed-instruction",
     "brussels": "other-instruction"
 };
 const profileButtonIds = {
     "fastest-route": "fast",
-    "shortest-route": "shortest", // Currently not in use
+    "relaxed-route": "relaxed", // Currently not in use
     "balanced-route": "balanced",
-    "relaxed-route": "networks",
+    //"networks-route": "networks",
     "other-route": "brussels"
 };
 
@@ -43,7 +43,7 @@ function roundToThree(num) {
  * @param {boolean} instructions - Whether or not the route instructions should be requested from the server
  * @param {String} lang - en/nl(/fr) select the language for the instructions
  */
-function calculateAllRoutes(origin, destination, profiles = ["fast", "shortest", "balanced", "networks", "brussels"], instructions = true, lang = 'en') {
+function calculateAllRoutes(origin, destination, profiles = ["fast", "relaxed", "balanced",/*"networks",*/ "brussels"], instructions = true, lang = 'en') {
     $(".route-instructions ul").html("Loading...");
     $(`.route-instructions  .instructions-resume`).html("");
     $(`.route-instructions .elevation-info`).html("");
@@ -142,7 +142,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
                                 property: 'cyclecolour'
                             }
                         ,
-                        'line-width': 4
+                        'line-width': 6
                     },
                     layout: {
                         'line-cap': 'round'
