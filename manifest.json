@@ -1,6 +1,6 @@
 {
-  "short_name": "BFB routeplanner",
-  "name": "",
+  "short_name": "Bike4Brussels",
+  "name": "Routeplanner",
   "icons": [
     {
       "src": "./android-chrome-192x192.png",

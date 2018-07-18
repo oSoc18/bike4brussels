@@ -17,6 +17,7 @@ function sidebarDisplayProfileHtmlId(id) {
 }
 
 function sidebarDisplayProfile(profile) {
+    selectedProfile = profile;
     if (location1 && location2) {
         for(var i in profileHtmlId){
             try {
@@ -74,7 +75,7 @@ jQuery('img.svg').each(function () {
 });
 
 function displayChart(htmlCanvasId, heightInfo) {
-    console.log(heightInfo);
+    //console.log(heightInfo);
     var ctx = document.getElementById(htmlCanvasId).getContext('2d');
     new Chart(ctx, {
         "type": "line",
@@ -133,7 +134,7 @@ function switchLanguage(element){
 }
 
 window.onload = function () {
-    sidebarDisplayProfile("fast");
+    sidebarDisplayProfile(selectedProfile);
     $(".lang_label").removeClass("active");
     switch (language) {
         case "en":

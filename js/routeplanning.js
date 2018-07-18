@@ -2,19 +2,20 @@ var location1 = undefined;
 var location1Marker = undefined;
 var location2 = undefined;
 var location2Marker = undefined;
-var routes = [];
+var routes = {};
 let language = "en";
 const availableProfiles = ["fast", "shortest", "balanced", "networks", "brussels"];
+let selectedProfile = "fast";
 
 //set the corect language
 var userLang = navigator.language || navigator.userLanguage;
-if(userLang==='nl' || userLang === 'fr'){
+if (userLang === 'nl' || userLang === 'fr') {
     language = userLang;
 }
 // Check browser support
 if (typeof(Storage) !== "undefined") {
     let temp_lang = localStorage.getItem("lang");
-    if(temp_lang){
+    if (temp_lang) {
         language = temp_lang;
     }
 } else {
@@ -49,7 +50,7 @@ function timeToText(s) {
 }
 
 function roundToThree(num) {
-    return +(Math.round(num + "e+3")  + "e-3");
+    return +(Math.round(num + "e+3") + "e-3");
 }
 
 /**
@@ -64,9 +65,11 @@ function calculateAllRoutes(origin, destination, profiles = availableProfiles, i
     $(".route-instructions ul").html("Loading...");
     $(`.route-instructions  .instructions-resume`).html("");
     $(`.route-instructions .elevation-info`).html("");
+    routes = {};
     profiles.forEach(function (profile) {
         calculateRoute(origin, destination, profile, instructions, lang);
     });
+    //sidebarDisplayProfile(selectedProfile);
 }
 
 /**
@@ -90,6 +93,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
         profile_url = profile;
     }
     const url = `${urls.route}/route?loc1=${originS}&loc2=${destinationS}&instructions=${instructions}&lang=${lang}` + (profile_url === "" ? "" : `&profile=${profile_url}`);
+    routes[profile] = [];
 
     $.getJSON(url, function (json) {
             console.log(json);
@@ -99,7 +103,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
 
             route = json.route.features;
             for (let i in route) {
-                if(route[i].name === "Stop"){
+                if (route[i].name === "Stop") {
                     routeStops.push(route[i]);
                 }
                 if (route[i].properties.cyclecolour === undefined) {
@@ -113,13 +117,14 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
                 }
                 try {
                     heightInfo.push(route[i].geometry.coordinates[0][2]);
-                } catch (e){
+                } catch (e) {
                     console.log("Failed to read height info", e);
                 }
             }
+            routes[profile] = route;
 
             let $instrResume = $(`#${profileHtmlId[profile]} .instructions-resume`);
-            if(routeStops.length === 2) {
+            if (routeStops.length === 2) {
                 $instrResume.html(`<div>${roundToThree(routeStops[1].properties.distance / 1000)}km</div><div>${timeToText(routeStops[1].properties.time)}</div>`);
             } else {
                 $instrResume.html("");
@@ -213,8 +218,8 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
         });
 }
 
-function removeAllRoutesFromMap(){
-    for(let i in Object.keys(profileHtmlId)) {
+function removeAllRoutesFromMap() {
+    for (let i in Object.keys(profileHtmlId)) {
         profile = Object.keys(profileHtmlId)[i];
         console.log(profile);
         if (map.getLayer(profile)) {
@@ -267,6 +272,105 @@ map.on('click', function (e) {
     }
     showLocationsOnMap();
 });
+
+function exportCurrentRoute() {
+    let route = routes[selectedProfile];
+    let startpoint, endpoint;
+    let routepoints = [];
+    for (let i in route) {
+        if (route[i].name === "Stop") {
+            if (startpoint) {
+                endpoint = route[i].geometry.coordinates;
+            } else {
+                startpoint = route[i].geometry.coordinates;
+            }
+        } else if (route[i].geometry.type === "LineString") {
+            for (let j in route[i].geometry.coordinates) {
+                routepoints.push(route[i].geometry.coordinates[j]);
+            }
+        }
+    }
+    console.log("route for export:", route);
+    console.log(startpoint, endpoint, routepoints);
+    download(exportRoute(startpoint, endpoint, routepoints), "Bike4Brussels-route.gpx", ".gpx");
+}
+
+function exportRoute(startpoint, endpoint, routepoints) {
+    let gpx = '<?xml version="1.0" encoding="UTF-8"?><gpx xmlns="http://www.topografix.com/GPX/1/1" creator="RouteYou" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">';
+    gpx +=
+        `<wpt lat="${startpoint[1]}" lon="${startpoint[0]}">
+            <name>Start</name>
+            <desc>Startpoint route</desc>
+            <type>Marker</type>
+        </wpt>
+        <wpt lat="${endpoint[1]}" lon="${endpoint[0]}">
+            <name>End</name>
+            <desc>Endpoint route</desc>
+            <type>Marker</type>
+        </wpt>`;
+    gpx +=
+        `\n\t\t<trk>
+            <name>BikeForBrussels Export</name>
+            <desc>Route exported using the Bike For Brussels Routeplaner.</desc>
+            <trkseg>`;
+    for(var i in routepoints) {
+        gpx +=
+                `\n\t\t\t\t<trkpt lat="${routepoints[i][1]}" lon="${routepoints[i][0]}">
+                    <ele>${routepoints[i][2]}</ele>
+                </trkpt>`;
+        }
+    gpx +=
+            `\n\t\t\t</trkseg>
+        </trk>
+    </gpx>`;
+    console.log(gpx);
+    return gpx;
+}
+
+// Function to download data to a file
+function download(data, filename, type) {
+    var file = new Blob([data], {type: type});
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"),
+            url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 0);
+    }
+}
+
+/*function exportRoute(startpoint, endpoint, routepoints) {
+    startpoint["name"] = "Start";
+    endpoint["name"] = "End";
+    //retrieve the GpxFileBuilder type
+    //var GpxFileBuilder = require('gpx').GpxFileBuilder;
+
+    //instanciate a GpxFileBuilder
+    var builder = new GpxFileBuilder();
+
+    //generate a gpx string with two waypoints and a route with two points
+    var xml = builder.setFileInfo({
+        name: 'Bike route',
+        description: 'A route generated by BikeForBrussels Routeplanner',
+        creator: 'BikeForBrussels Routeplanner',
+        time: new Date(),
+        keywords: ['bike', 'Brussels', 'Brussel', 'Bruxelles']
+    }).addWayPoints([
+        startpoint, endpoint
+    ]).addRoute(
+        {
+            name: 'BikeForBrussels route'
+        },
+        routepoints
+    ).xml();
+}*/
 
 function initInputGeocoders() {
     $('.geocoder-input').typeahead({
