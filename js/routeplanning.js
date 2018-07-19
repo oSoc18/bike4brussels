@@ -65,7 +65,8 @@ function calculateAllRoutes(origin, destination, profiles = availableProfiles, i
     if (!isSidebarVisible){
         toggleSidebar();
     }
-    $(".route-instructions ul").html("Loading...");
+    //$(".route-instructions ul").html("Loading...");
+    $(".route-instructions ul").html("<img src='./img/Loading.gif' style='width: 100%;'  alt=\"Loading...\" />");
     $(`.route-instructions  .instructions-resume`).html("");
     $(`.route-instructions .elevation-info`).html("");
     routes = {};
