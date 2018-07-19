@@ -314,11 +314,11 @@ input[type="text"], textarea {
     background: url("./icons/ic_straightOn_white.svg") no-repeat left 9px;
 }
 
-.angle-turnRight {
+.angle-SlightlyRight {
     background: url("./icons/ic_slight_turnRight_white.svg") no-repeat left 9px;
 }
 
-.angle-turnLeft {
+.angle-SlightlyLeft {
     background: url("./icons/ic_slight_turnLeft_white.svg") no-repeat left 9px;
 }
 
