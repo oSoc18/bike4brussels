@@ -35,12 +35,12 @@
         <div class="col-lg-8 col-md-8" id="top-overlay-input">
             <div class="row">
                 <!--<label class="col-lg-1 control-label" for="fromInput">From</label>-->
-                <div class="col-lg-5 col-md-12 currentLocation right-addon">
+                <div class="col-lg-5 col-md-12 col-10 currentLocation right-addon">
                     <input class="form-control typeahead geocoder-input" type="text" id="fromInput" placeholder="From">
                     <img src="./assets/img/currentLocation.svg" onclick="useCurrentLocation()"/>
                 </div>
                 <!--<label class="col-lg-1 control-label" for="toInput">To</label>-->
-                <div class="col-lg-2 col-md-12 text-center">
+                <div class="col-lg-2 col-md-12 col-1 text-center">
                     <button class="btn btn-warning image-button" id="swap-origin-destination-button"
                             onclick="swapOriginDestination()"></button>
                 </div>
@@ -84,7 +84,7 @@
             <span class="btn btn-lg text-center route" id="fastest-route"
                   onclick="sidebarDisplayProfileHtmlId(this.id)">
                 <span>
-                    <img class="svg" src="assets/img/fastest.svg"/>
+                    <img class="svg" src="assets/img/fast.svg"/>
                 </span>
                 <br>
                 Fast
@@ -92,7 +92,7 @@
             <span class="btn btn-default btn-lg text-center route" id="balanced-route"
                   onclick="sidebarDisplayProfileHtmlId(this.id)">
                 <span>
-                    <img class="svg" src="./assets/img/shortest.svg"/>
+                    <img class="svg" src="./assets/img/balance.svg"/>
                 </span>
                 <br>
                 Balanced
@@ -100,7 +100,7 @@
             <span class="btn btn-default btn-lg text-center route" id="relaxed-route"
                   onclick="sidebarDisplayProfileHtmlId(this.id)">
                 <span>
-                    <img class="svg" src="./assets/img/balanced.svg"/>
+                    <img class="svg" src="./assets/img/relaxed.svg"/>
                 </span>
                 <br>
                 Relaxed
@@ -108,7 +108,7 @@
             <span class="btn btn-default btn-lg text-center route" id="other-route"
                   onclick="sidebarDisplayProfileHtmlId(this.id)">
                 <span>
-                    <img class="svg" src="./assets/img/relaxed.svg"/>
+                    <img class="svg" src="./assets/img/network.svg"/>
                 </span>
                 <br>
                 Networks

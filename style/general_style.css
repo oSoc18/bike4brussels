@@ -163,13 +163,31 @@
     /*flex-grow: 1;*/
 }
 
-.route:hover path {
+.route:hover path, .route:hover polyline {
     fill: white;
+    stroke: white;
+}
+
+.route:hover circle {
     stroke: white;
 }
 
 .svg {
     fill: #ECB900;
+}
+
+.active {
+    color: white;
+    background-color: #FFD438;
+}
+
+.active path, .active polyline {
+    fill: white;
+    stroke: white;
+}
+
+.active circle {
+    stroke: white;
 }
 
 .route:hover {
@@ -209,16 +227,6 @@ li {
 ul {
     list-style-type: none;
     padding: 0px;
-}
-
-.active {
-    color: white;
-    background-color: #FFD438;
-}
-
-.active path {
-    fill: white;
-    stroke: white;
 }
 
 input[type="text"], textarea {
@@ -273,23 +281,6 @@ input[type="text"], textarea {
     display: block !important;
 }*/
 
-.startpoint-li {
-  background-image: url("../assets/img/currentLocation_white.svg");
-  background-repeat: no-repeat;
-  background-size: 12px;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-.endpoint-li {
-  background-image: url("./icons/ic_location_on_black_24px.svg");
-  background-repeat: no-repeat;
-  background-size: 24px;
-  margin-left: 20px;
-  margin-right: 20px;
-  border-bottom: none;
-}
-
 .type-stop {
   border-bottom: none;
 }
@@ -299,28 +290,51 @@ input[type="text"], textarea {
   margin-bottom: 20px;
 }
 
-.angle-Right::before {
-  content: "";
-  display:block;
-  height: 15px;
-  width: 15px;
-  background-size: 125px 125px;
-  background-image: url("./icons/ic_turnRight_white.svg");
-  background-repeat: no-repeat;
+.route-instructions ul {
+    margin-left: 5px;
 }
 
-.angle-Left::before {
-  content: url("./icons/ic_turnLeft_white.svg");
+.route-instructions ul li {
+    background-size: 40px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 45px;
+    display: block;
 }
 
-.angle-StraightOn::before {
-  content: url("./icons/ic_straightOn_white.svg");
+.angle-Right {
+    background: url("./icons/ic_turnRight_white.svg") no-repeat left 9px;
 }
 
-.angle-turnRight::before {
-  content: url("./icons/ic_slight_turnRight_white.svg");
+.angle-Left {
+    background: url("./icons/ic_turnLeft_white.svg") no-repeat left 9px;
 }
 
-.angle-turnLeft::before {
-  content: url("./icons/ic_slight_turnLeft_white.svg");
+.angle-StraightOn {
+    background: url("./icons/ic_straightOn_white.svg") no-repeat left 9px;
+}
+
+.angle-turnRight {
+    background: url("./icons/ic_slight_turnRight_white.svg") no-repeat left 9px;
+}
+
+.angle-turnLeft {
+    background: url("./icons/ic_slight_turnLeft_white.svg") no-repeat left 9px;
+}
+
+.startpoint-li {
+    background: url("./icons/currentLocation_white.svg") no-repeat left 9px;
+    /*background-repeat: no-repeat;
+    background-size: 12px;
+    margin-left: 20px;
+    margin-right: 20px;*/
+}
+
+.endpoint-li {
+    background: url("./icons/ic_location_on_black_24px.svg") no-repeat left 9px;
+    /*background-repeat: no-repeat;
+    background-size: 24px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-bottom: none;*/
 }
