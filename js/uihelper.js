@@ -279,6 +279,5 @@ window.onload = function () {
     }
     if (location1 && location2) {
         showLocationsOnMap();
-        calculateAllRoutes(location1, location2);
     }
 };
