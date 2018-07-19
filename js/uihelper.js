@@ -276,6 +276,8 @@ window.onload = function () {
         reverseGeocode(location1, function (adress) {
             $("#fromInput").val(adress);
         });
+    } else {
+        useCurrentLocation();
     }
     if (urlparams.loc2) {
         location2 = urlparams.loc2;
@@ -286,4 +288,11 @@ window.onload = function () {
     if (location1 && location2) {
         showLocationsOnMap();
     }
+    map.addControl(new mapboxgl.GeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true
+        },
+        trackUserLocation: true
+    }), 'top-left');
+
 };
