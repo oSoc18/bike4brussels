@@ -277,7 +277,9 @@ window.onload = function () {
             $("#fromInput").val(adress);
         });
     } else {
-        useCurrentLocation();
+        setTimeout(function () {
+            useCurrentLocation();
+        }, 2000);
     }
     if (urlparams.loc2) {
         location2 = urlparams.loc2;
