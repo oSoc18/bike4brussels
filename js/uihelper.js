@@ -273,9 +273,15 @@ window.onload = function () {
     console.log(urlparams);
     if (urlparams.loc1) {
         location1 = urlparams.loc1;
+        reverseGeocode(location1, function (adress) {
+            $("#fromInput").val(adress);
+        });
     }
     if (urlparams.loc2) {
         location2 = urlparams.loc2;
+        reverseGeocode(location2, function (adress) {
+            $("#toInput").val(adress);
+        });
     }
     if (location1 && location2) {
         showLocationsOnMap();
