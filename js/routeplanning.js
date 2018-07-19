@@ -62,6 +62,9 @@ function roundToThree(num) {
  * @param {String} lang - en/nl/fr select the language for the instructions
  */
 function calculateAllRoutes(origin, destination, profiles = availableProfiles, instructions = true, lang = language) {
+    if (!isSidebarVisible){
+        toggleSidebar();
+    }
     $(".route-instructions ul").html("Loading...");
     $(`.route-instructions  .instructions-resume`).html("");
     $(`.route-instructions .elevation-info`).html("");
