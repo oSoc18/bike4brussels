@@ -62,7 +62,8 @@
                     container: 'map',
                     style: './style.json',
                     center: [4.388443, 50.8486229], // starting position [lng, lat]
-                    zoom: 11 // starting zoom
+                    zoom: 11, // starting zoom
+                    preserveDrawingBuffer: true
                 });
             </script>
         </div>
@@ -145,7 +146,7 @@
 </div>
 
 <div class="bottom-left-floating-buttons">
-    <button class="btn btn-warning" onclick="exportCurrentRoute()">Export</button>
+    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exportModal">Export</button>
 </div>
 
 <div class="bottom-right-floating-buttons">
@@ -154,7 +155,7 @@
     <button class="btn btn-warning" data-toggle="button">FR</button>-->
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
 
-        <label class="btn btn-warning lang_label"  id="label-option-EN" onclick="switchLanguage(this);">
+        <label class="btn btn-warning lang_label" id="label-option-EN" onclick="switchLanguage(this);">
             <input type="radio" name="options" id="option-EN" autocomplete="off" checked> EN
         </label>
         <label class="btn btn-warning lang_label" id="label-option-FR" onclick="switchLanguage(this);">
@@ -163,6 +164,29 @@
         <label class="btn btn-warning lang_label" id="label-option-NL" onclick="switchLanguage(this);">
             <input type="radio" name="options" id="option-NL" autocomplete="off"> NL
         </label>
+    </div>
+</div>
+
+<div id="exportModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel"
+     style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLiveLabel">Export Options</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Please select a method to export your route.</p>
+                <button class="btn btn-warning" onclick="exportCurrentRoute()">Export as .gpx file</button>
+                <button class="btn btn-warning" onclick="printExport()">Print</button>
+                <iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -182,6 +206,6 @@
 
 <script src="js/uihelper.js"></script>
 <script src="js/routeplanning.js"></script>
-<script src="js/gpx.js"></script>
+<script src="js/strings.js"></script>
 
 </html>

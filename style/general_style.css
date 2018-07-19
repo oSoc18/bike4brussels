@@ -1,4 +1,4 @@
-    .container-fluid {
+.container-fluid {
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
@@ -198,6 +198,7 @@
     background-color: #FFD438;
     color: white;
     list-style: none;
+    overflow-x: hidden;
 }
 
 li {
@@ -271,3 +272,55 @@ input[type="text"], textarea {
 /*.dropdown-menu {
     display: block !important;
 }*/
+
+.startpoint-li {
+  background-image: url("../assets/img/currentLocation_white.svg");
+  background-repeat: no-repeat;
+  background-size: 12px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.endpoint-li {
+  background-image: url("./icons/ic_location_on_black_24px.svg");
+  background-repeat: no-repeat;
+  background-size: 24px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-bottom: none;
+}
+
+.type-stop {
+  border-bottom: none;
+}
+
+#chart-fast {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.angle-Right::before {
+  content: "";
+  display:block;
+  height: 15px;
+  width: 15px;
+  background-size: 125px 125px;
+  background-image: url("./icons/ic_turnRight_white.svg");
+  background-repeat: no-repeat;
+}
+
+.angle-Left::before {
+  content: url("./icons/ic_turnLeft_white.svg");
+}
+
+.angle-StraightOn::before {
+  content: url("./icons/ic_straightOn_white.svg");
+}
+
+.angle-turnRight::before {
+  content: url("./icons/ic_slight_turnRight_white.svg");
+}
+
+.angle-turnLeft::before {
+  content: url("./icons/ic_slight_turnLeft_white.svg");
+}
