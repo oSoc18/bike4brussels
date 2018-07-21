@@ -41,6 +41,29 @@ function sidebarDisplayProfile(profile) {
     $(`#${getKeyByValue(profileButtonIds, profile)}`).addClass("active");
 }
 
+function getBootstrapDeviceSize(){
+    let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    let cat;
+    switch (true){
+        case width <= 576:
+            cat = "xs";
+            break;
+        case width > 576 && width <= 768:
+            cat = "sm";
+            break;
+        case width > 768 && width <= 992:
+            cat = "md";
+            break;
+        case width > 992 && width <= 1200:
+            cat = "lg";
+            break;
+        case width > 1200:
+            cat = "xl";
+            break;
+    }
+    return cat;
+}
+
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }

@@ -3,6 +3,7 @@ var location1Marker = undefined;
 var location2 = undefined;
 var location2Marker = undefined;
 var routes = {};
+let routeRequests = {};
 let language = "en";
 const availableProfiles = ["fast", "balanced", "brussels", "relaxed"];
 let selectedProfile = "fast";
@@ -62,7 +63,8 @@ function roundToThree(num) {
  * @param {String} lang - en/nl/fr select the language for the instructions
  */
 function calculateAllRoutes(origin, destination, profiles = availableProfiles, instructions = true, lang = language) {
-    if (!isSidebarVisible){
+    let deviceSize = getBootstrapDeviceSize();
+    if (!isSidebarVisible && !(deviceSize === "xs" || deviceSize === "sm")) {
         toggleSidebar();
     }
     //$(".route-instructions ul").html("Loading...");
@@ -70,9 +72,11 @@ function calculateAllRoutes(origin, destination, profiles = availableProfiles, i
     $(`.route-instructions  .instructions-resume`).html("");
     $(`.route-instructions .elevation-info`).html("");
     routes = {};
+    removeAllRoutesFromMap();
     profiles.forEach(function (profile) {
         calculateRoute(origin, destination, profile, instructions, lang);
     });
+    fitToBounds(origin, destination);
     //sidebarDisplayProfile(selectedProfile);
 }
 
@@ -99,109 +103,104 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
     const url = `${urls.route}/route?loc1=${originS}&loc2=${destinationS}&instructions=${instructions}&lang=${lang}` + (profile_url === "" ? "" : `&profile=${profile_url}`);
     routes[profile] = [];
 
-    $.getJSON(url, function (json) {
-            console.log(json);
-
-            let routeStops = [];
-            let heightInfo = [];
-
-            route = json.route.features;
-            for (let i in route) {
-                if (route[i].name === "Stop") {
-                    routeStops.push(route[i]);
-                }
-                if (route[i].properties.cyclecolour === undefined) {
-                    route[i].properties.cyclecolour = "#979797";
-                } else if (route[i].properties.cyclecolour.length !== 7) {
-                    if (route[i].properties.cyclecolour.length > 7) {
-                        route[i].properties.cyclecolour = route[i].properties.cyclecolour.substring(0, 7);
-                    } else {
-                        route[i].properties.cyclecolour = "#979797";
-                    }
-                }
-                try {
-                    heightInfo.push(route[i].geometry.coordinates[0][2]);
-                } catch (e) {
-                    console.log("Failed to read height info", e);
-                }
-            }
-            routes[profile] = route;
-
-            let $instrResume = $(`#${profileHtmlId[profile]} .instructions-resume`);
-            if (routeStops.length === 2) {
-                $instrResume.html(`<div>${roundToThree(routeStops[1].properties.distance / 1000)}km</div><div>${timeToText(routeStops[1].properties.time)}</div>`);
-            } else {
-                $instrResume.html("");
-            }
-            $(`#${profileHtmlId[profile]} .elevation-info`).html(`<div><canvas id="chart-${profile}" style="width: 100%; height: 100px"></canvas></div>`);
-
-            displayChart(`chart-${profile}`, heightInfo);
-
-            // Shows the instructions in the sidebar
-            let $profileInstructions = $(`#${profileHtmlId[profile]} ul`);
-            $profileInstructions.html("");
-            $profileInstructions.append(`<li class="startpoint-li">${$("#fromInput").val()}</li>`);
-            if(json.instructions && json.instructions.features) {
-                for (let i in json.instructions.features) {
-                    $profileInstructions.append(`<li class="type-${json.instructions.features[i].properties.type}  angle-${json.instructions.features[i].properties.angle}">${json.instructions.features[i].properties.instruction}</li>`);
-                }
-            }
-            $profileInstructions.append(`<li class="endpoint-li">${$("#toInput").val()}</li>`);
-            $profileInstructions.append(`</ul>`);
-
-            // Check if profile already exists
-            const calculatedRoute = map.getSource(profile);
-            if (calculatedRoute) {
-                // Just set the data
-                calculatedRoute.setData(json.route);
-            } else {
-                // Add a new layer
-                map.addLayer({
-                    id: profile,
-                    type: 'line',
-                    source: {
-                        type: 'geojson',
-                        data: json.route
-                    },
-                    paint: {
-                        'line-color':
-                            {   // always use the colors of the cycling network
-                                type: 'identity',
-                                property: 'cyclecolour'
-                            }
-                        ,
-                        'line-width': 6
-                    },
-                    layout: {
-                        'line-cap': 'round'
-                    }
-                });
-            }
-
-            /*if (profile === 'shortest') {
-                // If the route is the 'shortest' then the duration (time) of the route (which is contained in the last
-                // route segment) was originally shown in a popup displayed at the middle line segment of all the lines.
-                // This code still works but is not used at the moment. Could be useful though.
-                const time = json.route.features[json.route.features.length - 1].properties.time;
-                const text = timeToText(time);
-                const middleFeature = json.route.features[Math.round(json.route.features.length / 2)];
-                const LatLng = middleFeature.geometry.coordinates[0];
-            }*/
-
-            // Move the network layer always on top
-            if (profile === 'shortest' && map.getSource('brussels')) {
-                map.moveLayer('shortest', 'brussels');
-            }
-
-            //fitToBounds(origin, destination);
-            /*setTimeout(() => {
-                fitToBounds(origin, destination);
-                // hide the loading icon
-                //view.toggleMapLoading();
-            }, 350);*/
+    if (routeRequests[profile]) {
+        try {
+            routeRequests[profile].abort();
+        } catch (e) {
+            console.log(e, routeRequests[profile]);
         }
-    )
-        .catch(ex => {
+    }
+
+    routeRequests[profile] = $.ajax({
+        dataType: "json",
+        url: url,
+        success: success,
+        error: requestError
+    });
+
+    function success(json) {
+        console.log(json);
+
+        let routeStops = [];
+        let heightInfo = [];
+
+        route = json.route.features;
+        for (let i in route) {
+            if (route[i].name === "Stop") {
+                routeStops.push(route[i]);
+            }
+            if (route[i].properties.cyclecolour === undefined) {
+                route[i].properties.cyclecolour = "#979797";
+            } else if (route[i].properties.cyclecolour.length !== 7) {
+                if (route[i].properties.cyclecolour.length > 7) {
+                    route[i].properties.cyclecolour = route[i].properties.cyclecolour.substring(0, 7);
+                } else {
+                    route[i].properties.cyclecolour = "#979797";
+                }
+            }
+            try {
+                heightInfo.push(route[i].geometry.coordinates[0][2]);
+            } catch (e) {
+                console.log("Failed to read height info", e);
+            }
+        }
+        routes[profile] = route;
+
+        let $instrResume = $(`#${profileHtmlId[profile]} .instructions-resume`);
+        if (routeStops.length === 2) {
+            $instrResume.html(`<div>${roundToThree(routeStops[1].properties.distance / 1000)}km</div><div>${timeToText(routeStops[1].properties.time)}</div>`);
+        } else {
+            $instrResume.html("");
+        }
+        $(`#${profileHtmlId[profile]} .elevation-info`).html(`<div><canvas id="chart-${profile}" style="width: 100%; height: 100px"></canvas></div>`);
+
+        displayChart(`chart-${profile}`, heightInfo);
+
+        // Shows the instructions in the sidebar
+        let $profileInstructions = $(`#${profileHtmlId[profile]} ul`);
+        $profileInstructions.html("");
+        $profileInstructions.append(`<li class="startpoint-li">${$("#fromInput").val()}</li>`);
+        if (json.instructions && json.instructions.features) {
+            for (let i in json.instructions.features) {
+                $profileInstructions.append(`<li class="type-${json.instructions.features[i].properties.type}  angle-${json.instructions.features[i].properties.angle}">${json.instructions.features[i].properties.instruction}</li>`);
+            }
+        }
+        $profileInstructions.append(`<li class="endpoint-li">${$("#toInput").val()}</li>`);
+        $profileInstructions.append(`</ul>`);
+
+        // Check if profile already exists
+        const calculatedRoute = map.getSource(profile);
+        if (calculatedRoute) {
+            // Just set the data
+            calculatedRoute.setData(json.route);
+        } else {
+            // Add a new layer
+            map.addLayer({
+                id: profile,
+                type: 'line',
+                source: {
+                    type: 'geojson',
+                    data: json.route
+                },
+                paint: {
+                    'line-color':
+                        {   // always use the colors of the cycling network
+                            type: 'identity',
+                            property: 'cyclecolour'
+                        }
+                    ,
+                    'line-width': 6
+                },
+                layout: {
+                    'line-cap': 'round'
+                }
+            });
+        }
+        fitToBounds(origin, destination);   //Called again to make sure the start or endpoint are not behind sidebar
+    }
+
+    function requestError(jqXHR, textStatus, errorThrown) {
+        if (textStatus !== "abort") {
             console.log(profile);
             $(`#${profileHtmlId[profile]} ul`).html("Fout :(");
 
@@ -211,22 +210,14 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
             if (map.getSource(profile)) {
                 map.removeSource(profile);
             }
-            // eslint-disable-next-line
-            console.warn('Problem calculating route: ', ex);
-            if (profile === 'brussels') {
-                /*
-                mapController.clearRoutes();
-                mapController.clearMapObject('shortestPopup');
-                view.toggleMapLoading();
-                view.toggleErrorDialog();
-                */
-            }
-        });
+            console.warn('Problem calculating route: ', errorThrown, textStatus, jqXHR);
+        }
+    }
 }
 
 function removeAllRoutesFromMap() {
-    for (let i in Object.keys(profileHtmlId)) {
-        profile = Object.keys(profileHtmlId)[i];
+    for (let i in availableProfiles) {
+        profile = availableProfiles[i];
         console.log(profile);
         if (map.getLayer(profile)) {
             map.removeLayer(profile);
@@ -253,11 +244,11 @@ function showLocationsOnMap() {
     }
     if (location1 !== undefined && location2 !== undefined) {
         calculateAllRoutes(location1, location2);
-        setCurrentUrl({loc1:location1, loc2:location2});
-    } else if(location1){
-        setCurrentUrl({loc1:location1});
-    } else if(location2){
-        setCurrentUrl({loc2:location2});
+        setCurrentUrl({loc1: location1, loc2: location2});
+    } else if (location1) {
+        setCurrentUrl({loc1: location1});
+    } else if (location2) {
+        setCurrentUrl({loc2: location2});
     } else {
         setCurrentUrl({});
     }
@@ -306,13 +297,13 @@ function exportCurrentRoute() {
     console.log("route for export:", route);
     console.log(startpoint, endpoint, routepoints);
     exported = exportRoute(startpoint, endpoint, routepoints);
-    if(exported) {
+    if (exported) {
         download(exported, "Bike4Brussels-route.gpx", ".gpx");
     }
 }
 
 function exportRoute(startpoint, endpoint, routepoints) {
-    if(!routepoints || !(startpoint && endpoint)){
+    if (!routepoints || !(startpoint && endpoint)) {
         alert(getString("routeMissing", language));
     } else {
         let gpx = '<?xml version="1.0" encoding="UTF-8"?><gpx xmlns="http://www.topografix.com/GPX/1/1" creator="RouteYou" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">';
@@ -359,7 +350,7 @@ function download(data, filename, type) {
         a.download = filename;
         document.body.appendChild(a);
         a.click();
-        setTimeout(function() {
+        setTimeout(function () {
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
         }, 0);
@@ -465,10 +456,15 @@ function fitToBounds(origin, destination) {
     bounds.extend(destination);
     //console.log(origin, destination, bounds);
     // Fit the map to the route
+    let paddingRight = 50;
+    if(isSidebarVisible){
+        paddingRight += $("#sidebar-right-container").width();
+        console.log($("#sidebar-right-container").width());
+    }
     map.fitBounds(bounds, {
         padding: {
             top: 75,
-            right: 50,
+            right: paddingRight,
             bottom: 75,
             left: 50
         }
