@@ -332,10 +332,14 @@ input[type="text"], textarea {
     }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 767px) {
     #swap-origin-destination-button {
         top: 50%;
         position: relative;
+    }
+
+    .top-overlay {
+        background-color: #FFD438;
     }
 }
 
