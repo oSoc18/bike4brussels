@@ -1,3 +1,15 @@
+@font-face {
+    font-family: Circular-Std-Book;
+    src: url(../assets/fonts/circular-std-book-cufonfonts-webfont/CircularStd-Book.woff) format("woff");
+    /*font-weight: 400;*/
+    /*font-style: normal*/
+}
+
+@font-face {
+    font-family: Circular-Std-Bold;
+    src: url(../assets/fonts/circular-std-book-cufonfonts-webfont/CircularStd-Bold.woff) format("woff");
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -183,6 +195,55 @@ body {
     padding-left: 0px;
     padding-right: 0px;
     /*flex-grow: 1;*/
+}
+
+.profile-explanation-icons {
+    text-align: center;
+}
+
+.profile-explanation-icons div img {
+    width: 100%;
+    padding: 20%;
+}
+
+.profile-explanation-icons div {
+    width: 30%;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+}
+
+.profile-explanation-icons div div {
+    width: 100%;
+    /*display: inline-block;*/
+    /*vertical-align: top;*/
+    position: relative;
+}
+
+.profile-explanation {
+    font-family: Circular-Std-Book, sans-serif;
+    margin: 20px 15px 20px 15px;
+}
+
+.profile-explanation h4 {
+    font-family: Circular-Std-Bold, sans-serif;
+}
+
+.bolletje {
+    border-radius: 100px;
+    width: 12px !important;
+    height: 12px;
+    position: absolute !important;
+    top: 20%;
+    right: 20%;
+}
+
+.green {
+    background-color: green;
+}
+
+.red {
+    background-color: red;
 }
 
 .route:hover path, .route:hover polyline {

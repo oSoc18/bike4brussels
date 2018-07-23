@@ -1,5 +1,6 @@
 //const mapboxAccessCode = "pk.eyJ1IjoiZml6ejU1IiwiYSI6ImNqajVxcG9uajAwMDYza3VrcXY5bTkwMjYifQ.ixw4txr_8ykx5GOeWzUBKQ";
-const mapboxAccessCode = "pk.eyJ1IjoiYXJuYXVkd2V5dHMiLCJhIjoiY2o0cGt3d3oxMXl0cDMzcXNlbThnM3RtaCJ9.BMUyxqHH-FC69pW4U4YO9A";
+//const mapboxAccessCode = "pk.eyJ1IjoiYXJuYXVkd2V5dHMiLCJhIjoiY2o0cGt3d3oxMXl0cDMzcXNlbThnM3RtaCJ9.BMUyxqHH-FC69pW4U4YO9A";
+const mapboxAccessCode = "pk.eyJ1IjoiZGFuaWVsbGV0ZXJyYXMiLCJhIjoiY2pqeWJheGxhMGwxODNxbW1sb2UzMGo0aiJ9.Y5HiKm7qjB1vrX7NGTOofA";
 
 const urls = {
     mapStyle: 'https://openmaptiles.github.io/positron-gl-style/style-cdn.json',

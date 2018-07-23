@@ -52,7 +52,7 @@
     </div>
     <!--</div>-->
 </div>
-<div class="container-fluid  map-container" style="height: 100vh">
+<div class="container-fluid  map-container">
     <div class="row">
         <div class="col-lg-12" style="padding: 0px 0px 0px 0px;">
             <div id='map' style='width: 100%; height: 100%'></div>
@@ -60,7 +60,8 @@
                 mapboxgl.accessToken = mapboxAccessCode;
                 var map = new mapboxgl.Map({
                     container: 'map',
-                    style: './style.json',
+                    /*style: 'mapbox://styles/danielleterras/cjjr485a40ye22ruo8crgi8m6',*/
+                    style: 'mapbox://styles/danielleterras/cjjr40gqx15he2spsygvqf8pd',
                     center: [4.388443, 50.8486229], // starting position [lng, lat]
                     zoom: 11, // starting zoom
                     preserveDrawingBuffer: true
@@ -123,13 +124,68 @@
             -->
         </div>
         <div id="fast-instruction" class="route-instructions">
+            <div class="profile-explanation">
+                <h4>Proposed route for you</h4>
+                <h5>This is the FAST route</h5>
+                <p>
+                    This profile minimizes the time to destination.
+                </p>
+                <div class="profile-explanation-icons">
+                    <div class="cobblestones">
+                        <div>
+                            <img src="img/cobblestones.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Cobble
+                            <wbr>
+                            stones
+                        </h6>
+                    </div>
+                    <div class="big-roads">
+                        <div>
+                            <img src="img/bigroad.svg">
+                            <div class="bolletje red"></div>
+                        </div>
+                        <h6>Big roads</h6>
+                    </div>
+                    <div class="hills">
+                        <div>
+                            <img src="img/hill.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Hills</h6>
+                    </div>
+                    <div class="networks">
+                        <div>
+                            <img src="img/network_icons.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Networks</h6>
+                    </div>
+                    <div class="parked-cars">
+                        <div>
+                            <img src="img/parked-car.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Parallel parked cars</h6>
+                    </div>
+                    <div class="small-roads">
+                        <div>
+                            <img src="img/small-roads.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Small roads</h6>
+                    </div>
+                </div>
+            </div>
             <div class="instructions-resume"></div>
             <div class="elevation-info"></div>
             <div id="accordion1">
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <h5 class="mb-0">
-                            <button class="btn btn-warning button-collapse-instructions" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            <button class="btn btn-warning button-collapse-instructions" data-toggle="collapse"
+                                    data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                 Instructions
                             </button>
                         </h5>
@@ -144,13 +200,68 @@
             </div>
         </div>
         <div id="balanced-instruction" class="route-instructions">
+            <div class="profile-explanation">
+                <h4>Proposed route for you</h4>
+                <h5>This is the BALANCED route</h5>
+                <p>
+                    This profile avoids the biggest streets and prefers cycleways.
+                </p>
+                <div class="profile-explanation-icons">
+                    <div class="cobblestones">
+                        <div>
+                            <img src="img/cobblestones.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Cobble
+                            <wbr>
+                            stones
+                        </h6>
+                    </div>
+                    <div class="big-roads">
+                        <div>
+                            <img src="img/bigroad.svg">
+                            <div class="bolletje red"></div>
+                        </div>
+                        <h6>Big roads</h6>
+                    </div>
+                    <div class="hills">
+                        <div>
+                            <img src="img/hill.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Hills</h6>
+                    </div>
+                    <div class="networks">
+                        <div>
+                            <img src="img/network_icons.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Networks</h6>
+                    </div>
+                    <div class="parked-cars">
+                        <div>
+                            <img src="img/parked-car.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Parallel parked cars</h6>
+                    </div>
+                    <div class="small-roads">
+                        <div>
+                            <img src="img/small-roads.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Small roads</h6>
+                    </div>
+                </div>
+            </div>
             <div class="instructions-resume"></div>
             <div class="elevation-info"></div>
             <div id="accordion2">
                 <div class="card">
                     <div class="card-header" id="headingTwo">
                         <h5 class="mb-0">
-                            <button class="btn btn-warning button-collapse-instructions" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <button class="btn btn-warning button-collapse-instructions" data-toggle="collapse"
+                                    data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                 Instructions
                             </button>
                         </h5>
@@ -165,13 +276,69 @@
             </div>
         </div>
         <div id="relaxed-instruction" class="route-instructions">
+            <div class="profile-explanation">
+                <h4>Proposed route for you</h4>
+                <h5>This is the RELAXED route</h5>
+                <p>
+                    This profile avoids big roads, highly prefers cycleways, avoids uncomfortable surfaces such as
+                    cobblestones, and avoids streets with parallel parked cars.
+                </p>
+                <div class="profile-explanation-icons">
+                    <div class="cobblestones">
+                        <div>
+                            <img src="img/cobblestones.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Cobble
+                            <wbr>
+                            stones
+                        </h6>
+                    </div>
+                    <div class="big-roads">
+                        <div>
+                            <img src="img/bigroad.svg">
+                            <div class="bolletje red"></div>
+                        </div>
+                        <h6>Big roads</h6>
+                    </div>
+                    <div class="hills">
+                        <div>
+                            <img src="img/hill.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Hills</h6>
+                    </div>
+                    <div class="networks">
+                        <div>
+                            <img src="img/network_icons.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Networks</h6>
+                    </div>
+                    <div class="parked-cars">
+                        <div>
+                            <img src="img/parked-car.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Parallel parked cars</h6>
+                    </div>
+                    <div class="small-roads">
+                        <div>
+                            <img src="img/small-roads.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Small roads</h6>
+                    </div>
+                </div>
+            </div>
             <div class="instructions-resume"></div>
             <div class="elevation-info"></div>
             <div id="accordion3">
                 <div class="card">
                     <div class="card-header" id="headingThree">
                         <h5 class="mb-0">
-                            <button class="btn btn-warning button-collapse-instructions" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <button class="btn btn-warning button-collapse-instructions" data-toggle="collapse"
+                                    data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                 Instructions
                             </button>
                         </h5>
@@ -186,13 +353,68 @@
             </div>
         </div>
         <div id="other-instruction" class="route-instructions">
+            <div class="profile-explanation">
+                <h4>Proposed route for you</h4>
+                <h5>This is the NETWORKS route</h5>
+                <p>
+                    This profile heavily prefers the Brussels cycle network.
+                </p>
+                <div class="profile-explanation-icons">
+                    <div class="cobblestones">
+                        <div>
+                            <img src="img/cobblestones.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Cobble
+                            <wbr>
+                            stones
+                        </h6>
+                    </div>
+                    <div class="big-roads">
+                        <div>
+                            <img src="img/bigroad.svg">
+                            <div class="bolletje red"></div>
+                        </div>
+                        <h6>Big roads</h6>
+                    </div>
+                    <div class="hills">
+                        <div>
+                            <img src="img/hill.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Hills</h6>
+                    </div>
+                    <div class="networks">
+                        <div>
+                            <img src="img/network_icons.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Networks</h6>
+                    </div>
+                    <div class="parked-cars">
+                        <div>
+                            <img src="img/parked-car.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Parallel parked cars</h6>
+                    </div>
+                    <div class="small-roads">
+                        <div>
+                            <img src="img/small-roads.svg">
+                            <div class="bolletje green"></div>
+                        </div>
+                        <h6>Small roads</h6>
+                    </div>
+                </div>
+            </div>
             <div class="instructions-resume"></div>
             <div class="elevation-info"></div>
             <div id="accordion4">
                 <div class="card">
                     <div class="card-header" id="headingFour">
                         <h5 class="mb-0">
-                            <button class="btn btn-warning button-collapse-instructions" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            <button class="btn btn-warning button-collapse-instructions" data-toggle="collapse"
+                                    data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                 Instructions
                             </button>
                         </h5>
