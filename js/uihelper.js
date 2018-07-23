@@ -156,6 +156,7 @@ function switchLanguage(element) {
     if (location1 && location2) {
         calculateAllRoutes(location1, location2, availableProfiles, true, language);
     }
+    applyLanguage(language);
 }
 
 function printExport() {
@@ -275,6 +276,16 @@ function setCurrentUrl(params) {
     window.history.pushState("object or string", "Title", currentUrl);
 }
 
+function applyLanguage(lang){
+    $(".button-collapse-instructions").html(getString("instructionsCollapseButton", lang));
+    $("#fromInput").attr("placeholder", getString("fromInputPlaceholder", lang));
+    $("#toInput").attr("placeholder", getString("toInputPlaceholder", lang));
+    $("#profile-button-text-fast").html(getString("profileNameFast", lang));
+    $("#profile-button-text-balanced").html(getString("profileNameBalanced", lang));
+    $("#profile-button-text-relaxed").html(getString("profileNameRelaxed", lang));
+    $("#profile-button-text-networks").html(getString("profileNameNetworks", lang));
+}
+
 window.onload = function () {
     sidebarDisplayProfile(selectedProfile);
     $(".lang_label").removeClass("active");
@@ -292,6 +303,7 @@ window.onload = function () {
             $("#label-option-NL").addClass("active");
             break;
     }
+    applyLanguage(language);
     let urlparams = getAllUrlParams();
     console.log(urlparams);
     if (urlparams.loc1) {
