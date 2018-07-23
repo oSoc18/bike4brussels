@@ -233,7 +233,12 @@ body {
     padding: 0px 0px 0px 0px;
 }
 
-.route-instructions {
+.card, .card-header {
+    background-color: #ECB900;
+    border: none;
+}
+
+.route-instructions, .collapse, .collapsing {
     overflow-y: auto;
     background-color: #FFD438;
     color: white;

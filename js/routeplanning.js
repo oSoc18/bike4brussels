@@ -68,9 +68,9 @@ function calculateAllRoutes(origin, destination, profiles = availableProfiles, i
         toggleSidebar();
     }
     //$(".route-instructions ul").html("Loading...");
-    $(".route-instructions ul").html("<img src='./img/Loading.gif' style='width: 100%;'  alt=\"Loading...\" />");
+    $(".route-instructions ul").html("");
     $(`.route-instructions  .instructions-resume`).html("");
-    $(`.route-instructions .elevation-info`).html("");
+    $(`.route-instructions .elevation-info`).html("<img src='./img/Loading.gif' style='width: 100%;'  alt=\"Loading...\" />");
     routes = {};
     removeAllRoutesFromMap();
     profiles.forEach(function (profile) {
