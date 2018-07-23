@@ -19,11 +19,11 @@ This profile considers street size/categorization and cycle infrastructure. The 
 
 -- Relaxed
 
-This profile considers street size/categorization, cycle infrastructure, surface quality, and parked cars. The following OSM keys are being used: highway=*, cycleway=*, cycleway:left=*, cycleway:right=*, surface=*, parking:lane:both=*. Factors between 0,8 and 1,2 are assigned to every possible key=tag combination. This factor gets multiplied with the standard line weight of the default profile. For example, a street with cobblestones and no bike infrastructure has a high weight and is therefore less likely to be part of a relaxed route.
+This profile considers street size/categorization, cycle infrastructure, surface quality, and parked cars. The following OSM keys are being used: highway=*, cycleway=*, cycleway:left=*, cycleway:right=*, surface=*, parking:lane:both=*. Factors between 0,8 and 1,2 are assigned to every possible key=tag combination. This factor gets multiplied with the standard line weight of the default profile. For example, a street with cobblestones, no bike infrastructure and parallel parked cars on both sides has a very high weight and is therefore less likely to be part of a relaxed route.
 
 -- Networks
 
-This profile heavily prefers streets that are on the Brussels Mobility Cycle Network. The weight of every line that is part of the network gets divided by 3 and therefore has a low weight and is highly likely to be part of a given route.
+This profile heavily prefers streets that are on the Brussels Mobility Cycle Network. The weight of every line that is part of the network gets divided by 3 and which makes that street highly likely to be part of a given route.
 
 
 - Feature list
