@@ -1,47 +1,47 @@
 const dict = {
     locationMissing: {  //Currently not used
         en: "Please enter at least 2 locations before continuing.",
-        fr: "[TBT]",
+        fr: "Veuillez entrer au moins deux endroits avant de continuer.",
         nl: "Gelieve minstens 2 locaties op te geven alvorens verder te gaan."
     },
     routeMissing: {
         en: "No route found for the given selections.",
-        fr: "[TBT]",
+        fr: "Aucun itinéraire trouvé pour les sélections données.",
         nl: "Er is geen route gevonden voor de gegevens selecties."
     },
     instructionsCollapseButton: {
         en: "Instructions",
-        fr: "[TBT]",
+        fr: "Instructions",
         nl: "Instructies"
     },
     fromInputPlaceholder: {
         en: "From",
-        fr: "[TBT]",
+        fr: "De",
         nl: "Van"
     },
     toInputPlaceholder: {
         en: "To",
-        fr: "[TBT]",
+        fr: "À",
         nl: "Naar"
     },
     profileNameFast: {
         en: "Fast",
-        fr: "[TBT]",
+        fr: "Rapide",
         nl: "Snel"
     },
     profileNameBalanced: {
         en: "Balanced",
-        fr: "[TBT]",
+        fr: "Équilibré",
         nl: "Gebalanceerd"
     },
     profileNameRelaxed: {
         en: "Relaxed",
-        fr: "[TBT]",
+        fr: "Détendu",
         nl: "Ontspannen"
     },
     profileNameNetworks: {
         en: "Networks",
-        fr: "[TBT]",
+        fr: "Réseaux",
         nl: "Netwerk"
     },
 };
