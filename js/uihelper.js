@@ -17,14 +17,17 @@ function sidebarDisplayProfileHtmlId(id) {
 }
 
 function sidebarDisplayProfile(profile) {
+    selectedProfile = profile;
     if (location1 && location2) {
-        for(var i in profileHtmlId){
+        for (var i in profileHtmlId) {
             try {
                 map.setPaintProperty(i, 'line-color', "grey");
                 map.setPaintProperty(i, 'line-opacity', 0.1);
-            } catch (e){ console.log(e);}
+            } catch (e) {
+                console.log(e);
+            }
         }
-        map.setPaintProperty(profile, 'line-color',  {   // always use the colors of the cycling network
+        map.setPaintProperty(profile, 'line-color', {   // always use the colors of the cycling network
             type: 'identity',
             property: 'cyclecolour'
         });
@@ -36,6 +39,29 @@ function sidebarDisplayProfile(profile) {
     $(`#${profileHtmlId[profile]}`).removeClass("height-zero");
     $("#sidebar-top>span").removeClass("active");
     $(`#${getKeyByValue(profileButtonIds, profile)}`).addClass("active");
+}
+
+function getBootstrapDeviceSize(){
+    let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    let cat;
+    switch (true){
+        case width <= 576:
+            cat = "xs";
+            break;
+        case width > 576 && width <= 768:
+            cat = "sm";
+            break;
+        case width > 768 && width <= 992:
+            cat = "md";
+            break;
+        case width > 992 && width <= 1200:
+            cat = "lg";
+            break;
+        case width > 1200:
+            cat = "xl";
+            break;
+    }
+    return cat;
 }
 
 function getKeyByValue(object, value) {
@@ -74,7 +100,7 @@ jQuery('img.svg').each(function () {
 });
 
 function displayChart(htmlCanvasId, heightInfo) {
-    console.log(heightInfo);
+    //console.log(heightInfo);
     var ctx = document.getElementById(htmlCanvasId).getContext('2d');
     new Chart(ctx, {
         "type": "line",
@@ -109,7 +135,7 @@ function displayChart(htmlCanvasId, heightInfo) {
     });
 }
 
-function switchLanguage(element){
+function switchLanguage(element) {
     switch (element.id) {
         case "label-option-EN":
             //English
@@ -130,10 +156,138 @@ function switchLanguage(element){
     if (location1 && location2) {
         calculateAllRoutes(location1, location2, availableProfiles, true, language);
     }
+    applyLanguage(language);
+}
+
+function printExport() {
+    let mapimg = new Image();
+    mapimg.id = "map-pic";
+    mapimg.src = document.getElementsByClassName("mapboxgl-canvas")[0].toDataURL();
+    /*let graphImg = new Image();
+    graphImg.id = "graph-pic";
+    graphImg.src = document.getElementById(`chart-${selectedProfile}`).toDataURL();*/
+    let html = "<head>" +
+        "<title>Bike For Brussels - Route export</title>" +
+        '<link href="style/printstyle.css" rel="stylesheet" type="text/css">' +
+        '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"\n' +
+        '          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">' +
+        "</head>" +
+        "<body>" +
+        "<h1>Bike For Brussels - Routeplanner</h1>" +
+        "<p id='image_for_crop'>" /*+ mapimgHtml */ + "</p>" + `${selectedProfile} route` +
+        "<div id='instructionsPrintContainer'>" +
+        document.getElementById(profileHtmlId[selectedProfile]).innerHTML +
+        "</div></body>";
+    window.frames["print_frame"].document.body.innerHTML = html;
+    window.frames["print_frame"].document.getElementById("image_for_crop").appendChild(mapimg);
+    window.frames["print_frame"].document.getElementsByClassName("elevation-info")[0].innerHTML = "";
+    //window.frames["print_frame"].document.getElementsByClassName("elevation-info")[0].appendChild(graphImg);
+    //var c = window.frames["print_frame"].document.getElementById(`chart-${selectedProfile}`);
+    //var ctx = c.getContext("2d");
+    //ctx.fillStyle = "#ECB900";
+    //c.style.backgroundColor = "#ECB900";
+    //ctx.fillRect(0, 0, c.width, c.height);
+    //ctx.drawImage(graphImg,0,0);
+    //c.width+=0;
+    window.frames["print_frame"].window.focus();
+    setTimeout(function () {
+        window.frames["print_frame"].window.print();
+    }, 100);
+}
+
+function getAllUrlParams(url) {
+    // get query string from url (optional) or window
+    var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+
+    // we'll store the parameters here
+    var obj = {};
+
+    // if query string exists
+    if (queryString) {
+
+        // stuff after # is not part of query string, so get rid of it
+        queryString = queryString.split('#')[0];
+
+        // split our query string into its component parts
+        var arr = queryString.split('&');
+
+        for (var i = 0; i < arr.length; i++) {
+            // separate the keys and the values
+            var a = arr[i].split('=');
+
+            // in case params look like: list[]=thing1&list[]=thing2
+            var paramNum = undefined;
+            var paramName = a[0].replace(/\[\d*\]/, function (v) {
+                paramNum = v.slice(1, -1);
+                return '';
+            });
+
+            // set parameter value (use 'true' if empty)
+            //var paramValue = a[1];
+            let paramValue;
+            if (typeof(a[1])==='undefined') {
+                paramValue = true;
+            } else {
+                console.log(a[1]);
+                paramValue = a[1].toLowerCase();
+                //check if the value is a comma sepperated list
+                var b = paramValue.split(',');
+                paramValue = typeof(b[1]) === 'undefined' ? b[0] : b;
+            }
+
+            // (optional) keep case consistent
+            paramName = paramName.toLowerCase();
+
+
+            // if parameter name already exists
+            if (obj[paramName]) {
+                // convert value to array (if still string)
+                if (typeof obj[paramName] === 'string') {
+                    obj[paramName] = [obj[paramName]];
+                }
+                // if no array index number specified...
+                if (typeof paramNum === 'undefined') {
+                    // put the value on the end of the array
+                    obj[paramName].push(paramValue);
+                }
+                // if array index number specified...
+                else {
+                    // put the value at that index number
+                    obj[paramName][paramNum] = paramValue;
+                }
+            }
+            // if param name doesn't exist yet, set it
+            else {
+                obj[paramName] = paramValue;
+            }
+        }
+    }
+
+    return obj;
+}
+
+function setCurrentUrl(params) {
+    currentUrl = window.location.href;
+    currentUrl = currentUrl.split('?')[0] + '?';  //verwijder huidige parameters (if any)
+    for (var i in params) {
+        currentUrl += i + '=' + params[i] + "&";
+    }
+    //window.location.href = currentUrl;
+    window.history.pushState("object or string", "Title", currentUrl);
+}
+
+function applyLanguage(lang){
+    $(".button-collapse-instructions").html(getString("instructionsCollapseButton", lang));
+    $("#fromInput").attr("placeholder", getString("fromInputPlaceholder", lang));
+    $("#toInput").attr("placeholder", getString("toInputPlaceholder", lang));
+    $("#profile-button-text-fast").html(getString("profileNameFast", lang));
+    $("#profile-button-text-balanced").html(getString("profileNameBalanced", lang));
+    $("#profile-button-text-relaxed").html(getString("profileNameRelaxed", lang));
+    $("#profile-button-text-networks").html(getString("profileNameNetworks", lang));
 }
 
 window.onload = function () {
-    sidebarDisplayProfile("fast");
+    sidebarDisplayProfile(selectedProfile);
     $(".lang_label").removeClass("active");
     switch (language) {
         case "en":
@@ -149,5 +303,33 @@ window.onload = function () {
             $("#label-option-NL").addClass("active");
             break;
     }
+    applyLanguage(language);
+    let urlparams = getAllUrlParams();
+    console.log(urlparams);
+    if (urlparams.loc1) {
+        location1 = urlparams.loc1;
+        reverseGeocode(location1, function (adress) {
+            $("#fromInput").val(adress);
+        });
+    } else {
+        setTimeout(function () {
+            useCurrentLocation();
+        }, 2000);
+    }
+    if (urlparams.loc2) {
+        location2 = urlparams.loc2;
+        reverseGeocode(location2, function (adress) {
+            $("#toInput").val(adress);
+        });
+    }
+    if (location1 && location2) {
+        showLocationsOnMap();
+    }
+    map.addControl(new mapboxgl.GeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true
+        },
+        trackUserLocation: true
+    }), 'top-left');
 
 };
