@@ -22,20 +22,23 @@ function sidebarDisplayProfile(profile) {
     if (location1 && location2) {
         for (var i in profileHtmlId) {
             try {
-                map.setPaintProperty(i, 'line-color', "grey");
-                map.setPaintProperty(i, 'line-opacity', 0.25);
+                if (map.getLayer(i)) {
+                    map.setPaintProperty(i, 'line-color', "grey");
+                    map.setPaintProperty(i, 'line-opacity', 0.25);
+                }
             } catch (e) {
-                console.log(e);
+                console.warn(e);
             }
         }
-        map.setPaintProperty(profile, 'line-color', {   // always use the colors of the cycling network
-            type: 'identity',
-            property: 'cyclecolour'
-        });
-        map.setPaintProperty(profile, 'line-opacity', 1);
-        map.moveLayer(profile);
+        if (map.getLayer(profile)) {
+            map.setPaintProperty(profile, 'line-color', {   // always use the colors of the cycling network
+                type: 'identity',
+                property: 'cyclecolour'
+            });
+            map.setPaintProperty(profile, 'line-opacity', 1);
+            map.moveLayer(profile);
+        }
     }
-    console.log(`showing only ${profile}`);
     $(".route-instructions").addClass("height-zero");
     $(`#${profileHtmlId[profile]}`).removeClass("height-zero");
     $("#sidebar-top>span").removeClass("active");
@@ -44,10 +47,10 @@ function sidebarDisplayProfile(profile) {
     $(`#${getKeyByValue(profileButtonIds, profile)}-mobile`).addClass("active");
 }
 
-function getBootstrapDeviceSize(){
+function getBootstrapDeviceSize() {
     let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     let cat;
-    switch (true){
+    switch (true) {
         case width <= 576:
             cat = "xs";
             break;
@@ -228,10 +231,9 @@ function getAllUrlParams(url) {
             // set parameter value (use 'true' if empty)
             //var paramValue = a[1];
             let paramValue;
-            if (typeof(a[1])==='undefined') {
+            if (typeof(a[1]) === 'undefined') {
                 paramValue = true;
             } else {
-                console.log(a[1]);
                 paramValue = a[1].toLowerCase();
                 //check if the value is a comma sepperated list
                 var b = paramValue.split(',');
@@ -279,7 +281,7 @@ function setCurrentUrl(params) {
     window.history.pushState("object or string", "Title", currentUrl);
 }
 
-function applyLanguage(lang){
+function applyLanguage(lang) {
     $(".button-collapse-instructions").html(getString("instructionsCollapseButton", lang));
     $("#fromInput").attr("placeholder", getString("fromInputPlaceholder", lang));
     $("#toInput").attr("placeholder", getString("toInputPlaceholder", lang));
@@ -305,6 +307,30 @@ function applyLanguage(lang){
     $("#fast-instruction div h4").html(getString("profileProposal", lang));
 }
 
+function fromFieldInputDetected(el) {
+    if (!el.value || el.value === "") {
+        //show location button
+        $("#clearInputFieldFromButton").hide();
+        $("#useLocationInputFieldButton").show();
+    } else {
+        //show empty button
+        $("#clearInputFieldFromButton").show();
+        $("#useLocationInputFieldButton").hide();
+    }
+}
+
+function toFieldInputDetected(el) {
+    if (!el.value || el.value === "") {
+        //show location button
+        $("#clearInputFieldToButton").hide();
+        //$("#useLocationInputFieldButton").show();
+    } else {
+        //show empty button
+        $("#clearInputFieldToButton").show();
+        //$("#useLocationInputFieldButton").hide();
+    }
+}
+
 window.onload = function () {
     sidebarDisplayProfile(selectedProfile);
     $(".lang_label").removeClass("active");
@@ -324,7 +350,6 @@ window.onload = function () {
     }
     applyLanguage(language);
     let urlparams = getAllUrlParams();
-    console.log(urlparams);
     if (urlparams.loc1) {
         location1 = urlparams.loc1;
         reverseGeocode(location1, function (adress) {
@@ -341,7 +366,7 @@ window.onload = function () {
             $("#toInput").val(adress);
         });
     }
-    if (location1 && location2) {
+    if (location1 || location2) {
         showLocationsOnMap();
     }
     map.addControl(new mapboxgl.GeolocateControl({
@@ -352,3 +377,17 @@ window.onload = function () {
     }), 'top-left');
 
 };
+
+function clearInputFieldFrom() {
+    $("#fromInput").val("");
+    location1 = undefined;
+    showLocationsOnMap();
+    fromFieldInputDetected(document.getElementById("fromInput"));
+}
+
+function clearInputFieldTo() {
+    $("#toInput").val("");
+    location2 = undefined;
+    showLocationsOnMap();
+    toFieldInputDetected(document.getElementById("toInput"));
+}

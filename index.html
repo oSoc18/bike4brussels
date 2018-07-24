@@ -36,16 +36,18 @@
             <div class="row">
                 <!--<label class="col-lg-1 control-label" for="fromInput">From</label>-->
                 <div class="col-lg-5 col-md-12 col-10 currentLocation right-addon">
-                    <input class="form-control typeahead geocoder-input" type="text" id="fromInput" placeholder="From">
-                    <img src="./assets/img/currentLocation.svg" onclick="useCurrentLocation()"/>
+                    <input class="form-control typeahead geocoder-input" type="text" id="fromInput" placeholder="From" oninput="fromFieldInputDetected(this)">
+                    <img id="useLocationInputFieldButton" src="./assets/img/currentLocation.svg" onclick="useCurrentLocation()"/>
+                    <img id="clearInputFieldFromButton" src="./style/icons/ic_clear_black_24px.svg" onclick="clearInputFieldFrom()"/>
                 </div>
                 <!--<label class="col-lg-1 control-label" for="toInput">To</label>-->
                 <div class="col-lg-2 col-md-12 col-1 text-center">
                     <button class="btn btn-warning image-button" id="swap-origin-destination-button"
                             onclick="swapOriginDestination()"></button>
                 </div>
-                <div class="col-lg-5 col-md-12 col-10">
-                    <input class="form-control typeahead geocoder-input" type="text" id="toInput" placeholder="To">
+                <div class="col-lg-5 col-md-12 col-10 right-addon">
+                    <input class="form-control typeahead geocoder-input" type="text" id="toInput" placeholder="To" oninput="toFieldInputDetected(this)">
+                    <img id="clearInputFieldToButton" src="./style/icons/ic_clear_black_24px.svg" onclick="clearInputFieldTo()"/>
                 </div>
             </div>
         </div>

@@ -278,7 +278,8 @@ body {
     color: white;
 }
 
-.currentLocation {
+/*.currentLocation {*/
+.right-addon {
     display: flex;
     align-items: center;
 }
@@ -366,12 +367,13 @@ input[type="text"], textarea {
 }
 
 /* enable absolute positioning */
-.currentLocation {
+/*.currentLocation {*/
+.right-addon {
     position: relative;
 }
 
 /* style icon */
-.currentLocation img {
+.currentLocation img, #clearInputFieldToButton {
     position: absolute;
     padding: 10px;
 }
@@ -458,4 +460,8 @@ input[type="text"], textarea {
     margin-left: 20px;
     margin-right: 20px;
     border-bottom: none;*/
+}
+
+#clearInputFieldFromButton, #clearInputFieldToButton {
+    display: none;
 }
