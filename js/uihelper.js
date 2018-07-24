@@ -291,6 +291,11 @@ function applyLanguage(lang) {
     $("#profile-button-text-relaxed").html(getString("profileNameRelaxed", lang));
     $("#profile-button-text-networks").html(getString("profileNameNetworks", lang));
 
+    $("#profile-button-text-fast-mobile").html(getString("profileNameFast", lang));
+    $("#profile-button-text-balanced-mobile").html(getString("profileNameBalanced", lang));
+    $("#profile-button-text-relaxed-mobile").html(getString("profileNameRelaxed", lang));
+    $("#profile-button-text-networks-mobile").html(getString("profileNameNetworks", lang));
+
     $("#other-instruction div p").html(getString("profileDescriptionNetworks", lang));
     $("#relaxed-instruction div p").html(getString("profileDescriptionRelaxed", lang));
     $("#balanced-instruction div p").html(getString("profileDescriptionBalanced", lang));
