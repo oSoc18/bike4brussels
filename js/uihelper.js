@@ -312,6 +312,8 @@ function fromFieldInputDetected(el) {
         //show location button
         $("#clearInputFieldFromButton").hide();
         $("#useLocationInputFieldButton").show();
+        location1 = undefined;
+        showLocationsOnMap();
     } else {
         //show empty button
         $("#clearInputFieldFromButton").show();
@@ -323,11 +325,11 @@ function toFieldInputDetected(el) {
     if (!el.value || el.value === "") {
         //show location button
         $("#clearInputFieldToButton").hide();
-        //$("#useLocationInputFieldButton").show();
+        location2 = undefined;
+        showLocationsOnMap();
     } else {
         //show empty button
         $("#clearInputFieldToButton").show();
-        //$("#useLocationInputFieldButton").hide();
     }
 }
 

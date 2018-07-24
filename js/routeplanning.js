@@ -278,8 +278,6 @@ function showLocationsOnMap() {
     } else {
         setCurrentUrl({});
     }
-    fromFieldInputDetected(document.getElementById("fromInput"));
-    toFieldInputDetected(document.getElementById("toInput"));
 }
 
 function createMarker(loc, color = '#3FB1CE') {
