@@ -283,7 +283,8 @@ body {
     align-items: center;
 }
 
-#sidebar-top {
+#sidebar-top, #top-overlay-profile-buttons-mobile {
+    width: 100%;
     display: flex;
     flex-direction: row;
     height: 5rem;
@@ -332,6 +333,10 @@ input[type="text"], textarea {
     }
 }
 
+#top-overlay-profile-buttons-mobile {
+    display: none;
+}
+
 @media only screen and (max-width: 767px) {
     #swap-origin-destination-button {
         top: 50%;
@@ -340,7 +345,24 @@ input[type="text"], textarea {
 
     .top-overlay {
         background-color: #FFD438;
+        padding-bottom: 0px;
     }
+
+    #top-overlay-input {
+        margin-bottom: 5vh;
+    }
+
+    .card {
+        margin-bottom: 50px;
+    }
+
+    #top-overlay-profile-buttons-mobile {
+        display: flex;
+    }
+}
+
+.card-body {
+    padding-top: 0px;
 }
 
 /* enable absolute positioning */

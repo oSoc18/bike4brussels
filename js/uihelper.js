@@ -13,6 +13,7 @@ function toggleSidebar() {
 }
 
 function sidebarDisplayProfileHtmlId(id) {
+    id = id.replace("-mobile", "");
     sidebarDisplayProfile(profileButtonIds[id]);
 }
 
@@ -38,7 +39,9 @@ function sidebarDisplayProfile(profile) {
     $(".route-instructions").addClass("height-zero");
     $(`#${profileHtmlId[profile]}`).removeClass("height-zero");
     $("#sidebar-top>span").removeClass("active");
+    $("#top-overlay-profile-buttons-mobile>span").removeClass("active");
     $(`#${getKeyByValue(profileButtonIds, profile)}`).addClass("active");
+    $(`#${getKeyByValue(profileButtonIds, profile)}-mobile`).addClass("active");
 }
 
 function getBootstrapDeviceSize(){
