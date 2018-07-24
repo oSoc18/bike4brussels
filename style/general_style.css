@@ -239,11 +239,11 @@ body {
 }
 
 .green {
-    background-color: green;
+    background-color: #73DA60;
 }
 
 .red {
-    background-color: red;
+    background-color: #D85657;
 }
 
 .route:hover path, .route:hover polyline {
