@@ -44,6 +44,51 @@ const dict = {
         fr: "Réseaux",
         nl: "Netwerk"
     },
+    profileDescriptionFast: {
+      en: "This profile minimizes the time to destination.",
+      fr: "Ce profil minimise le temps de destination.",
+      nl: "Dit profiel minimaliseert de tijd naar uw bestemming.",
+    },
+    profileDescriptionBalanced: {
+      en: "This profile avoids the biggest streets and prefers cycleways.",
+      fr: "Ce profil évite les plus grandes rues et préfère les pistes cyclables.",
+      nl: "Dit profiel vermijdt de grote wegen en verkiest voornamelijk het fietsnetwerk."
+    },
+    profileDescriptionRelaxed: {
+      en: "This profile avoids big roads, highly prefers cycleways, avoids uncomfortable surfaces such as cobblestones, and avoids streets with parallel parked cars.",
+      fr: "Ce profil évite les grandes routes, privilégie fortement les pistes cyclables, évite les surfaces inconfortables telles que les pavés, et évite les rues avec des voitures en stationnement parallèles.",
+      nl: "Dit profiel vermijdt grote wegen, geeft de voorkeur aan fietspaden, vermijdt oncomfortabele oppervlakken zoals kasseien en vermijdt straten met parallel geparkeerde auto's."
+    },
+    profileDescriptionNetworks: {
+      en: "This profile heavily prefers the Brussels cycle network.",
+      fr: "Ce profil privilégie fortement le réseau cyclable Bruxellois.",
+      nl: "Dit profiel verkiest het fietsnetwerk in Brussel."
+    },
+    profileTitleFast: {
+      en: "This is the FAST route",
+      fr: "C'est la route la plus RAPIDE.",
+      nl: "Dit is de SNELSTE route.",
+    },
+    profileTitleBalanced: {
+      en: "This is the BALANCED route",
+      fr: "C'est la route ÉQUILIBRÉE.",
+      nl: "Dit is de GEBLANCEERDE route"
+    },
+    profileTitleRelaxed: {
+      en: "This is the RELAXED route",
+      fr: "C'est la route RELAXÉE",
+      nl: "Dit is de ONTSPANNEN route"
+    },
+    profileTitleNetwork: {
+      en: "This is the NETWORK route",
+      fr: "C'est la route avec le RÉSEAU CYCLABLE",
+      nl: "Dit is de NETWERK route"
+    },
+    profileProposal: {
+      en: "Proposed route for you",
+      fr: "C'est la route proposée pour vous",
+      nl: "Dit is de voorgestelde route"
+    }
 };
 
 function getString(stringId, lang){
