@@ -106,7 +106,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
         try {
             routeRequests[profile].abort();
         } catch (e) {
-            console.log(e, routeRequests[profile]);
+            console.warn(e, routeRequests[profile]);
         }
     }
 
@@ -118,7 +118,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
     });
 
     function success(json) {
-        console.log(json);
+        //console.log(json);
 
         let routeStops = [];
         let heightInfo = [];
@@ -174,34 +174,59 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
             calculatedRoute.setData(json.route);
         } else {
             // Add a new layer
-            map.addLayer({
-                id: profile,
-                type: 'line',
-                source: {
-                    type: 'geojson',
-                    data: json.route
-                },
-                paint: {
-                    'line-color':
-                        {   // always use the colors of the cycling network
-                            type: 'identity',
-                            property: 'cyclecolour'
-                        }
-                    ,
-                    'line-width': 6
-                },
-                layout: {
-                    'line-cap': 'round'
-                }
-            });
+            if(profile === selectedProfile) {
+                map.addLayer({
+                    id: profile,
+                    type: 'line',
+                    source: {
+                        type: 'geojson',
+                        data: json.route
+                    },
+                    paint: {
+                        'line-color':
+                            {   // always use the colors of the cycling network
+                                type: 'identity',
+                                property: 'cyclecolour'
+                            }
+                        ,
+                        'line-width': 6
+                    },
+                    layout: {
+                        'line-cap': 'round'
+                    }
+                });
+            } else {
+                map.addLayer({
+                    id: profile,
+                    type: 'line',
+                    source: {
+                        type: 'geojson',
+                        data: json.route
+                    },
+                    paint: {
+                        'line-color': "grey",
+                        'line-opacity': 0.25,
+                        /*'line-color':
+                            {   // always use the colors of the cycling network
+                                type: 'identity',
+                                property: 'cyclecolour'
+                            }
+                        ,*/
+                        'line-width': 6
+                    },
+                    layout: {
+                        'line-cap': 'round'
+                    }
+                });
+            }
         }
         fitToBounds(origin, destination);   //Called again to make sure the start or endpoint are not hidden behind sidebar
     }
 
     function requestError(jqXHR, textStatus, errorThrown) {
         if (textStatus !== "abort") {
-            console.log(profile);
-            $(`#${profileHtmlId[profile]} ul`).html("Fout :(");
+            $(`#${profileHtmlId[profile]} .elevation-info`).html("Fout :(");
+            //$(`#${profileHtmlId[profile]} ul`).html("Fout :(");
 
             if (map.getLayer(profile)) {
                 map.removeLayer(profile);
@@ -217,7 +242,6 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
 function removeAllRoutesFromMap() {
     for (let i in availableProfiles) {
         profile = availableProfiles[i];
-        console.log(profile);
         if (map.getLayer(profile)) {
             map.removeLayer(profile);
         }
@@ -229,16 +253,19 @@ function removeAllRoutesFromMap() {
 
 
 function showLocationsOnMap() {
+    if(location1 === undefined || location2 === undefined){
+        removeAllRoutesFromMap();
+    }
+    if (location1Marker !== undefined) {
+        location1Marker.remove();
+    }
     if (location1 !== undefined) {
-        if (location1Marker !== undefined) {
-            location1Marker.remove();
-        }
         location1Marker = createMarker(location1, '#47b200');
     }
+    if (location2Marker !== undefined) {
+        location2Marker.remove();
+    }
     if (location2 !== undefined) {
-        if (location2Marker !== undefined) {
-            location2Marker.remove();
-        }
         location2Marker = createMarker(location2, '#b50000');
     }
     if (location1 !== undefined && location2 !== undefined) {
@@ -251,6 +278,8 @@ function showLocationsOnMap() {
     } else {
         setCurrentUrl({});
     }
+    fromFieldInputDetected(document.getElementById("fromInput"));
+    toFieldInputDetected(document.getElementById("toInput"));
 }
 
 function createMarker(loc, color = '#3FB1CE') {
@@ -260,7 +289,6 @@ function createMarker(loc, color = '#3FB1CE') {
 }
 
 map.on('click', function (e) {
-    console.log(e.lngLat);
     var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
     var features = map.queryRenderedFeatures(
         bbox,
@@ -268,7 +296,6 @@ map.on('click', function (e) {
             //options (none)
         }
     );
-    console.log(features);
     let profile_found;
     for(let i in features){
         if($.inArray(features[i].layer.id, availableProfiles) !== -1){
@@ -277,7 +304,6 @@ map.on('click', function (e) {
             }
         }
     }
-    console.log(profile_found);
     if(profile_found) {
         sidebarDisplayProfile(profile_found);
     } else {
@@ -320,8 +346,6 @@ function exportCurrentRoute() {
             }
         }
     }
-    console.log("route for export:", route);
-    console.log(startpoint, endpoint, routepoints);
     exported = exportRoute(startpoint, endpoint, routepoints);
     if (exported) {
         download(exported, "Bike4Brussels-route.gpx", ".gpx");
@@ -359,7 +383,7 @@ function exportRoute(startpoint, endpoint, routepoints) {
             `\n\t\t\t</trkseg>
         </trk>
     </gpx>`;
-        console.log(gpx);
+        //console.log(gpx);
         return gpx;
     }
 }
@@ -394,6 +418,8 @@ function initInputGeocoders() {
                         resArray.push({name: data.features[feature].text + " (" + data.features[feature].place_name + ")", loc: data.features[feature].center});
                     }
                     callback(resArray);
+                    fromFieldInputDetected(document.getElementById("fromInput"));
+                    toFieldInputDetected(document.getElementById("toInput"));
                 });
 
             // Nominatim Geocoder
@@ -419,7 +445,7 @@ function initInputGeocoders() {
                 location2 = activeItem.loc;
             } else {
                 //fout
-                console.log("NIET GEVONDEN!");
+                console.warn("FIELD NOT FOUND!");
             }
             showLocationsOnMap();
         }
@@ -431,8 +457,9 @@ function reverseGeocode(location, callback) {
     var lat = location[1];
     //$.getJSON(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=0`, function (data) {
     $.getJSON(urls.reverseGeocoder.format(lng, lat), function (data) {
-        console.log(data);
         callback(data.features[0].text + " (" + data.features[0].place_name + ")" );
+        fromFieldInputDetected(document.getElementById("fromInput"));
+        toFieldInputDetected(document.getElementById("toInput"));
     });
 }
 
@@ -456,12 +483,10 @@ function fitToBounds(origin, destination) {
     let bounds = new mapboxgl.LngLatBounds();
     bounds.extend(origin);
     bounds.extend(destination);
-    //console.log(origin, destination, bounds);
     // Fit the map to the route
     let paddingRight = 50;
     if (isSidebarVisible) {
         paddingRight += $("#sidebar-right-container").width();
-        console.log($("#sidebar-right-container").width());
     }
     map.fitBounds(bounds, {
         padding: {
