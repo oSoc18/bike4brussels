@@ -23,7 +23,7 @@ function sidebarDisplayProfile(profile) {
         for (var i in profileHtmlId) {
             try {
                 map.setPaintProperty(i, 'line-color', "grey");
-                map.setPaintProperty(i, 'line-opacity', 0.1);
+                map.setPaintProperty(i, 'line-opacity', 0.25);
             } catch (e) {
                 console.log(e);
             }
