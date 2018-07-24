@@ -363,9 +363,11 @@ window.onload = function () {
             $("#fromInput").val(adress);
         });
     } else {
-        setTimeout(function () {
-            useCurrentLocation();
-        }, 2000);
+        if (!(typeof(Storage) !== "undefined" && new Date(localStorage.getItem("geolocation.permission.denieddate")).addDays(7) > new Date() )) {
+            setTimeout(function () {
+                useCurrentLocation();
+            }, 1000);
+        }
     }
     if (urlparams.loc2) {
         location2 = urlparams.loc2;

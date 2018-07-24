@@ -174,7 +174,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
             calculatedRoute.setData(json.route);
         } else {
             // Add a new layer
-            if(profile === selectedProfile) {
+            if (profile === selectedProfile) {
                 map.addLayer({
                     id: profile,
                     type: 'line',
@@ -253,7 +253,7 @@ function removeAllRoutesFromMap() {
 
 
 function showLocationsOnMap() {
-    if(location1 === undefined || location2 === undefined){
+    if (location1 === undefined || location2 === undefined) {
         removeAllRoutesFromMap();
     }
     if (location1Marker !== undefined) {
@@ -295,14 +295,14 @@ map.on('click', function (e) {
         }
     );
     let profile_found;
-    for(let i in features){
-        if($.inArray(features[i].layer.id, availableProfiles) !== -1){
-            if(!profile_found){
+    for (let i in features) {
+        if ($.inArray(features[i].layer.id, availableProfiles) !== -1) {
+            if (!profile_found) {
                 profile_found = features[i].layer.id;
             }
         }
     }
-    if(profile_found) {
+    if (profile_found) {
         sidebarDisplayProfile(profile_found);
     } else {
         var lngLatArray = [e.lngLat.lng, e.lngLat.lat];
@@ -413,7 +413,10 @@ function initInputGeocoders() {
                 function (data) {
                     var resArray = [];
                     for (var feature in data.features) {
-                        resArray.push({name: data.features[feature].text + " (" + data.features[feature].place_name + ")", loc: data.features[feature].center});
+                        resArray.push({
+                            name: data.features[feature].text + " (" + data.features[feature].place_name + ")",
+                            loc: data.features[feature].center
+                        });
                     }
                     callback(resArray);
                     fromFieldInputDetected(document.getElementById("fromInput"));
@@ -455,7 +458,7 @@ function reverseGeocode(location, callback) {
     var lat = location[1];
     //$.getJSON(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=0`, function (data) {
     $.getJSON(urls.reverseGeocoder.format(lng, lat), function (data) {
-        callback(data.features[0].text + " (" + data.features[0].place_name + ")" );
+        callback(data.features[0].text + " (" + data.features[0].place_name + ")");
         fromFieldInputDetected(document.getElementById("fromInput"));
         toFieldInputDetected(document.getElementById("toInput"));
     });
@@ -463,10 +466,19 @@ function reverseGeocode(location, callback) {
 
 function useCurrentLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(showPosition, locationFetchFailed);
+        if(typeof(Storage) !== "undefined") {
+            localStorage.removeItem("geolocation.permission.denieddate");
+        }
     } else {
-        alert("Geolocation is not supported by this browser.");
+        console.warn("Geolocation is not supported by this browser.");
     }
+}
+
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
 }
 
 function showPosition(position) {
@@ -475,6 +487,17 @@ function showPosition(position) {
     reverseGeocode(location1, function (adress) {
         $("#fromInput").val(adress);
     });
+}
+
+function locationFetchFailed(error) {
+    if (error.code === error.PERMISSION_DENIED) {
+        console.log("Geolocation permission denied");
+        if (typeof(Storage) !== "undefined") {
+            localStorage.setItem("geolocation.permission.denieddate", new Date());
+        }
+    } else {
+        console.warn("Accessing geolocation failed.", error);
+    }
 }
 
 function fitToBounds(origin, destination) {
@@ -526,4 +549,5 @@ function swapArrayValues(array) {
 }*/
 
 initInputGeocoders();
+
 //setTimeout(startCalculation, 2000);
