@@ -151,7 +151,7 @@ body {
     z-index: 102;
 }
 
-.btnAddToHomescreen {
+#btnAddToHomescreen {
     display: none;
 }
 
