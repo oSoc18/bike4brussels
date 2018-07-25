@@ -308,7 +308,7 @@ function fromFieldInputDetected(el) {
         //show location button
         $("#clearInputFieldFromButton").hide();
         $("#useLocationInputFieldButton").show();
-        if(windowLoaded) {
+        if (windowLoaded) {
             console.log("setting location 1 to undef");
             location1 = undefined;
             showLocationsOnMap();
@@ -354,7 +354,7 @@ window.onload = function () {
     if (urlparams.loc1) {
         location1 = urlparams.loc1;
     } else {
-        if (!(typeof(Storage) !== "undefined" && new Date(localStorage.getItem("geolocation.permission.denieddate")).addDays(7) > new Date() )) {
+        if (!(typeof(Storage) !== "undefined" && new Date(localStorage.getItem("geolocation.permission.denieddate")).addDays(7) > new Date())) {
             setTimeout(function () {
                 useCurrentLocation();
             }, 2000);
@@ -363,14 +363,14 @@ window.onload = function () {
     if (urlparams.loc2) {
         location2 = urlparams.loc2;
     }
-    if(location1){
+    if (location1) {
         reverseGeocode(location1, function (adress) {
             $("#fromInput").val(adress);
         });
         $("#useLocationInputFieldButton").hide();
         $("#clearInputFieldFromButton").show();
     }
-    if(location2){
+    if (location2) {
         reverseGeocode(location2, function (adress) {
             $("#toInput").val(adress);
         });
@@ -404,7 +404,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
 document.getElementById("btnAddToHomescreen").addEventListener('click', (e) => {
     // hide our user interface that shows our A2HS button
-    btnAdd.style.display = 'none';
+    document.getElementById("btnAddToHomescreen").style.display = 'none';
     // Show the prompt
     deferredPrompt.prompt();
     // Wait for the user to respond to the prompt
