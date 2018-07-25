@@ -3,6 +3,10 @@
     height: 15cm;
 }
 
+.collapse {
+    display: block !important;
+}
+
 /*#graph-pic {
     border: 2px solid black;
 }

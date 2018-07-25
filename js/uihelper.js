@@ -178,13 +178,14 @@ function printExport() {
         "</head>" +
         "<body>" +
         "<h1>Bike For Brussels - Routeplanner</h1>" +
-        "<p id='image_for_crop'>" /*+ mapimgHtml */ + "</p>" + `${selectedProfile} route` +
+        "<p id='image_for_crop'>" /*+ mapimgHtml */ + "</p>" +
         "<div id='instructionsPrintContainer'>" +
         document.getElementById(profileHtmlId[selectedProfile]).innerHTML +
         "</div></body>";
     window.frames["print_frame"].document.body.innerHTML = html;
     window.frames["print_frame"].document.getElementById("image_for_crop").appendChild(mapimg);
     window.frames["print_frame"].document.getElementsByClassName("elevation-info")[0].innerHTML = "";
+    window.frames["print_frame"].document.getElementsByClassName("profile-explanation-icons")[0].innerHTML = "";
     window.frames["print_frame"].window.focus();
     setTimeout(function () {
         window.frames["print_frame"].window.print();
