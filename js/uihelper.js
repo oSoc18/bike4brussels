@@ -386,7 +386,9 @@ window.onload = function () {
         trackUserLocation: true
     }), 'top-left');
     windowLoaded = true;
-
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js');
+    }
 };
 
 function clearInputFieldFrom() {
