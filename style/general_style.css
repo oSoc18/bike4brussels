@@ -309,6 +309,40 @@ body {
     overflow-x: hidden;
 }
 
+.button-collapse-instructions {
+    width: 100%;
+    color: #ECB900;
+    border-radius: 0px;
+}
+
+.lang_label {
+    color: #ECB900;
+}
+
+.button-collapse-instructions:hover, .lang_label:hover {
+    color: white;
+}
+
+.btn-group-toggle .active {
+    color: white !important;
+}
+
+.bottom-left-floating-buttons button {
+    color: #ECB900;
+    border: 1px solid #ECB900;
+    padding: 2px 5px 2px 2px;
+}
+
+.btn-group-toggle {
+    border: 1px solid #ECB900;
+    border-radius: .25rem;
+}
+
+.bottom-left-floating-buttons button img {
+    padding: 0px 0px 0px 0px;
+    margin-right: 2px
+}
+
 li {
     border-bottom: 1px solid white;
     padding: 1.5rem;
