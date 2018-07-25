@@ -2,7 +2,7 @@
 
 Popular routeplanner apps often do not consider bike-friendly routes and therefore are not optimal to use when cycling in the city. We are building a routeplanning app for bikers in Brussels that will consider cycling infrastructure, road quality, slope and other criteria to provide the best route to get to where you want to go.
 
-# Installation Instructions
+## Installation Instructions
 
 This web application is a static website, so installation is not required. Simply serving the files over the network will work. To achieve this in our environment Nginx was run on an Ubuntu server.
 Our configuration file for Nginx (located in /etc/nginx/sites-available) looks like this:
@@ -42,7 +42,9 @@ server {
                 try_files $uri $uri/ =404;
         }
 
-		# We run the bike4brussels-backend on the same server. Since it's a dotnet application, requests will have to be proxied to the port the application is listening to.
+		# We run the bike4brussels-backend on the same server. 
+		# Since it's a dotnet application, requests will have to be proxied to the port the application is
+		# listening to.
         location /api/ {
                 proxy_pass http://localhost:5000/;
                 proxy_http_version 1.1;
@@ -102,4 +104,3 @@ server {
 
 }
 ```
-
