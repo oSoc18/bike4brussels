@@ -280,6 +280,20 @@ function createMarker(loc, color = '#3FB1CE') {
         .addTo(map);
 }
 
+map.on('load', function () {
+    map.addSource('dem', {
+        "type": "raster-dem",
+        "url": "mapbox://mapbox.terrain-rgb"
+    });
+    map.addLayer({
+        "id": "hillshading",
+        "source": "dem",
+        "type": "hillshade"
+        // insert below waterway-river-canal-shadow;
+        // where hillshading sits in the Mapbox Outdoors style
+    }, );//'waterway-river-canal-shadow');
+});
+
 map.on('click', function (e) {
     var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
     var features = map.queryRenderedFeatures(
