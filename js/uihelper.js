@@ -400,7 +400,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
     deferredPrompt = e;
     // Update UI notify the user they can add to home screen
     if (deferredPrompt) {
-        $("#btnAddToHomescreen").show();
+        //$("#btnAddToHomescreen").show();
+        document.getElementById("btnAddToHomescreen").style.display = 'block';
     }
 });
 
