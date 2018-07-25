@@ -366,17 +366,17 @@ window.onload = function () {
         reverseGeocode(location1, function (adress) {
             $("#fromInput").val(adress);
         });
+        $("#useLocationInputFieldButton").hide();
+        $("#clearInputFieldFromButton").show();
     }
     if(location2){
         reverseGeocode(location2, function (adress) {
             $("#toInput").val(adress);
         });
+        $("#clearInputFieldToButton").show();
     }
     if (location1 || location2) {
         showLocationsOnMap();
-        $("#useLocationInputFieldButton").hide();
-        $("#clearInputFieldFromButton").show();
-        $("#clearInputFieldToButton").show();
     }
     map.addControl(new mapboxgl.GeolocateControl({
         positionOptions: {
