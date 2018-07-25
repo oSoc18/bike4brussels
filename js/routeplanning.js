@@ -77,7 +77,6 @@ function calculateAllRoutes(origin, destination, profiles = availableProfiles, i
         calculateRoute(origin, destination, profile, instructions, lang);
     });
     fitToBounds(origin, destination);
-    //sidebarDisplayProfile(selectedProfile);
 }
 
 /**
@@ -107,7 +106,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
         try {
             routeRequests[profile].abort();
         } catch (e) {
-            console.log(e, routeRequests[profile]);
+            console.warn(e, routeRequests[profile]);
         }
     }
 
@@ -119,7 +118,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
     });
 
     function success(json) {
-        console.log(json);
+        //console.log(json);
 
         let routeStops = [];
         let heightInfo = [];
@@ -175,34 +174,59 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
             calculatedRoute.setData(json.route);
         } else {
             // Add a new layer
-            map.addLayer({
-                id: profile,
-                type: 'line',
-                source: {
-                    type: 'geojson',
-                    data: json.route
-                },
-                paint: {
-                    'line-color':
-                        {   // always use the colors of the cycling network
-                            type: 'identity',
-                            property: 'cyclecolour'
-                        }
-                    ,
-                    'line-width': 6
-                },
-                layout: {
-                    'line-cap': 'round'
-                }
-            });
+            if (profile === selectedProfile) {
+                map.addLayer({
+                    id: profile,
+                    type: 'line',
+                    source: {
+                        type: 'geojson',
+                        data: json.route
+                    },
+                    paint: {
+                        'line-color':
+                            {   // always use the colors of the cycling network
+                                type: 'identity',
+                                property: 'cyclecolour'
+                            }
+                        ,
+                        'line-width': 6
+                    },
+                    layout: {
+                        'line-cap': 'round'
+                    }
+                });
+            } else {
+                map.addLayer({
+                    id: profile,
+                    type: 'line',
+                    source: {
+                        type: 'geojson',
+                        data: json.route
+                    },
+                    paint: {
+                        'line-color': "grey",
+                        'line-opacity': 0.25,
+                        /*'line-color':
+                            {   // always use the colors of the cycling network
+                                type: 'identity',
+                                property: 'cyclecolour'
+                            }
+                        ,*/
+                        'line-width': 6
+                    },
+                    layout: {
+                        'line-cap': 'round'
+                    }
+                });
+            }
         }
-        fitToBounds(origin, destination);   //Called again to make sure the start or endpoint are not behind sidebar
+        fitToBounds(origin, destination);   //Called again to make sure the start or endpoint are not hidden behind sidebar
     }
 
     function requestError(jqXHR, textStatus, errorThrown) {
         if (textStatus !== "abort") {
-            console.log(profile);
-            $(`#${profileHtmlId[profile]} ul`).html("Fout :(");
+            $(`#${profileHtmlId[profile]} .elevation-info`).html("Fout :(");
+            //$(`#${profileHtmlId[profile]} ul`).html("Fout :(");
 
             if (map.getLayer(profile)) {
                 map.removeLayer(profile);
@@ -218,7 +242,6 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
 function removeAllRoutesFromMap() {
     for (let i in availableProfiles) {
         profile = availableProfiles[i];
-        console.log(profile);
         if (map.getLayer(profile)) {
             map.removeLayer(profile);
         }
@@ -230,16 +253,19 @@ function removeAllRoutesFromMap() {
 
 
 function showLocationsOnMap() {
+    if (location1 === undefined || location2 === undefined) {
+        removeAllRoutesFromMap();
+    }
+    if (location1Marker !== undefined) {
+        location1Marker.remove();
+    }
     if (location1 !== undefined) {
-        if (location1Marker !== undefined) {
-            location1Marker.remove();
-        }
         location1Marker = createMarker(location1, '#47b200');
     }
+    if (location2Marker !== undefined) {
+        location2Marker.remove();
+    }
     if (location2 !== undefined) {
-        if (location2Marker !== undefined) {
-            location2Marker.remove();
-        }
         location2Marker = createMarker(location2, '#b50000');
     }
     if (location1 !== undefined && location2 !== undefined) {
@@ -261,21 +287,45 @@ function createMarker(loc, color = '#3FB1CE') {
 }
 
 map.on('click', function (e) {
-    console.log(e.lngLat);
-    var lngLatArray = [e.lngLat.lng, e.lngLat.lat];
-    if (location1 === undefined) {
-        location1 = lngLatArray;
-        reverseGeocode(location1, function (adress) {
-            $("#fromInput").val(adress);
-        });
-    } else {
-        location2 = lngLatArray;
-        reverseGeocode(location2, function (adress) {
-            $("#toInput").val(adress);
-        });
+    var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
+    var features = map.queryRenderedFeatures(
+        bbox,
+        {
+            //options (none)
+        }
+    );
+    let profile_found;
+    for (let i in features) {
+        if ($.inArray(features[i].layer.id, availableProfiles) !== -1) {
+            if (!profile_found) {
+                profile_found = features[i].layer.id;
+            }
+        }
     }
-    showLocationsOnMap();
+    if (profile_found) {
+        sidebarDisplayProfile(profile_found);
+    } else {
+        var lngLatArray = [e.lngLat.lng, e.lngLat.lat];
+        if (location1 === undefined) {
+            location1 = lngLatArray;
+            reverseGeocode(location1, function (adress) {
+                $("#fromInput").val(adress);
+            });
+        } else {
+            location2 = lngLatArray;
+            reverseGeocode(location2, function (adress) {
+                $("#toInput").val(adress);
+            });
+        }
+        showLocationsOnMap();
+    }
 });
+
+/*for(let i in availableProfiles) {
+    map.on('click', availableProfiles[i], function (e) {
+        console.warn(e);
+    });
+}*/
 
 function exportCurrentRoute() {
     let route = routes[selectedProfile];
@@ -294,8 +344,6 @@ function exportCurrentRoute() {
             }
         }
     }
-    console.log("route for export:", route);
-    console.log(startpoint, endpoint, routepoints);
     exported = exportRoute(startpoint, endpoint, routepoints);
     if (exported) {
         download(exported, "Bike4Brussels-route.gpx", ".gpx");
@@ -333,7 +381,7 @@ function exportRoute(startpoint, endpoint, routepoints) {
             `\n\t\t\t</trkseg>
         </trk>
     </gpx>`;
-        console.log(gpx);
+        //console.log(gpx);
         return gpx;
     }
 }
@@ -357,32 +405,6 @@ function download(data, filename, type) {
     }
 }
 
-/*function exportRoute(startpoint, endpoint, routepoints) {
-    startpoint["name"] = "Start";
-    endpoint["name"] = "End";
-    //retrieve the GpxFileBuilder type
-    //var GpxFileBuilder = require('gpx').GpxFileBuilder;
-
-    //instanciate a GpxFileBuilder
-    var builder = new GpxFileBuilder();
-
-    //generate a gpx string with two waypoints and a route with two points
-    var xml = builder.setFileInfo({
-        name: 'Bike route',
-        description: 'A route generated by BikeForBrussels Routeplanner',
-        creator: 'BikeForBrussels Routeplanner',
-        time: new Date(),
-        keywords: ['bike', 'Brussels', 'Brussel', 'Bruxelles']
-    }).addWayPoints([
-        startpoint, endpoint
-    ]).addRoute(
-        {
-            name: 'BikeForBrussels route'
-        },
-        routepoints
-    ).xml();
-}*/
-
 function initInputGeocoders() {
     $('.geocoder-input').typeahead({
         source: function (query, callback) {
@@ -391,9 +413,14 @@ function initInputGeocoders() {
                 function (data) {
                     var resArray = [];
                     for (var feature in data.features) {
-                        resArray.push({name: data.features[feature].text + " (" + data.features[feature].place_name + ")", loc: data.features[feature].center});
+                        resArray.push({
+                            name: data.features[feature].text + " (" + data.features[feature].place_name + ")",
+                            loc: data.features[feature].center
+                        });
                     }
                     callback(resArray);
+                    fromFieldInputDetected(document.getElementById("fromInput"));
+                    toFieldInputDetected(document.getElementById("toInput"));
                 });
 
             // Nominatim Geocoder
@@ -419,7 +446,7 @@ function initInputGeocoders() {
                 location2 = activeItem.loc;
             } else {
                 //fout
-                console.log("NIET GEVONDEN!");
+                console.warn("FIELD NOT FOUND!");
             }
             showLocationsOnMap();
         }
@@ -431,17 +458,27 @@ function reverseGeocode(location, callback) {
     var lat = location[1];
     //$.getJSON(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=0`, function (data) {
     $.getJSON(urls.reverseGeocoder.format(lng, lat), function (data) {
-        console.log(data);
-        callback(data.features[0].text + " (" + data.features[0].place_name + ")" );
+        callback(data.features[0].text + " (" + data.features[0].place_name + ")");
+        fromFieldInputDetected(document.getElementById("fromInput"));
+        toFieldInputDetected(document.getElementById("toInput"));
     });
 }
 
 function useCurrentLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(showPosition, locationFetchFailed);
+        if(typeof(Storage) !== "undefined") {
+            localStorage.removeItem("geolocation.permission.denieddate");
+        }
     } else {
-        alert("Geolocation is not supported by this browser.");
+        console.warn("Geolocation is not supported by this browser.");
     }
+}
+
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
 }
 
 function showPosition(position) {
@@ -452,16 +489,25 @@ function showPosition(position) {
     });
 }
 
+function locationFetchFailed(error) {
+    if (error.code === error.PERMISSION_DENIED) {
+        console.log("Geolocation permission denied");
+        if (typeof(Storage) !== "undefined") {
+            localStorage.setItem("geolocation.permission.denieddate", new Date());
+        }
+    } else {
+        console.warn("Accessing geolocation failed.", error);
+    }
+}
+
 function fitToBounds(origin, destination) {
     let bounds = new mapboxgl.LngLatBounds();
     bounds.extend(origin);
     bounds.extend(destination);
-    //console.log(origin, destination, bounds);
     // Fit the map to the route
     let paddingRight = 50;
     if (isSidebarVisible) {
         paddingRight += $("#sidebar-right-container").width();
-        console.log($("#sidebar-right-container").width());
     }
     map.fitBounds(bounds, {
         padding: {
@@ -503,4 +549,5 @@ function swapArrayValues(array) {
 }*/
 
 initInputGeocoders();
+
 //setTimeout(startCalculation, 2000);

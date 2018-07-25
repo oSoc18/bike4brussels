@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
@@ -36,18 +36,56 @@
             <div class="row">
                 <!--<label class="col-lg-1 control-label" for="fromInput">From</label>-->
                 <div class="col-lg-5 col-md-12 col-10 currentLocation right-addon">
-                    <input class="form-control typeahead geocoder-input" type="text" id="fromInput" placeholder="From">
-                    <img src="./assets/img/currentLocation.svg" onclick="useCurrentLocation()"/>
+                    <input class="form-control typeahead geocoder-input" type="text" id="fromInput" placeholder="From" oninput="fromFieldInputDetected(this)">
+                    <img id="useLocationInputFieldButton" src="./assets/img/currentLocation.svg" onclick="useCurrentLocation()"/>
+                    <img id="clearInputFieldFromButton" src="./style/icons/ic_clear_black_24px.svg" onclick="clearInputFieldFrom()"/>
                 </div>
                 <!--<label class="col-lg-1 control-label" for="toInput">To</label>-->
                 <div class="col-lg-2 col-md-12 col-1 text-center">
                     <button class="btn btn-warning image-button" id="swap-origin-destination-button"
                             onclick="swapOriginDestination()"></button>
                 </div>
-                <div class="col-lg-5 col-md-12 col-10">
-                    <input class="form-control typeahead geocoder-input" type="text" id="toInput" placeholder="To">
+                <div class="col-lg-5 col-md-12 col-10 right-addon">
+                    <input class="form-control typeahead geocoder-input" type="text" id="toInput" placeholder="To" oninput="toFieldInputDetected(this)">
+                    <img id="clearInputFieldToButton" src="./style/icons/ic_clear_black_24px.svg" onclick="clearInputFieldTo()"/>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id='top-overlay-profile-buttons-mobile'>
+            <span class="btn btn-lg text-center route" id="fastest-route-mobile"
+                  onclick="sidebarDisplayProfileHtmlId(this.id)">
+                <span>
+                    <img class="svg" src="assets/img/fast.svg"/>
+                </span>
+                <br>
+                <div id="profile-button-text-fast-mobile">Fast</div>
+            </span>
+            <span class="btn btn-lg text-center route" id="balanced-route-mobile"
+                  onclick="sidebarDisplayProfileHtmlId(this.id)">
+                <span>
+                    <img class="svg" src="./assets/img/balance.svg"/>
+                </span>
+                <br>
+                <div id="profile-button-text-balanced-mobile">Balanced</div>
+            </span>
+            <span class="btn btn-lg text-center route" id="relaxed-route-mobile"
+                  onclick="sidebarDisplayProfileHtmlId(this.id)">
+                <span>
+                    <img class="svg" src="./assets/img/relaxed.svg"/>
+                </span>
+                <br>
+                <div id="profile-button-text-relaxed-mobile">Relaxed</div>
+            </span>
+            <span class="btn btn-lg text-center route" id="other-route-mobile"
+                  onclick="sidebarDisplayProfileHtmlId(this.id)">
+                <span>
+                    <img class="svg" src="./assets/img/network.svg"/>
+                </span>
+                <br>
+                <div id="profile-button-text-networks-mobile">Networks</div>
+            </span>
         </div>
     </div>
     <!--</div>-->
@@ -126,7 +164,7 @@
         <div id="fast-instruction" class="route-instructions">
             <div class="profile-explanation">
                 <h4>Proposed route for you</h4>
-                <h5>This is the FAST route</h5>
+                <h5 class="sub-title">This is the FAST route</h5>
                 <p>
                     This profile minimizes the time to destination.
                 </p>
@@ -144,7 +182,7 @@
                     <div class="big-roads">
                         <div>
                             <img src="img/bigroad.svg">
-                            <div class="bolletje red"></div>
+                            <div class="bolletje green"></div>
                         </div>
                         <h6>Big roads</h6>
                     </div>
@@ -202,7 +240,7 @@
         <div id="balanced-instruction" class="route-instructions">
             <div class="profile-explanation">
                 <h4>Proposed route for you</h4>
-                <h5>This is the BALANCED route</h5>
+                <h5 class="sub-title">This is the BALANCED route</h5>
                 <p>
                     This profile avoids the biggest streets and prefers cycleways.
                 </p>
@@ -278,7 +316,7 @@
         <div id="relaxed-instruction" class="route-instructions">
             <div class="profile-explanation">
                 <h4>Proposed route for you</h4>
-                <h5>This is the RELAXED route</h5>
+                <h5 class="sub-title">This is the RELAXED route</h5>
                 <p>
                     This profile avoids big roads, highly prefers cycleways, avoids uncomfortable surfaces such as
                     cobblestones, and avoids streets with parallel parked cars.
@@ -287,7 +325,7 @@
                     <div class="cobblestones">
                         <div>
                             <img src="img/cobblestones.svg">
-                            <div class="bolletje green"></div>
+                            <div class="bolletje red"></div>
                         </div>
                         <h6>Cobble
                             <wbr>
@@ -318,7 +356,7 @@
                     <div class="parked-cars">
                         <div>
                             <img src="img/parked-car.svg">
-                            <div class="bolletje green"></div>
+                            <div class="bolletje red"></div>
                         </div>
                         <h6>Parallel parked cars</h6>
                     </div>
@@ -355,7 +393,7 @@
         <div id="other-instruction" class="route-instructions">
             <div class="profile-explanation">
                 <h4>Proposed route for you</h4>
-                <h5>This is the NETWORKS route</h5>
+                <h5 class="sub-title">This is the NETWORKS route</h5>
                 <p>
                     This profile heavily prefers the Brussels cycle network.
                 </p>
@@ -373,7 +411,7 @@
                     <div class="big-roads">
                         <div>
                             <img src="img/bigroad.svg">
-                            <div class="bolletje red"></div>
+                            <div class="bolletje green"></div>
                         </div>
                         <h6>Big roads</h6>
                     </div>
@@ -432,7 +470,7 @@
 </div>
 
 <div class="bottom-left-floating-buttons">
-    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exportModal">Export</button>
+    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exportModal"><img src="./assets/img/export.svg" width="30px"/>Export</button>
 </div>
 
 <div class="bottom-right-floating-buttons">

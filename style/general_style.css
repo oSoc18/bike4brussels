@@ -239,11 +239,11 @@ body {
 }
 
 .green {
-    background-color: green;
+    background-color: #73DA60;
 }
 
 .red {
-    background-color: red;
+    background-color: #D85657;
 }
 
 .route:hover path, .route:hover polyline {
@@ -278,12 +278,14 @@ body {
     color: white;
 }
 
-.currentLocation {
+/*.currentLocation {*/
+.right-addon {
     display: flex;
     align-items: center;
 }
 
-#sidebar-top {
+#sidebar-top, #top-overlay-profile-buttons-mobile {
+    width: 100%;
     display: flex;
     flex-direction: row;
     height: 5rem;
@@ -305,6 +307,40 @@ body {
     color: white;
     list-style: none;
     overflow-x: hidden;
+}
+
+.button-collapse-instructions {
+    width: 100%;
+    color: #ECB900;
+    border-radius: 0px;
+}
+
+.lang_label {
+    color: #ECB900;
+}
+
+.button-collapse-instructions:hover, .lang_label:hover {
+    color: white;
+}
+
+.btn-group-toggle .active {
+    color: white !important;
+}
+
+.bottom-left-floating-buttons button {
+    color: #ECB900;
+    border: 1px solid #ECB900;
+    padding: 2px 5px 2px 2px;
+}
+
+.btn-group-toggle {
+    border: 1px solid #ECB900;
+    border-radius: .25rem;
+}
+
+.bottom-left-floating-buttons button img {
+    padding: 0px 0px 0px 0px;
+    margin-right: 2px
 }
 
 li {
@@ -332,6 +368,10 @@ input[type="text"], textarea {
     }
 }
 
+#top-overlay-profile-buttons-mobile {
+    display: none;
+}
+
 @media only screen and (max-width: 767px) {
     #swap-origin-destination-button {
         top: 50%;
@@ -340,16 +380,34 @@ input[type="text"], textarea {
 
     .top-overlay {
         background-color: #FFD438;
+        padding-bottom: 0px;
+    }
+
+    #top-overlay-input {
+        margin-bottom: 5vh;
+    }
+
+    .card {
+        margin-bottom: 50px;
+    }
+
+    #top-overlay-profile-buttons-mobile {
+        display: flex;
     }
 }
 
+.card-body {
+    padding-top: 0px;
+}
+
 /* enable absolute positioning */
-.currentLocation {
+/*.currentLocation {*/
+.right-addon {
     position: relative;
 }
 
 /* style icon */
-.currentLocation img {
+.currentLocation img, #clearInputFieldToButton {
     position: absolute;
     padding: 10px;
 }
@@ -436,4 +494,8 @@ input[type="text"], textarea {
     margin-left: 20px;
     margin-right: 20px;
     border-bottom: none;*/
+}
+
+#clearInputFieldFromButton, #clearInputFieldToButton {
+    display: none;
 }
