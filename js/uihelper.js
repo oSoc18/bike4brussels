@@ -1,6 +1,9 @@
 var isSidebarVisible = false;
 let windowLoaded = false;
 
+/**
+ * Make the sidebar visible/invisible
+ */
 function toggleSidebar() {
     $("#sidebar-right-container").toggleClass('hidden-sidebar');
     isSidebarVisible = !isSidebarVisible;
@@ -13,11 +16,19 @@ function toggleSidebar() {
     }
 }
 
+/**
+ * Select a profile with the given button id
+ * @param id
+ */
 function sidebarDisplayProfileHtmlId(id) {
     id = id.replace("-mobile", "");
     sidebarDisplayProfile(profileButtonIds[id]);
 }
 
+/**
+ * Select the profile
+ * @param profile
+ */
 function sidebarDisplayProfile(profile) {
     selectedProfile = profile;
     if (location1 && location2) {
@@ -48,6 +59,10 @@ function sidebarDisplayProfile(profile) {
     $(`#${getKeyByValue(profileButtonIds, profile)}-mobile`).addClass("active");
 }
 
+/**
+ * Helper method to determin the screen size bootstrap-wise
+ * @returns {*}
+ */
 function getBootstrapDeviceSize() {
     let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     let cat;
@@ -71,11 +86,17 @@ function getBootstrapDeviceSize() {
     return cat;
 }
 
+/**
+ * Get the key of the given value in a map
+ * @param object
+ * @param value
+ * @returns {string | undefined}
+ */
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
 
-/*
+/**
  * Replace all SVG images with inline SVG
  */
 jQuery('img.svg').each(function () {
@@ -106,6 +127,11 @@ jQuery('img.svg').each(function () {
     }, 'xml');
 });
 
+/**
+ * Display the elevation data in a nice graph
+ * @param htmlCanvasId
+ * @param heightInfo
+ */
 function displayChart(htmlCanvasId, heightInfo) {
     //console.log(heightInfo);
     var ctx = document.getElementById(htmlCanvasId).getContext('2d');
@@ -142,6 +168,10 @@ function displayChart(htmlCanvasId, heightInfo) {
     });
 }
 
+/**
+ * Detect which language the user has selected
+ * @param element
+ */
 function switchLanguage(element) {
     switch (element.id) {
         case "label-option-EN":
@@ -166,6 +196,9 @@ function switchLanguage(element) {
     applyLanguage(language);
 }
 
+/**
+ * Prepare an iframe to be printed. (opens the print preview dialog)
+ */
 function printExport() {
     let mapimg = new Image();
     mapimg.id = "map-pic";
@@ -192,6 +225,10 @@ function printExport() {
     }, 100);
 }
 
+/**
+ * Get the parameters that are encoded in the given url
+ * @param url
+ */
 function getAllUrlParams(url) {
     // get query string from url (optional) or window
     var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
@@ -262,6 +299,10 @@ function getAllUrlParams(url) {
     return obj;
 }
 
+/**
+ * Set the current url, so that refreshing the page will take you to the same locations.
+ * @param params - map containing the parameters to encode (in this case probably loc1 and loc2)
+ */
 function setCurrentUrl(params) {
     currentUrl = window.location.href;
     currentUrl = currentUrl.split('?')[0] + '?';  //verwijder huidige parameters (if any)
@@ -303,6 +344,10 @@ function applyLanguage(lang) {
     $("#fast-instruction div h4").html(getString("profileProposal", lang));
 }
 
+/**
+ * Method that gets called when input is detected in the Startpoint input field
+ * @param el - The input field itself
+ */
 function fromFieldInputDetected(el) {
     if (!el.value || el.value === "") {
         //show location button
@@ -320,6 +365,10 @@ function fromFieldInputDetected(el) {
     }
 }
 
+/**
+ * Method that gets called when input is detected in the Endpoint input field
+ * @param el - The input field itself
+ */
 function toFieldInputDetected(el) {
     if (!el.value || el.value === "") {
         //show location button
@@ -332,6 +381,9 @@ function toFieldInputDetected(el) {
     }
 }
 
+/**
+ * Do stuff when the window is done loading
+ */
 window.onload = function () {
     sidebarDisplayProfile(selectedProfile);
     $(".lang_label").removeClass("active");
@@ -393,6 +445,9 @@ window.onload = function () {
 
 let deferredPrompt;
 
+/**
+ * Logic for the "Add to homescreen" functionallity on mobile devices
+ */
 window.addEventListener('beforeinstallprompt', (e) => {
     // Prevent Chrome 67 and earlier from automatically showing the prompt
     e.preventDefault();
@@ -405,6 +460,9 @@ window.addEventListener('beforeinstallprompt', (e) => {
     }
 });
 
+/**
+ * Logic for the "Add to homescreen" functionallity on mobile devices
+ */
 document.getElementById("btnAddToHomescreen").addEventListener('click', (e) => {
     // hide our user interface that shows our A2HS button
     document.getElementById("btnAddToHomescreen").style.display = 'none';
@@ -422,6 +480,9 @@ document.getElementById("btnAddToHomescreen").addEventListener('click', (e) => {
         });
 });
 
+/**
+ * Empty the contents of the startpoint input field
+ */
 function clearInputFieldFrom() {
     $("#fromInput").val("");
     location1 = undefined;
@@ -429,6 +490,9 @@ function clearInputFieldFrom() {
     fromFieldInputDetected(document.getElementById("fromInput"));
 }
 
+/**
+ * Empty the contents of the endpoint input field
+ */
 function clearInputFieldTo() {
     $("#toInput").val("");
     location2 = undefined;

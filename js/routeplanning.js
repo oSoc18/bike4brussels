@@ -23,6 +23,10 @@ if (typeof(Storage) !== "undefined") {
     console.log("Sorry, your browser does not support Web Storage.");
 }
 
+/**
+ * Map containing the html instruction elements id's for each profile.
+ * @type {{fast: string, relaxed: string, balanced: string, brussels: string}}
+ */
 const profileHtmlId = {
     "fast": "fast-instruction",
     "relaxed": "relaxed-instruction", // Currently not in use
@@ -30,6 +34,11 @@ const profileHtmlId = {
     //"networks": "relaxed-instruction",
     "brussels": "other-instruction"
 };
+
+/**
+ * Map containing the html id's of the profile buttons
+ * @type {{"fastest-route": string, "relaxed-route": string, "balanced-route": string, "other-route": string}}
+ */
 const profileButtonIds = {
     "fastest-route": "fast",
     "relaxed-route": "relaxed", // Currently not in use
@@ -38,6 +47,11 @@ const profileButtonIds = {
     "other-route": "brussels"
 };
 
+/**
+ * Convert the time returned by the routing api to a string representation readable for humans
+ * @param s
+ * @returns {string}
+ */
 function timeToText(s) {
     if (s < 60) {
         return '1min';
@@ -50,6 +64,11 @@ function timeToText(s) {
     return `${h} h ${m}min`;
 }
 
+/**
+ * Round number to 3 decimals
+ * @param num
+ * @returns {number}
+ */
 function roundToThree(num) {
     return +(Math.round(num + "e+3") + "e-3");
 }
@@ -85,7 +104,7 @@ function calculateAllRoutes(origin, destination, profiles = availableProfiles, i
  * @param {[int, int]} destination - The LatLng Coords
  * @param {String} profile - The routing profile
  * @param {boolean} instructions - Whether or not the route instructions should be requested from the server
- * @param {String} lang - en/nl(/fr) select the language for the instructions
+ * @param {String} lang - en/nl/fr select the language for the instructions
  */
 function calculateRoute(origin, destination, profile = "balanced", instructions = true, lang = 'en') {
     // Swap around values for the API
@@ -110,6 +129,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
         }
     }
 
+    // send api-call via ajax
     routeRequests[profile] = $.ajax({
         dataType: "json",
         url: url,
@@ -117,6 +137,7 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
         error: requestError
     });
 
+    // method to be executed on successfull ajax call (we have a route now)
     function success(json) {
         //console.log(json);
 
@@ -217,10 +238,10 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
         fitToBounds(origin, destination);   //Called again to make sure the start or endpoint are not hidden behind sidebar
     }
 
+    // Request failed, cleanup nicely
     function requestError(jqXHR, textStatus, errorThrown) {
         if (textStatus !== "abort") {
-            $(`#${profileHtmlId[profile]} .elevation-info`).html("Fout :(");
-            //$(`#${profileHtmlId[profile]} ul`).html("Fout :(");
+            $(`#${profileHtmlId[profile]} .elevation-info`).html(language === "en" ? "Error :(" : language === 'fr' ? "Erreur :(" : "Fout :(");
 
             if (map.getLayer(profile)) {
                 map.removeLayer(profile);
@@ -233,6 +254,9 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
     }
 }
 
+/**
+ * Removes routes from map.. obviously
+ */
 function removeAllRoutesFromMap() {
     for (let i in availableProfiles) {
         profile = availableProfiles[i];
@@ -245,7 +269,9 @@ function removeAllRoutesFromMap() {
     }
 }
 
-
+/**
+ * Method to refresh / set markers on the map. Will also start route calculation if 2 locations are present
+ */
 function showLocationsOnMap() {
     if (location1 === undefined || location2 === undefined) {
         removeAllRoutesFromMap();
@@ -274,12 +300,21 @@ function showLocationsOnMap() {
     }
 }
 
+/**
+ * Create a marker to be shown on the map.
+ * @param loc Location of the marker (LngLat)
+ * @param color The color of the marker
+ * @returns {*} A marker
+ */
 function createMarker(loc, color = '#3FB1CE') {
     return new mapboxgl.Marker({color: color})
         .setLngLat(loc)
         .addTo(map);
 }
 
+/**
+ * Add hillshades to the map once it's loaded
+ */
 map.on('load', function () {
     map.addSource('dem', {
         "type": "raster-dem",
@@ -294,6 +329,10 @@ map.on('load', function () {
     }, );//'waterway-river-canal-shadow');
 });
 
+/**
+ * Detect clicks on the map. If you click on a route it gets selected, if not on a route, set new location
+ * (start or end, depending on whether there already is a start).
+ */
 map.on('click', function (e) {
     var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
     var features = map.queryRenderedFeatures(
@@ -310,9 +349,9 @@ map.on('click', function (e) {
             }
         }
     }
-    if (profile_found) {
+    if (profile_found) {    // select route
         sidebarDisplayProfile(profile_found);
-    } else {
+    } else {                // set new location
         var lngLatArray = [e.lngLat.lng, e.lngLat.lat];
         if (location1 === undefined) {
             location1 = lngLatArray;
@@ -331,6 +370,9 @@ map.on('click', function (e) {
     }
 });
 
+/**
+ * Utility method to start exporting the current route as a .GPX file.
+ */
 function exportCurrentRoute() {
     let route = routes[selectedProfile];
     let startpoint, endpoint;
@@ -354,6 +396,13 @@ function exportCurrentRoute() {
     }
 }
 
+/**
+ * Construct a .GPX file from the given startpoint, endpoint and routepoints
+ * @param startpoint LatLng of the startpoint
+ * @param endpoint LatLng of the endpoint
+ * @param routepoints collection of routepoints
+ * @returns {string} The .gpx file
+ */
 function exportRoute(startpoint, endpoint, routepoints) {
     if (!routepoints || !(startpoint && endpoint)) {
         alert(getString("routeMissing", language));
@@ -390,7 +439,9 @@ function exportRoute(startpoint, endpoint, routepoints) {
     }
 }
 
-// Function to download data to a file
+/**
+ * Function to download data to a file
+ */
 function download(data, filename, type) {
     var file = new Blob([data], {type: type});
     if (window.navigator.msSaveOrOpenBlob) // IE10+
@@ -409,6 +460,9 @@ function download(data, filename, type) {
     }
 }
 
+/**
+ * Initialise the geocoders for the input fields.
+ */
 function initInputGeocoders() {
     $('.geocoder-input').typeahead({
         source: function (query, callback) {
@@ -457,6 +511,11 @@ function initInputGeocoders() {
     });
 }
 
+/**
+ * Convert a location to an adress.
+ * @param location LatLng of the location to be converted.
+ * @param callback Function to be called when conversion is complete
+ */
 function reverseGeocode(location, callback) {
     var lng = location[0];
     var lat = location[1];
@@ -468,6 +527,9 @@ function reverseGeocode(location, callback) {
     });
 }
 
+/**
+ * Use the current user location as a startpoint.
+ */
 function useCurrentLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, locationFetchFailed);
@@ -479,12 +541,21 @@ function useCurrentLocation() {
     }
 }
 
+/**
+ * Utility method to add days to a date object
+ * @param days The number of days to add
+ * @returns {Date} The calculated date
+ */
 Date.prototype.addDays = function(days) {
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
-}
+};
 
+/**
+ * Set location1 to the specified position, show it on the map and fill in the adress in the input field
+ * @param position the position to be set (LatLng)
+ */
 function showPosition(position) {
     location1 = [position.coords.longitude, position.coords.latitude];
     showLocationsOnMap();
@@ -494,6 +565,10 @@ function showPosition(position) {
     });
 }
 
+/**
+ * Function that is called when geolocation failed. Sets value in localstorage so that the next time the page loads this can be taken into account.
+ * @param error
+ */
 function locationFetchFailed(error) {
     if (error.code === error.PERMISSION_DENIED) {
         console.log("Geolocation permission denied");
@@ -505,6 +580,11 @@ function locationFetchFailed(error) {
     }
 }
 
+/**
+ * Zoom the map to the given 2 points.
+ * @param origin
+ * @param destination
+ */
 function fitToBounds(origin, destination) {
     let bounds = new mapboxgl.LngLatBounds();
     bounds.extend(origin);
@@ -524,6 +604,9 @@ function fitToBounds(origin, destination) {
     });
 }
 
+/**
+ * Make location1 location2 and location2 location1.
+ */
 function swapOriginDestination() {
     var locTemp = location1;
     location1 = location2;
@@ -539,6 +622,11 @@ function swapOriginDestination() {
     showLocationsOnMap();
 }
 
+/**
+ * Utility method to swap 2 array values (usefull for LatLng <=> LngLat)
+ * @param array
+ * @returns {Array}
+ */
 function swapArrayValues(array) {
     var newArray = [];
     newArray[0] = array[1];
@@ -549,4 +637,5 @@ function swapArrayValues(array) {
     return newArray;
 }
 
+// initialise the geocoders already
 initInputGeocoders();
