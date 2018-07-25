@@ -1,4 +1,5 @@
 var isSidebarVisible = false;
+let windowLoaded = false;
 
 function toggleSidebar() {
     $("#sidebar-right-container").toggleClass('hidden-sidebar');
@@ -169,9 +170,6 @@ function printExport() {
     let mapimg = new Image();
     mapimg.id = "map-pic";
     mapimg.src = document.getElementsByClassName("mapboxgl-canvas")[0].toDataURL();
-    /*let graphImg = new Image();
-    graphImg.id = "graph-pic";
-    graphImg.src = document.getElementById(`chart-${selectedProfile}`).toDataURL();*/
     let html = "<head>" +
         "<title>Bike For Brussels - Route export</title>" +
         '<link href="style/printstyle.css" rel="stylesheet" type="text/css">' +
@@ -187,14 +185,6 @@ function printExport() {
     window.frames["print_frame"].document.body.innerHTML = html;
     window.frames["print_frame"].document.getElementById("image_for_crop").appendChild(mapimg);
     window.frames["print_frame"].document.getElementsByClassName("elevation-info")[0].innerHTML = "";
-    //window.frames["print_frame"].document.getElementsByClassName("elevation-info")[0].appendChild(graphImg);
-    //var c = window.frames["print_frame"].document.getElementById(`chart-${selectedProfile}`);
-    //var ctx = c.getContext("2d");
-    //ctx.fillStyle = "#ECB900";
-    //c.style.backgroundColor = "#ECB900";
-    //ctx.fillRect(0, 0, c.width, c.height);
-    //ctx.drawImage(graphImg,0,0);
-    //c.width+=0;
     window.frames["print_frame"].window.focus();
     setTimeout(function () {
         window.frames["print_frame"].window.print();
@@ -317,8 +307,11 @@ function fromFieldInputDetected(el) {
         //show location button
         $("#clearInputFieldFromButton").hide();
         $("#useLocationInputFieldButton").show();
-        location1 = undefined;
-        showLocationsOnMap();
+        if(windowLoaded) {
+            console.log("setting location 1 to undef");
+            location1 = undefined;
+            showLocationsOnMap();
+        }
     } else {
         //show empty button
         $("#clearInputFieldFromButton").show();
@@ -359,24 +352,31 @@ window.onload = function () {
     let urlparams = getAllUrlParams();
     if (urlparams.loc1) {
         location1 = urlparams.loc1;
-        reverseGeocode(location1, function (adress) {
-            $("#fromInput").val(adress);
-        });
     } else {
         if (!(typeof(Storage) !== "undefined" && new Date(localStorage.getItem("geolocation.permission.denieddate")).addDays(7) > new Date() )) {
             setTimeout(function () {
                 useCurrentLocation();
-            }, 1000);
+            }, 2000);
         }
     }
     if (urlparams.loc2) {
         location2 = urlparams.loc2;
+    }
+    if(location1){
+        reverseGeocode(location1, function (adress) {
+            $("#fromInput").val(adress);
+        });
+    }
+    if(location2){
         reverseGeocode(location2, function (adress) {
             $("#toInput").val(adress);
         });
     }
     if (location1 || location2) {
         showLocationsOnMap();
+        $("#useLocationInputFieldButton").hide();
+        $("#clearInputFieldFromButton").show();
+        $("#clearInputFieldToButton").show();
     }
     map.addControl(new mapboxgl.GeolocateControl({
         positionOptions: {
@@ -384,6 +384,7 @@ window.onload = function () {
         },
         trackUserLocation: true
     }), 'top-left');
+    windowLoaded = true;
 
 };
 
