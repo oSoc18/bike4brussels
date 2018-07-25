@@ -144,6 +144,17 @@ body {
     z-index: 102;
 }
 
+.bottom-center-floating-buttons {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    z-index: 102;
+}
+
+#btnAddToHomescreen {
+    display: none;
+}
+
 
 #sidebarHamburger {
     position: absolute;
@@ -333,12 +344,23 @@ body {
     padding: 2px 5px 2px 2px;
 }
 
+.bottom-center-floating-buttons button {
+    color: #ECB900;
+    border: 1px solid #ECB900;
+    padding: 2px 5px 2px 2px;
+}
+
 .btn-group-toggle {
     border: 1px solid #ECB900;
     border-radius: .25rem;
 }
 
 .bottom-left-floating-buttons button img {
+    padding: 0px 0px 0px 0px;
+    margin-right: 2px
+}
+
+.bottom-center-floating-buttons button img {
     padding: 0px 0px 0px 0px;
     margin-right: 2px
 }
@@ -410,6 +432,7 @@ input[type="text"], textarea {
 .currentLocation img, #clearInputFieldToButton {
     position: absolute;
     padding: 10px;
+    width: 2.8rem;
 }
 
 /* align icon */

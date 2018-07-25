@@ -1,4 +1,5 @@
 var isSidebarVisible = false;
+let windowLoaded = false;
 
 function toggleSidebar() {
     $("#sidebar-right-container").toggleClass('hidden-sidebar');
@@ -169,9 +170,6 @@ function printExport() {
     let mapimg = new Image();
     mapimg.id = "map-pic";
     mapimg.src = document.getElementsByClassName("mapboxgl-canvas")[0].toDataURL();
-    /*let graphImg = new Image();
-    graphImg.id = "graph-pic";
-    graphImg.src = document.getElementById(`chart-${selectedProfile}`).toDataURL();*/
     let html = "<head>" +
         "<title>Bike For Brussels - Route export</title>" +
         '<link href="style/printstyle.css" rel="stylesheet" type="text/css">' +
@@ -180,21 +178,14 @@ function printExport() {
         "</head>" +
         "<body>" +
         "<h1>Bike For Brussels - Routeplanner</h1>" +
-        "<p id='image_for_crop'>" /*+ mapimgHtml */ + "</p>" + `${selectedProfile} route` +
+        "<p id='image_for_crop'>" /*+ mapimgHtml */ + "</p>" +
         "<div id='instructionsPrintContainer'>" +
         document.getElementById(profileHtmlId[selectedProfile]).innerHTML +
         "</div></body>";
     window.frames["print_frame"].document.body.innerHTML = html;
     window.frames["print_frame"].document.getElementById("image_for_crop").appendChild(mapimg);
     window.frames["print_frame"].document.getElementsByClassName("elevation-info")[0].innerHTML = "";
-    //window.frames["print_frame"].document.getElementsByClassName("elevation-info")[0].appendChild(graphImg);
-    //var c = window.frames["print_frame"].document.getElementById(`chart-${selectedProfile}`);
-    //var ctx = c.getContext("2d");
-    //ctx.fillStyle = "#ECB900";
-    //c.style.backgroundColor = "#ECB900";
-    //ctx.fillRect(0, 0, c.width, c.height);
-    //ctx.drawImage(graphImg,0,0);
-    //c.width+=0;
+    window.frames["print_frame"].document.getElementsByClassName("profile-explanation-icons")[0].innerHTML = "";
     window.frames["print_frame"].window.focus();
     setTimeout(function () {
         window.frames["print_frame"].window.print();
@@ -317,8 +308,11 @@ function fromFieldInputDetected(el) {
         //show location button
         $("#clearInputFieldFromButton").hide();
         $("#useLocationInputFieldButton").show();
-        location1 = undefined;
-        showLocationsOnMap();
+        if (windowLoaded) {
+            console.log("setting location 1 to undef");
+            location1 = undefined;
+            showLocationsOnMap();
+        }
     } else {
         //show empty button
         $("#clearInputFieldFromButton").show();
@@ -359,21 +353,28 @@ window.onload = function () {
     let urlparams = getAllUrlParams();
     if (urlparams.loc1) {
         location1 = urlparams.loc1;
-        reverseGeocode(location1, function (adress) {
-            $("#fromInput").val(adress);
-        });
     } else {
-        if (!(typeof(Storage) !== "undefined" && new Date(localStorage.getItem("geolocation.permission.denieddate")).addDays(7) > new Date() )) {
+        if (!(typeof(Storage) !== "undefined" && new Date(localStorage.getItem("geolocation.permission.denieddate")).addDays(7) > new Date())) {
             setTimeout(function () {
                 useCurrentLocation();
-            }, 1000);
+            }, 2000);
         }
     }
     if (urlparams.loc2) {
         location2 = urlparams.loc2;
+    }
+    if (location1) {
+        reverseGeocode(location1, function (adress) {
+            $("#fromInput").val(adress);
+        });
+        $("#useLocationInputFieldButton").hide();
+        $("#clearInputFieldFromButton").show();
+    }
+    if (location2) {
         reverseGeocode(location2, function (adress) {
             $("#toInput").val(adress);
         });
+        $("#clearInputFieldToButton").show();
     }
     if (location1 || location2) {
         showLocationsOnMap();
@@ -384,8 +385,42 @@ window.onload = function () {
         },
         trackUserLocation: true
     }), 'top-left');
-
+    windowLoaded = true;
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js');
+    }
 };
+
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
+    e.preventDefault();
+    // Stash the event so it can be triggered later.
+    deferredPrompt = e;
+    // Update UI notify the user they can add to home screen
+    if (deferredPrompt) {
+        //$("#btnAddToHomescreen").show();
+        document.getElementById("btnAddToHomescreen").style.display = 'block';
+    }
+});
+
+document.getElementById("btnAddToHomescreen").addEventListener('click', (e) => {
+    // hide our user interface that shows our A2HS button
+    document.getElementById("btnAddToHomescreen").style.display = 'none';
+    // Show the prompt
+    deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    deferredPrompt.userChoice
+        .then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the A2HS prompt');
+            } else {
+                console.log('User dismissed the A2HS prompt');
+            }
+            deferredPrompt = null;
+        });
+});
 
 function clearInputFieldFrom() {
     $("#fromInput").val("");

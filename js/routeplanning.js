@@ -206,12 +206,6 @@ function calculateRoute(origin, destination, profile = "balanced", instructions 
                     paint: {
                         'line-color': "grey",
                         'line-opacity': 0.25,
-                        /*'line-color':
-                            {   // always use the colors of the cycling network
-                                type: 'identity',
-                                property: 'cyclecolour'
-                            }
-                        ,*/
                         'line-width': 6
                     },
                     layout: {
@@ -286,6 +280,20 @@ function createMarker(loc, color = '#3FB1CE') {
         .addTo(map);
 }
 
+map.on('load', function () {
+    map.addSource('dem', {
+        "type": "raster-dem",
+        "url": "mapbox://mapbox.terrain-rgb"
+    });
+    map.addLayer({
+        "id": "hillshading",
+        "source": "dem",
+        "type": "hillshade"
+        // insert below waterway-river-canal-shadow;
+        // where hillshading sits in the Mapbox Outdoors style
+    }, );//'waterway-river-canal-shadow');
+});
+
 map.on('click', function (e) {
     var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
     var features = map.queryRenderedFeatures(
@@ -310,22 +318,18 @@ map.on('click', function (e) {
             location1 = lngLatArray;
             reverseGeocode(location1, function (adress) {
                 $("#fromInput").val(adress);
+                fromFieldInputDetected(document.getElementById("fromInput"));
             });
         } else {
             location2 = lngLatArray;
             reverseGeocode(location2, function (adress) {
                 $("#toInput").val(adress);
+                toFieldInputDetected(document.getElementById("toInput"));
             });
         }
         showLocationsOnMap();
     }
 });
-
-/*for(let i in availableProfiles) {
-    map.on('click', availableProfiles[i], function (e) {
-        console.warn(e);
-    });
-}*/
 
 function exportCurrentRoute() {
     let route = routes[selectedProfile];
@@ -459,8 +463,8 @@ function reverseGeocode(location, callback) {
     //$.getJSON(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=0`, function (data) {
     $.getJSON(urls.reverseGeocoder.format(lng, lat), function (data) {
         callback(data.features[0].text + " (" + data.features[0].place_name + ")");
-        fromFieldInputDetected(document.getElementById("fromInput"));
-        toFieldInputDetected(document.getElementById("toInput"));
+        //fromFieldInputDetected(document.getElementById("fromInput"));
+        //toFieldInputDetected(document.getElementById("toInput"));
     });
 }
 
@@ -486,6 +490,7 @@ function showPosition(position) {
     showLocationsOnMap();
     reverseGeocode(location1, function (adress) {
         $("#fromInput").val(adress);
+        fromFieldInputDetected(document.getElementById("fromInput"));
     });
 }
 
@@ -544,10 +549,4 @@ function swapArrayValues(array) {
     return newArray;
 }
 
-/*function startCalculation() {
-    calculateRoute([4.320122, 50.858051], [4.397713, 50.854367], "shortest");
-}*/
-
 initInputGeocoders();
-
-//setTimeout(startCalculation, 2000);
