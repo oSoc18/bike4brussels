@@ -91,17 +91,17 @@ const dict = {
     },
     exportOptionsTitle: {
       en: "Export Options",
-      fr: "Export Options",
+      fr: "Options d'exportation",
       nl: "Exporteer opties"
     },
     exportgeneralexplanation: {
         en: "Please select a method to export your route.",
-        fr: "Please select a method to export your route.",
+        fr: "Veuillez sélectionner une méthode pour exporter votre itinéraire.",
         nl: "Selecteer een manier om uw route te exporteren."
     },
     exportgpxexplanation: {
         en: "You can export .gpx files to navigation applications and GPS devices.",
-        fr: "You can export .gpx files to navigation applications and GPS devices.",
+        fr: "Vous pouvez exporter des fichiers .gpx vers des applications de navigation et des appareils GPS",
         nl: "U kan de route exporteren naar een .gpx bestand. Dit kan geopend worden door navigatie applicaties en gps toestellen."
     },
     exportprintexplanation: {
@@ -111,12 +111,12 @@ const dict = {
     },
     exportgpxbutton: {
         en: "Export as .gpx file",
-        fr: "Export as .gpx file",
+        fr: "Exporter au format .gpx",
         nl: "Exporteer als .gpx bestand"
     },
     exportprintbutton: {
         en: "Print",
-        fr: "Print",
+        fr: "Imprimer",
         nl: "Afdrukken"
     },
     close: {
