@@ -1,5 +1,9 @@
 var isSidebarVisible = false;
+let windowLoaded = false;
 
+/**
+ * Make the sidebar visible/invisible
+ */
 function toggleSidebar() {
     $("#sidebar-right-container").toggleClass('hidden-sidebar');
     isSidebarVisible = !isSidebarVisible;
@@ -12,11 +16,19 @@ function toggleSidebar() {
     }
 }
 
+/**
+ * Select a profile with the given button id
+ * @param id
+ */
 function sidebarDisplayProfileHtmlId(id) {
     id = id.replace("-mobile", "");
     sidebarDisplayProfile(profileButtonIds[id]);
 }
 
+/**
+ * Select the profile
+ * @param profile
+ */
 function sidebarDisplayProfile(profile) {
     selectedProfile = profile;
     if (location1 && location2) {
@@ -47,6 +59,10 @@ function sidebarDisplayProfile(profile) {
     $(`#${getKeyByValue(profileButtonIds, profile)}-mobile`).addClass("active");
 }
 
+/**
+ * Helper method to determin the screen size bootstrap-wise
+ * @returns {*}
+ */
 function getBootstrapDeviceSize() {
     let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     let cat;
@@ -70,11 +86,17 @@ function getBootstrapDeviceSize() {
     return cat;
 }
 
+/**
+ * Get the key of the given value in a map
+ * @param object
+ * @param value
+ * @returns {string | undefined}
+ */
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
 
-/*
+/**
  * Replace all SVG images with inline SVG
  */
 jQuery('img.svg').each(function () {
@@ -105,6 +127,11 @@ jQuery('img.svg').each(function () {
     }, 'xml');
 });
 
+/**
+ * Display the elevation data in a nice graph
+ * @param htmlCanvasId
+ * @param heightInfo
+ */
 function displayChart(htmlCanvasId, heightInfo) {
     //console.log(heightInfo);
     var ctx = document.getElementById(htmlCanvasId).getContext('2d');
@@ -141,6 +168,10 @@ function displayChart(htmlCanvasId, heightInfo) {
     });
 }
 
+/**
+ * Detect which language the user has selected
+ * @param element
+ */
 function switchLanguage(element) {
     switch (element.id) {
         case "label-option-EN":
@@ -165,13 +196,13 @@ function switchLanguage(element) {
     applyLanguage(language);
 }
 
+/**
+ * Prepare an iframe to be printed. (opens the print preview dialog)
+ */
 function printExport() {
     let mapimg = new Image();
     mapimg.id = "map-pic";
     mapimg.src = document.getElementsByClassName("mapboxgl-canvas")[0].toDataURL();
-    /*let graphImg = new Image();
-    graphImg.id = "graph-pic";
-    graphImg.src = document.getElementById(`chart-${selectedProfile}`).toDataURL();*/
     let html = "<head>" +
         "<title>Bike For Brussels - Route export</title>" +
         '<link href="style/printstyle.css" rel="stylesheet" type="text/css">' +
@@ -180,27 +211,24 @@ function printExport() {
         "</head>" +
         "<body>" +
         "<h1>Bike For Brussels - Routeplanner</h1>" +
-        "<p id='image_for_crop'>" /*+ mapimgHtml */ + "</p>" + `${selectedProfile} route` +
+        "<p id='image_for_crop'>" /*+ mapimgHtml */ + "</p>" +
         "<div id='instructionsPrintContainer'>" +
         document.getElementById(profileHtmlId[selectedProfile]).innerHTML +
         "</div></body>";
     window.frames["print_frame"].document.body.innerHTML = html;
     window.frames["print_frame"].document.getElementById("image_for_crop").appendChild(mapimg);
     window.frames["print_frame"].document.getElementsByClassName("elevation-info")[0].innerHTML = "";
-    //window.frames["print_frame"].document.getElementsByClassName("elevation-info")[0].appendChild(graphImg);
-    //var c = window.frames["print_frame"].document.getElementById(`chart-${selectedProfile}`);
-    //var ctx = c.getContext("2d");
-    //ctx.fillStyle = "#ECB900";
-    //c.style.backgroundColor = "#ECB900";
-    //ctx.fillRect(0, 0, c.width, c.height);
-    //ctx.drawImage(graphImg,0,0);
-    //c.width+=0;
+    window.frames["print_frame"].document.getElementsByClassName("profile-explanation-icons")[0].innerHTML = "";
     window.frames["print_frame"].window.focus();
     setTimeout(function () {
         window.frames["print_frame"].window.print();
     }, 100);
 }
 
+/**
+ * Get the parameters that are encoded in the given url
+ * @param url
+ */
 function getAllUrlParams(url) {
     // get query string from url (optional) or window
     var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
@@ -271,6 +299,10 @@ function getAllUrlParams(url) {
     return obj;
 }
 
+/**
+ * Set the current url, so that refreshing the page will take you to the same locations.
+ * @param params - map containing the parameters to encode (in this case probably loc1 and loc2)
+ */
 function setCurrentUrl(params) {
     currentUrl = window.location.href;
     currentUrl = currentUrl.split('?')[0] + '?';  //verwijder huidige parameters (if any)
@@ -310,15 +342,30 @@ function applyLanguage(lang) {
     $("#relaxed-instruction div h4").html(getString("profileProposal", lang));
     $("#balanced-instruction div h4").html(getString("profileProposal", lang));
     $("#fast-instruction div h4").html(getString("profileProposal", lang));
+
+    $("#ModalExportOptions").html(getString("exportOptionsTitle", lang));
+    $("#export-general-explanation").html(getString("exportgeneralexplanation", lang));
+    $("#export-gpx-explanation").html(getString("exportgpxexplanation", lang));
+    $("#export-print-explanation").html(getString("exportprintexplanation", lang));
+    $("#exportgpxbutton").html(getString("exportgpxbutton", lang));
+    $("#exportprintbutton").html(getString("exportprintbutton", lang));
+    $(".btn-close-export").html(getString("close", lang));
 }
 
+/**
+ * Method that gets called when input is detected in the Startpoint input field
+ * @param el - The input field itself
+ */
 function fromFieldInputDetected(el) {
     if (!el.value || el.value === "") {
         //show location button
         $("#clearInputFieldFromButton").hide();
         $("#useLocationInputFieldButton").show();
-        location1 = undefined;
-        showLocationsOnMap();
+        if (windowLoaded) {
+            console.log("setting location 1 to undef");
+            location1 = undefined;
+            showLocationsOnMap();
+        }
     } else {
         //show empty button
         $("#clearInputFieldFromButton").show();
@@ -326,6 +373,10 @@ function fromFieldInputDetected(el) {
     }
 }
 
+/**
+ * Method that gets called when input is detected in the Endpoint input field
+ * @param el - The input field itself
+ */
 function toFieldInputDetected(el) {
     if (!el.value || el.value === "") {
         //show location button
@@ -338,6 +389,9 @@ function toFieldInputDetected(el) {
     }
 }
 
+/**
+ * Do stuff when the window is done loading
+ */
 window.onload = function () {
     sidebarDisplayProfile(selectedProfile);
     $(".lang_label").removeClass("active");
@@ -359,21 +413,28 @@ window.onload = function () {
     let urlparams = getAllUrlParams();
     if (urlparams.loc1) {
         location1 = urlparams.loc1;
-        reverseGeocode(location1, function (adress) {
-            $("#fromInput").val(adress);
-        });
     } else {
-        if (!(typeof(Storage) !== "undefined" && new Date(localStorage.getItem("geolocation.permission.denieddate")).addDays(7) > new Date() )) {
+        if (!(typeof(Storage) !== "undefined" && new Date(localStorage.getItem("geolocation.permission.denieddate")).addDays(7) > new Date())) {
             setTimeout(function () {
                 useCurrentLocation();
-            }, 1000);
+            }, 2000);
         }
     }
     if (urlparams.loc2) {
         location2 = urlparams.loc2;
+    }
+    if (location1) {
+        reverseGeocode(location1, function (adress) {
+            $("#fromInput").val(adress);
+        });
+        $("#useLocationInputFieldButton").hide();
+        $("#clearInputFieldFromButton").show();
+    }
+    if (location2) {
         reverseGeocode(location2, function (adress) {
             $("#toInput").val(adress);
         });
+        $("#clearInputFieldToButton").show();
     }
     if (location1 || location2) {
         showLocationsOnMap();
@@ -384,9 +445,52 @@ window.onload = function () {
         },
         trackUserLocation: true
     }), 'top-left');
-
+    windowLoaded = true;
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js');
+    }
 };
 
+let deferredPrompt;
+
+/**
+ * Logic for the "Add to homescreen" functionallity on mobile devices
+ */
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
+    e.preventDefault();
+    // Stash the event so it can be triggered later.
+    deferredPrompt = e;
+    // Update UI notify the user they can add to home screen
+    if (deferredPrompt) {
+        //$("#btnAddToHomescreen").show();
+        document.getElementById("btnAddToHomescreen").style.display = 'block';
+    }
+});
+
+/**
+ * Logic for the "Add to homescreen" functionallity on mobile devices
+ */
+document.getElementById("btnAddToHomescreen").addEventListener('click', (e) => {
+    // hide our user interface that shows our A2HS button
+    document.getElementById("btnAddToHomescreen").style.display = 'none';
+    // Show the prompt
+    deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    deferredPrompt.userChoice
+        .then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the A2HS prompt');
+            } else {
+                console.log('User dismissed the A2HS prompt');
+            }
+            deferredPrompt = null;
+        });
+});
+
+/**
+ * Empty the contents of the startpoint input field
+ */
 function clearInputFieldFrom() {
     $("#fromInput").val("");
     location1 = undefined;
@@ -394,6 +498,9 @@ function clearInputFieldFrom() {
     fromFieldInputDetected(document.getElementById("fromInput"));
 }
 
+/**
+ * Empty the contents of the endpoint input field
+ */
 function clearInputFieldTo() {
     $("#toInput").val("");
     location2 = undefined;

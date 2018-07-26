@@ -88,6 +88,41 @@ const dict = {
       en: "Proposed route for you",
       fr: "C'est la route proposée pour vous",
       nl: "Dit is de voorgestelde route"
+    },
+    exportOptionsTitle: {
+      en: "Export Options",
+      fr: "Export Options",
+      nl: "Exporteer opties"
+    },
+    exportgeneralexplanation: {
+        en: "Please select a method to export your route.",
+        fr: "Please select a method to export your route.",
+        nl: "Selecteer een manier om uw route te exporteren."
+    },
+    exportgpxexplanation: {
+        en: "You can export .gpx files to navigation applications and GPS devices.",
+        fr: "You can export .gpx files to navigation applications and GPS devices.",
+        nl: "U kan de route exporteren naar een .gpx bestand. Dit kan geopend worden door navigatie applicaties en gps toestellen."
+    },
+    exportprintexplanation: {
+        en: "Not into digital? Print it out!",
+        fr: "Not into digital? Print it out!",
+        nl: "Houdt u niet van digitaal? Print uw route op papier!"
+    },
+    exportgpxbutton: {
+        en: "Export as .gpx file",
+        fr: "Export as .gpx file",
+        nl: "Exporteer als .gpx bestand"
+    },
+    exportprintbutton: {
+        en: "Print",
+        fr: "Print",
+        nl: "Afdrukken"
+    },
+    close: {
+        en: "Close",
+        fr: "Fermer",
+        nl: "Sluit"
     }
 };
 
