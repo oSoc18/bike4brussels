@@ -349,7 +349,7 @@ function applyLanguage(lang) {
     $("#export-print-explanation").html(getString("exportprintexplanation", lang));
     $("#exportgpxbutton").html(getString("exportgpxbutton", lang));
     $("#exportprintbutton").html(getString("exportprintbutton", lang));
-    $(".btn-close").html(getString("close", lang));
+    $(".btn-close-export").html(getString("close", lang));
 }
 
 /**
