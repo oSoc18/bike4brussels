@@ -342,6 +342,14 @@ function applyLanguage(lang) {
     $("#relaxed-instruction div h4").html(getString("profileProposal", lang));
     $("#balanced-instruction div h4").html(getString("profileProposal", lang));
     $("#fast-instruction div h4").html(getString("profileProposal", lang));
+
+    $("#ModalExportOptions").html(getString("exportOptionsTitle", lang));
+    $("#export-general-explanation").html(getString("exportgeneralexplanation", lang));
+    $("#export-gpx-explanation").html(getString("exportgpxexplanation", lang));
+    $("#export-print-explanation").html(getString("exportprintexplanation", lang));
+    $("#exportgpxbutton").html(getString("exportgpxbutton", lang));
+    $("#exportprintbutton").html(getString("exportprintbutton", lang));
+    $(".btn-close").html(getString("close", lang));
 }
 
 /**

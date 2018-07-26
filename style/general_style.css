@@ -522,15 +522,3 @@ input[type="text"], textarea {
 #clearInputFieldFromButton, #clearInputFieldToButton {
     display: none;
 }
-
-.modal-body div {
-    /*display: flex;*/
-}
-
-.modal-body div div {
-    /*flex-grow: 1;*/
-}
-
-.modal-body div p {
-    /*flex-grow: 0;*/
-}

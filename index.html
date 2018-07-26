@@ -494,39 +494,39 @@
     </div>
 </div>
 
-<div id="exportModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel"
+<div id="exportModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalExportOptions"
      style="display: none;" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLiveLabel">Export Options</h5>
+                <h5 class="modal-title" id="ModalExportOptions">Export Options</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Please select a method to export your route.</p>
-                <div class="row">
-                    <div class="col-7">
-                        <p>You can export .gpx files to navigation applications and GPS devices.</p>
+                <p id="export-general-explanation">Please select a method to export your route.</p>
+                <div style="display: flex">
+                    <div style="flex-shrink: 1; flex-grow: 1">
+                        <p id="export-gpx-explanation">You can export .gpx files to navigation applications and GPS devices.</p>
                     </div>
-                    <div class="col-5">
-                        <button class="btn btn-warning" onclick="exportCurrentRoute()">Export as .gpx file</button>
+                    <div>
+                        <button id="exportgpxbutton" class="btn btn-warning" onclick="exportCurrentRoute()">Export as .gpx file</button>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-10">
-                        <p>Not into digital? Print it out!</p>
+                <div style="display: flex">
+                    <div style="flex-shrink: 1; flex-grow: 1;">
+                        <p id="export-print-explanation">Not into digital? Print it out!</p>
                     </div>
-                    <div class="col-2">
-                        <button class="btn btn-warning" onclick="printExport()">Print</button>
+                    <div >
+                        <button id="exportprintbutton" class="btn btn-warning" onclick="printExport()">Print</button>
                     </div>
                 </div>
                 <iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning btn-close" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
