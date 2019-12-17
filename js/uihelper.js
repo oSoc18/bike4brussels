@@ -447,7 +447,13 @@ window.onload = function () {
     }), 'top-left');
     windowLoaded = true;
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js');
+        navigator.serviceWorker.getRegistrations().then(
+            function (registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            }
+        );
     }
 };
 
