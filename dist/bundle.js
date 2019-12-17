@@ -1318,3 +1318,16 @@ const dict = {
 function getString(stringId, lang){
     return dict[stringId][lang];
 }
+
+window.app = {
+    clearInputFieldFrom,
+    clearInputFieldTo,
+    exportCurrentRoute,
+    printExport,
+    sidebarDisplayProfileHtmlId,
+    swapOriginDestination,
+    switchLanguage,
+    toFieldInputDetected,
+    toggleSidebar,
+    useCurrentLocation
+};

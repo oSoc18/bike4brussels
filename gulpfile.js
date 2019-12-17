@@ -9,7 +9,8 @@ gulp.task('default', function() {
       './js/map.js',
       './js/routeplanning.js',
       './js/uihelper.js',
-      './js/strings.js'
+      './js/strings.js',
+      './js/export.js'
   ])
     .pipe(concat('bundle.js'))
     .pipe(gulp.dest('./dist/'));

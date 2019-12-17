@@ -1,7 +1,7 @@
 {
   "name": "bike4brussels",
   "scripts": {
-    "build": "gulp && parcel build dist/bundle.js --no-source-maps --global app --out-file bundle.min.js",
+    "build": "gulp && parcel build --global window dist/bundle.js --no-source-maps --out-file bundle.min.js",
     "serve": "http-server"
   },
   "repository": {

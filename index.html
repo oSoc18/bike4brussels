@@ -23,7 +23,7 @@
             <h4>Route Planner</h4>
         </div>
     </div>-->
-    <button class="btn image-button" id="sidebarHamburger" onclick="toggleSidebar()"></button>
+    <button class="btn image-button" id="sidebarHamburger" onclick="window.app.toggleSidebar()"></button>
     <!--<div class="center-helper">-->
     <div class="row">
         <div class="col-lg-2 col-md-2" id="top-overlay-center-spacer">
@@ -33,17 +33,17 @@
                 <!--<label class="col-lg-1 control-label" for="fromInput">From</label>-->
                 <div class="col-lg-5 col-md-12 col-10 currentLocation right-addon">
                     <input class="form-control typeahead geocoder-input" type="text" id="fromInput" placeholder="From" oninput="fromFieldInputDetected(this)">
-                    <img id="useLocationInputFieldButton" src="./assets/img/currentLocation.svg" onclick="useCurrentLocation()"/>
-                    <img id="clearInputFieldFromButton" src="./style/icons/ic_clear_black_24px.svg" onclick="clearInputFieldFrom()"/>
+                    <img id="useLocationInputFieldButton" src="./assets/img/currentLocation.svg" onclick="window.app.useCurrentLocation()"/>
+                    <img id="clearInputFieldFromButton" src="./style/icons/ic_clear_black_24px.svg" onclick="window.app.clearInputFieldFrom()"/>
                 </div>
                 <!--<label class="col-lg-1 control-label" for="toInput">To</label>-->
                 <div class="col-lg-2 col-md-12 col-1 text-center">
                     <button class="btn btn-warning image-button" id="swap-origin-destination-button"
-                            onclick="swapOriginDestination()"></button>
+                            onclick="window.app.swapOriginDestination()"></button>
                 </div>
                 <div class="col-lg-5 col-md-12 col-10 right-addon">
-                    <input class="form-control typeahead geocoder-input" type="text" id="toInput" placeholder="To" oninput="toFieldInputDetected(this)">
-                    <img id="clearInputFieldToButton" src="./style/icons/ic_clear_black_24px.svg" onclick="clearInputFieldTo()"/>
+                    <input class="form-control typeahead geocoder-input" type="text" id="toInput" placeholder="To" oninput="window.app.toFieldInputDetected(this)">
+                    <img id="clearInputFieldToButton" src="./style/icons/ic_clear_black_24px.svg" onclick="window.app.clearInputFieldTo()"/>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
     <div class="row">
         <div id='top-overlay-profile-buttons-mobile'>
             <span class="btn btn-lg text-center route" id="fastest-route-mobile"
-                  onclick="sidebarDisplayProfileHtmlId(this.id)">
+                  onclick="window.app.sidebarDisplayProfileHtmlId(this.id)">
                 <span>
                     <img class="svg" src="assets/img/fast.svg"/>
                 </span>
@@ -59,7 +59,7 @@
                 <div id="profile-button-text-fast-mobile">Fast</div>
             </span>
             <span class="btn btn-lg text-center route" id="balanced-route-mobile"
-                  onclick="sidebarDisplayProfileHtmlId(this.id)">
+                  onclick="window.app.sidebarDisplayProfileHtmlId(this.id)">
                 <span>
                     <img class="svg" src="./assets/img/balance.svg"/>
                 </span>
@@ -67,7 +67,7 @@
                 <div id="profile-button-text-balanced-mobile">Balanced</div>
             </span>
             <span class="btn btn-lg text-center route" id="relaxed-route-mobile"
-                  onclick="sidebarDisplayProfileHtmlId(this.id)">
+                  onclick="window.app.sidebarDisplayProfileHtmlId(this.id)">
                 <span>
                     <img class="svg" src="./assets/img/relaxed.svg"/>
                 </span>
@@ -75,7 +75,7 @@
                 <div id="profile-button-text-relaxed-mobile">Relaxed</div>
             </span>
             <span class="btn btn-lg text-center route" id="other-route-mobile"
-                  onclick="sidebarDisplayProfileHtmlId(this.id)">
+                  onclick="window.app.sidebarDisplayProfileHtmlId(this.id)">
                 <span>
                     <img class="svg" src="./assets/img/network.svg"/>
                 </span>
@@ -98,7 +98,7 @@
         <div class="row">
             <div id="sidebar-top-spacer" class="col-12">
                 <span class="float-right">
-                    <button class="btn-close btn-lg image-button" id="sidebarClose" onclick="toggleSidebar()"></button>
+                    <button class="btn-close btn-lg image-button" id="sidebarClose" onclick="window.app.toggleSidebar()"></button>
                 </span>
             </div>
         </div>
@@ -106,7 +106,7 @@
     <div id='sidebar-right-content'>
         <div id='sidebar-top'>
             <span class="btn btn-lg text-center route" id="fastest-route"
-                  onclick="sidebarDisplayProfileHtmlId(this.id)">
+                  onclick="window.app.sidebarDisplayProfileHtmlId(this.id)">
                 <span>
                     <img class="svg" src="assets/img/fast.svg"/>
                 </span>
@@ -114,7 +114,7 @@
                 <div id="profile-button-text-fast">Fast</div>
             </span>
             <span class="btn btn-lg text-center route" id="balanced-route"
-                  onclick="sidebarDisplayProfileHtmlId(this.id)">
+                  onclick="window.app.sidebarDisplayProfileHtmlId(this.id)">
                 <span>
                     <img class="svg" src="./assets/img/balance.svg"/>
                 </span>
@@ -122,7 +122,7 @@
                 <div id="profile-button-text-balanced">Balanced</div>
             </span>
             <span class="btn btn-lg text-center route" id="relaxed-route"
-                  onclick="sidebarDisplayProfileHtmlId(this.id)">
+                  onclick="window.app.sidebarDisplayProfileHtmlId(this.id)">
                 <span>
                     <img class="svg" src="./assets/img/relaxed.svg"/>
                 </span>
@@ -130,7 +130,7 @@
                 <div id="profile-button-text-relaxed">Relaxed</div>
             </span>
             <span class="btn btn-lg text-center route" id="other-route"
-                  onclick="sidebarDisplayProfileHtmlId(this.id)">
+                  onclick="window.app.sidebarDisplayProfileHtmlId(this.id)">
                 <span>
                     <img class="svg" src="./assets/img/network.svg"/>
                 </span>
@@ -461,13 +461,13 @@
     <button class="btn btn-warning" data-toggle="button">FR</button>-->
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
 
-        <label class="btn btn-warning lang_label" id="label-option-EN" onclick="switchLanguage(this);">
+        <label class="btn btn-warning lang_label" id="label-option-EN" onclick="window.app.switchLanguage(this);">
             <input type="radio" name="options" id="option-EN" autocomplete="off" checked> EN
         </label>
-        <label class="btn btn-warning lang_label" id="label-option-FR" onclick="switchLanguage(this);">
+        <label class="btn btn-warning lang_label" id="label-option-FR" onclick="window.app.switchLanguage(this);">
             <input type="radio" name="options" id="option-FR" autocomplete="off"> FR
         </label>
-        <label class="btn btn-warning lang_label" id="label-option-NL" onclick="switchLanguage(this);">
+        <label class="btn btn-warning lang_label" id="label-option-NL" onclick="window.app.switchLanguage(this);">
             <input type="radio" name="options" id="option-NL" autocomplete="off"> NL
         </label>
     </div>
@@ -490,7 +490,7 @@
                         <p id="export-gpx-explanation">You can export .gpx files to navigation applications and GPS devices.</p>
                     </div>
                     <div>
-                        <button id="exportgpxbutton" class="btn btn-warning" onclick="exportCurrentRoute()">Export as .gpx file</button>
+                        <button id="exportgpxbutton" class="btn btn-warning" onclick="window.app.exportCurrentRoute()">Export as .gpx file</button>
                     </div>
                 </div>
                 <div style="display: flex">
@@ -498,7 +498,7 @@
                         <p id="export-print-explanation">Not into digital? Print it out!</p>
                     </div>
                     <div >
-                        <button id="exportprintbutton" class="btn btn-warning" onclick="printExport()">Print</button>
+                        <button id="exportprintbutton" class="btn btn-warning" onclick="window.app.printExport()">Print</button>
                     </div>
                 </div>
                 <iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
