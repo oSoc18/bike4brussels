@@ -466,30 +466,28 @@ function download(data, filename, type) {
 function initInputGeocoders() {
     $('.geocoder-input').typeahead({
         source: function (query, callback) {
-            // MapBox Geocoder:
-            $.getJSON(urls.geocoder.format(query)/*`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${mapboxAccessCode}&proximity=50.861%2C4.356&country=BE&bbox=3.9784240723%2C50.6485897217%2C4.7282409668%2C51.0552073386&limit=5`*/,
-                function (data) {
-                    var resArray = [];
-                    for (var feature in data.features) {
-                        resArray.push({
-                            name: data.features[feature].text + " (" + data.features[feature].place_name + ")",
-                            loc: data.features[feature].center
-                        });
-                    }
-                    callback(resArray);
-                    fromFieldInputDetected(document.getElementById("fromInput"));
-                    toFieldInputDetected(document.getElementById("toInput"));
-                });
-
-            // Nominatim Geocoder
-            //$.getJSON(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&polygon=0&addressdetails=0&countrycodes=BE`/*bounded=1&viewbox=4.239465,50.930741,4.501558,50.784803`*/, function (data) {
-            /*    var resArray = [];
-                for (var feature in data) {
-                    resArray.push({name: data[feature].display_name, loc: [data[feature].lon, data[feature].lat]});
+            // MapBox Geocoder
+            $.getJSON(urls.geocoder.format(query), function (data) {
+                var resArray = [];
+                for (var feature in data.features) {
+                    resArray.push({
+                        name: data.features[feature].text + " (" + data.features[feature].place_name + ")",
+                        loc: data.features[feature].center
+                    });
                 }
                 callback(resArray);
-            });*/
+                fromFieldInputDetected(document.getElementById("fromInput"));
+                toFieldInputDetected(document.getElementById("toInput"));
+            });
 
+            // Nominatim Geocoder
+            // $.getJSON(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&polygon=0&addressdetails=0&countrycodes=BE`/*bounded=1&viewbox=4.239465,50.930741,4.501558,50.784803`*/, function (data) {
+            //     var resArray = [];
+            //     for (var feature in data) {
+            //         resArray.push({name: data[feature].display_name, loc: [data[feature].lon, data[feature].lat]});
+            //     }
+            //     callback(resArray);
+            // });
         },
         matcher: function (s) {   //Fix display results when query contains space
             return true;
@@ -519,12 +517,19 @@ function initInputGeocoders() {
 function reverseGeocode(location, callback) {
     var lng = location[0];
     var lat = location[1];
-    //$.getJSON(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=0`, function (data) {
+    // MapBox Geocoder
     $.getJSON(urls.reverseGeocoder.format(lng, lat), function (data) {
         callback(data.features[0].text + " (" + data.features[0].place_name + ")");
         //fromFieldInputDetected(document.getElementById("fromInput"));
         //toFieldInputDetected(document.getElementById("toInput"));
     });
+
+    // Nominatim Geocoder
+    // $.getJSON(`https://nominatim.openstreetmap.org/reverse?format=geojson&lat=${lat}&lon=${lng}&zoom=18&addressdetails=0`, function (data) {
+    //     callback(data.features[0].display_name);
+    //     //fromFieldInputDetected(document.getElementById("fromInput"));
+    //     //toFieldInputDetected(document.getElementById("toInput"));
+    // });
 }
 
 /**
